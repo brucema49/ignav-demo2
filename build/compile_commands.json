@@ -1,0 +1,467 @@
+[
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/lc-fbsm.dir/src/ins-gnss/app/lc-fbsm.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/app/lc-fbsm.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/app/lc-fbsm.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/lc-rts.dir/src/ins-gnss/app/lc-rts.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/app/lc-rts.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/app/lc-rts.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navapp.dir/src/ins-gnss/app/rtkrcv.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/app/rtkrcv.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/app/rtkrcv.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ar.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ar.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/convgpx.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/convgpx.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/convkml.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/convkml.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/convrnx.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/convrnx.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/convrnx.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/datum.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/datum.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/datum.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ephemeris.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ephemeris.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ephemeris.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/geoid.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/geoid.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/geoid.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/geomag.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/geomag.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/geomag.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/gis.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/gis.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/gis.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-align.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-align.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-align.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-back-mech.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-back-mech.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-back-mech.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-camera.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-camera.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-camera.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-doppler.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-doppler.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-doppler.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-dualant-calib.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-dualant-calib.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-dualant-calib.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-geomag.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-geomag.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-geomag.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-fbsm.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-fbsm.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-fbsm.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-psi.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-psi.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-psi.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-rts.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-rts.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-rts.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-state.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-state.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-state.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-tc.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-tc.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-tc.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-init-rt.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-init-rt.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-init-rt.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-nhc.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-nhc.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-nhc.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-odo.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-odo.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-odo.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-pose.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-pose.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-pose.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-sim.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-sim.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-sim.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-static-detect.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-static-detect.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-static-detect.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-vel-match-align.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vel-match-align.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vel-match-align.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-vo-aid.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vo-aid.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vo-aid.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-vo.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vo.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vo.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-zaru.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-zaru.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-zaru.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins-zvu.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-zvu.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-zvu.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ins.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ins.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ionex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ionex.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ionex.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/lambda.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/lambda.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/lambda.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/options.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/options.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/options.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/pntpos.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/pntpos.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/pntpos.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/postpos.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/postpos.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/postpos.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ppp.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ppp.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ppp.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ppp_ar.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ppp_ar.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ppp_ar.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ppp_corr.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ppp_corr.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ppp_corr.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/preceph.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/preceph.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/preceph.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/quaternion.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/quaternion.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/quaternion.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/qzslex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/qzslex.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/qzslex.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/binex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/binex.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/binex.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/cmr.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/cmr.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/cmr.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/crescent.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/crescent.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/crescent.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/euroc.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/euroc.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/euroc.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/ground-truth.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ground-truth.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ground-truth.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/gsof.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/gsof.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/gsof.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/gw10.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/gw10.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/gw10.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/imu.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/imu.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/imu.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/javad.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/javad.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/javad.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/karl.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/karl.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/karl.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/kitti.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/kitti.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/kitti.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/m39-mix.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/m39-mix.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/m39-mix.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/malaga.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/malaga.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/malaga.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel-oem6.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/novatel-oem6.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/novatel-oem6.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/novatel.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/novatel.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/nvs.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/nvs.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/nvs.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/odo.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/odo.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/odo.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/rcvlex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rcvlex.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rcvlex.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/rinex-rt.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rinex-rt.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rinex-rt.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/rt17.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rt17.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rt17.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/septentrio.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/septentrio.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/septentrio.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/serialisation.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/serialisation.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/serialisation.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/skytraq.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/skytraq.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/skytraq.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/ss2.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ss2.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ss2.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/tersus.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/tersus.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/tersus.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/ublox.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ublox.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ublox.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rcvraw.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcvraw.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rcvraw.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rinex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rinex.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rinex.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rtcm.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rtcm2.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm2.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm2.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rtcm3.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm3.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm3.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rtcm3e.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm3e.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm3e.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rtk-utils.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtk-utils.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rtk-utils.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rtkcmn.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtkcmn.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rtkcmn.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rtkpos.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtkpos.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rtkpos.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtksvr.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/rtksvr.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/sbas.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/sbas.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/sbas.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/se3.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/se3.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/se3.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/so3.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/so3.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/so3.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/solution.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/solution.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/solution.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/stream.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/stream.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/stream.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/streamsvr.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/streamsvr.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/streamsvr.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/svd.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/svd.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/svd.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/tides.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/tides.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/tides.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/tle.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/tle.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/tle.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/vt.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/vt.cc"
+}
+]

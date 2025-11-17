@@ -1,0 +1,1 @@
+/usr/bin/c++  -msse3  -O0 -Wall -g -ggdb  -rdynamic CMakeFiles/navapp.dir/src/ins-gnss/app/rtkrcv.cc.o  -o ../bin/navapp  ../lib/libnavlib.a -lpthread -lblas -llapack -lz 

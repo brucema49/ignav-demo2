@@ -1,0 +1,11 @@
+{
+    "cmake.debugConfig": {
+        "args": ["-s","-o", "../conf/spp_tc_data3.conf"],
+        "cwd": "${workspaceFolder}/bin"
+    },
+    "cmake.configureEnvironment": {
+        "BUILD_TYPE": "Debug"
+    },
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.installPrefix": "${workspaceFolder}/bin"
+}

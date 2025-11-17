@@ -50,3 +50,13 @@ QQ  ：1971129844
 
 # 备注
 若对ignav专业版本有需求可咨询作者
+
+
+# Spoofing Detector
+
+
+git add .		#把该目录下所有文件添加到分支上 git add <路径> 就可以指定上传的文件了
+git commit -m "注明本次上传修改的地方"
+git push
+
+

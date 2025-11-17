@@ -33,6 +33,9 @@
 #include <queue.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <array>
+#include <vector>
+
 
 /* define fixed-width datatypes for Visual Studio projects */
 #if defined(_MSC_VER)&&(_MSC_VER<1600)
@@ -1945,6 +1948,22 @@ typedef struct {
     ddamb_t *amb;       /* double difference ambiguity list */
 } amb_t;
 
+// 历元数据结构
+typedef struct{
+    std::vector<double> residuals;      // 残差向量
+    std::vector<std::vector<double>> covariance; // 协方差矩阵
+    size_t satellite_count;             // 卫星数量
+}EpochData ;
+
+typedef struct{
+    std::array<EpochData, 10> epoch_data;  // 固定10个历元的数据，假设每个历元观测卫星一致
+    int valid_count;                     // 有效历元数量
+    int total_residuals;                  // 总残差数量
+    int current_index;                   // 当前写入位置索引
+
+} WindowedResiduals;
+
+
 typedef struct {        /* RTK control/result type */
     sol_t  sol;         /* RTK solution */
     double rb[6];       /* base position/velocity (ecef) (m|m/s) */
@@ -1966,6 +1985,7 @@ typedef struct {        /* RTK control/result type */
     amb_t bias;                  /* double-difference ambiguity list */
     amb_t wlbias;                /* WL double-difference ambiguity list */
     ddsat_t sat[MAXSAT];         /* double difference satellite list */
+    WindowedResiduals windowed_residuals; /* sliding window residuals */
 } rtk_t;
 
 typedef struct half_cyc_tag {  /* half-cycle correction list type */

@@ -39,6 +39,10 @@ dirent.h
 -
 unistd.h
 -
+array
+-
+vector
+-
 stdint.h
 -
 winsock2.h

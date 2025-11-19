@@ -1584,6 +1584,20 @@ typedef struct {        /* NovAtel OEM6 velocity solution type */
     int type;           /* velocity solution type (1: instantaneous doppler,2: difference from successive position) */
 } solvel_t;
 
+// 历元数据结构
+typedef struct{
+    std::vector<double> residuals;      // 残差向量
+    std::vector<double> cov_diag; // 协方差矩阵的对角向量
+}EpochData ;
+
+typedef struct{
+    std::array<EpochData, 10> epoch_data;  // 固定10个历元的数据，假设每个历元观测卫星一致
+    int valid_count;                     // 有效历元数量
+    int total_residuals;                  // 总残差数量
+    int current_index;                   // 当前写入历元位置索引
+
+} WindowedResiduals;
+
 typedef struct {        /* solution type */
     gtime_t time;       /* time (GPST) */
     double rr[9];       /* position/velocity/acceleration (m|m/s|m/s^2) */
@@ -1620,6 +1634,7 @@ typedef struct {        /* solution type */
 
     solvel_t sol_vel;   /* NovAtel OEM6 velocity solution */
     imud_t imu;         /* correction imu measurement data */
+    WindowedResiduals windowed_residuals; /* sliding window residuals */
 } sol_t;
 
 typedef struct {        /* solution buffer type */
@@ -1948,21 +1963,6 @@ typedef struct {
     ddamb_t *amb;       /* double difference ambiguity list */
 } amb_t;
 
-// 历元数据结构
-typedef struct{
-    std::vector<double> residuals;      // 残差向量
-    std::vector<std::vector<double>> covariance; // 协方差矩阵
-    size_t satellite_count;             // 卫星数量
-}EpochData ;
-
-typedef struct{
-    std::array<EpochData, 10> epoch_data;  // 固定10个历元的数据，假设每个历元观测卫星一致
-    int valid_count;                     // 有效历元数量
-    int total_residuals;                  // 总残差数量
-    int current_index;                   // 当前写入位置索引
-
-} WindowedResiduals;
-
 
 typedef struct {        /* RTK control/result type */
     sol_t  sol;         /* RTK solution */
@@ -1985,7 +1985,7 @@ typedef struct {        /* RTK control/result type */
     amb_t bias;                  /* double-difference ambiguity list */
     amb_t wlbias;                /* WL double-difference ambiguity list */
     ddsat_t sat[MAXSAT];         /* double difference satellite list */
-    WindowedResiduals windowed_residuals; /* sliding window residuals */
+
 } rtk_t;
 
 typedef struct half_cyc_tag {  /* half-cycle correction list type */

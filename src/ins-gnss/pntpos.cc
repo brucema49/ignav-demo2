@@ -435,6 +435,40 @@ static int valins(const double *azel, const int *vsat, int n,const prcopt_t *opt
     }
     return 1;
 }
+
+static int ChiSquareTest(sol_t *sol){
+
+    
+}
+
+// 更新窗口化残差数据以进行欺骗检测
+static int SpoofingDetection(sol_t *sol, const double* v, const double *var,const int nv) {
+    int windows_size=10;
+    //数据存储
+    if(sol->windowed_residuals.valid_count<windows_size){//不足窗口数
+        for(int i=0;i<nv&&v[i]!=0.0;i++) {
+            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.push_back(v[i]);
+            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag.push_back(var[i]);
+        }
+        sol->windowed_residuals.valid_count++;
+    } else {//达到窗口数，根据环形索引覆盖数据
+        sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.clear();
+        sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag.clear();
+        for(int i=0;i<nv&&v[i]!=0.0;i++) {
+            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.push_back(v[i]);
+            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag.push_back(var[i]);
+        }
+
+    }
+
+    int *p=&sol->windowed_residuals.current_index;
+    *p++;
+    if (*p>9) *p-=10;//窗口环形索引
+    
+
+}
+
+
 /* ins estimate states by using pseudorange measurement-----------------------*/
 static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
                     const double *vare,const int *svh,const nav_t *nav,
@@ -442,20 +476,19 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
                     int *vsat,double *resp, char *msg)
 {
     int i,nx,nv,ns,stat=0,irc=0,IP;
-    double *x,*R,*v,*H,*var,*P;
+    double *x,*R,*v,*H,*var,*P,*v_pre;//存储先验残差
     const insopt_t *insopt=&opt->insopt;
     static insstate_t inss={0};
-
+    
     trace(3,"estinspr:\n");
 
     nx=xnX(insopt);
     irc=xiRc(insopt); IP=xiP(insopt);
 
     x=zeros(nx,1); R=zeros(NFREQ*n+4,NFREQ*n+4);
-    H=zeros(nx,NFREQ*n+4); v=zeros(NFREQ*n+4,1);
+    H=zeros(nx,NFREQ*n+4); v=zeros(NFREQ*n+4,1);v_pre=zeros(NFREQ*n+4,1);
     var=mat(NFREQ*n+4,1); P=mat(nx,nx);
 
-        
     /* prefit residuals */
     nv=rescode(1,obs,n,rs,dts,vare,svh,nav,x,opt,ins,v,H,var,azel,vsat,
                resp,&ns);
@@ -466,7 +499,11 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
         matcpy(P,ins->P,ins->nx,ins->nx);
 
         /* measurement variance */
-        for (i=0;i<nv;i++) R[i+i*nv]=var[i];
+        for (i=0;i<nv;i++) 
+        {
+            R[i+i*nv]=var[i];
+            v_pre[i]=v[i];
+        }
 
         /* ekf filter */
         stat=filter(x,P,H,v,R,nx,nv);
@@ -485,6 +522,10 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
             /* postfit residuals */
             nv=rescode(1,obs,n,rs,dts,vare,svh,nav,x,opt,&inss,v,H,
                        var,azel,vsat,resp,&ns);
+            
+            /*spoofing detector*/
+            if(fabs(v_pre[0])>20000)SpoofingDetection(sol, v, var, nv);
+            else SpoofingDetection(sol, v_pre, var, nv);
 
             /* valid solutions */
             if (nv&&(stat=valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {
@@ -512,7 +553,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
         stat=0;
     }
     
-    free(v); free(H); free(var);
+    free(v);free(v_pre); free(H); free(var);
     free(x); free(R); free(P);
     return stat;
 }

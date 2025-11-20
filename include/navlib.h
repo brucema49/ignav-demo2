@@ -1595,8 +1595,10 @@ typedef struct{
     int valid_count;                     // 有效历元数量
     int total_residuals;                  // 总残差数量
     int current_index;                   // 当前写入历元位置索引
-
-} WindowedResiduals;
+    int stat;                            // 0:窗口数不足，1：窗口数足够
+    double ws;                       /*the windowed statistic detector*/
+    double wi;                       /*the windowed innoviation detector*/  
+} WindowedResiduals;        
 
 typedef struct {        /* solution type */
     gtime_t time;       /* time (GPST) */

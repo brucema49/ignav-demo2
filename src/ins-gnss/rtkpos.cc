@@ -2914,15 +2914,13 @@ extern void rtkinit(rtk_t *rtk, const prcopt_t *opt)
     sol_t sol0={{0}};
     ambc_t ambc0={{{0}}};
     ssat_t ssat0={0};
+
     register int i,j;
     trace(3,"rtkinit :\n");
     /*spoofing detector*/
 
     rtk->sol=sol0;
-    rtk->sol.windowed_residuals.valid_count=0;
-    rtk->sol.windowed_residuals.total_residuals=0;
-    rtk->sol.windowed_residuals.current_index=0;
-    
+
     for (i=0;i<6;i++) rtk->rb[i]=0.0;
     rtk->nx=opt->mode<=PMODE_FIXED?NX(opt):pppnx(opt);
     rtk->na=opt->mode<=PMODE_FIXED?NR(opt):pppnx(opt);

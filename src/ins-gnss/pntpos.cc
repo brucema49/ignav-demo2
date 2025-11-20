@@ -435,10 +435,41 @@ static int valins(const double *azel, const int *vsat, int n,const prcopt_t *opt
     }
     return 1;
 }
+
 /*the windowed innoviation detector*/
 static int ChiSquareTestWI(WindowedResiduals *windowed_residuals){
+/*简单版：仅仅使用前n个残差，n为窗口里最小的新息维度*/
+    double *sum_AinvGamma,*sum_Ainv,*temp;
+    double *gamma,*A,*AinvGamma;
+    int n=100;
+    for(int i=0;i<windowed_residuals->valid_count;i++) n=MIN(n,windowed_residuals->epoch_data[i].residuals.size());//获取窗口内最小的新息维度
+    sum_AinvGamma=zeros(n,1);sum_Ainv=zeros(n,n);temp=zeros(1,n);
+    gamma=zeros(n,1);//初始化新息矩阵
+    A=zeros(n,n);//初始化协方差矩阵
+    AinvGamma=zeros(n,1);//初始化累加矩阵
+
+    for(int i=0;i<windowed_residuals->valid_count;i++){
+        for(int j=0;j<n;j++){
+            gamma[j]=windowed_residuals->epoch_data[i].residuals[j];//新息赋值
+            A[j+j*n]=windowed_residuals->epoch_data[i].cov_diag[j];//协方差对角矩阵赋值
+        }
+        matinv(A,n);//计算协方差矩阵的逆
+        matmul("NN",n,1,n,1.0,A,gamma,0.0,AinvGamma);//计算统计量n*1
+
+        for(int j=0;j<n;j++){//括号内累加
+            sum_AinvGamma[j]+=AinvGamma[j];
+            sum_Ainv[j+j*n]+=A[j+j*n];
+        }
+    }
+    matinv(sum_Ainv,n);//计算协方差矩阵的逆
+    matmul("NN",1,n,n,1.0,sum_AinvGamma,sum_Ainv,0.0,temp);//计算统计量1*n
+    double reslt=dot(temp,sum_AinvGamma,n);
+    windowed_residuals->wi=reslt;
 
 
+    free(gamma);free(A);free(AinvGamma);
+    free(sum_Ainv);free(sum_AinvGamma);free(temp);
+    return 0;
 }
 
 /*the windowed statistic detector*/
@@ -467,10 +498,10 @@ static int ChiSquareTestWS(WindowedResiduals *windowed_residuals){
     return 0;
 }
 
-// 更新窗口化残差数据以进行欺骗检测,仅支持单频
+// 更新窗口化残差数据以进行欺骗检测,仅支持单频,实际当第11的历元才会解算，偶然解决第一个历元的用的是后验残差的问题
 static int SpoofingDetection(sol_t *sol, const double* v, const double *var,const int nv) {
     int windows_size=10;int opt;
-    opt=0;      //0:the windowed statistic detector   1:the windowed innoviation detector
+    opt=1;      //0:the windowed statistic detector   1:the windowed innoviation detector
     //数据存储
     if(sol->windowed_residuals.valid_count<windows_size){//不足窗口数
         for(int i=0;i<nv&&v[i]!=0.0;i++) {
@@ -481,6 +512,7 @@ static int SpoofingDetection(sol_t *sol, const double* v, const double *var,cons
         sol->windowed_residuals.total_residuals+=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//总残差数更新
         sol->windowed_residuals.valid_count++;
     } else {//达到窗口数，根据环形索引覆盖数据
+        sol->windowed_residuals.stat=1;
         sol->windowed_residuals.total_residuals-=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//总残差-旧残差
         sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.clear();
         sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag.clear();

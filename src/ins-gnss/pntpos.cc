@@ -444,14 +444,14 @@ static int ChiSquareTestWI(WindowedResiduals *windowed_residuals){
     int n=100;
     for(int i=0;i<windowed_residuals->valid_count;i++) n=MIN(n,windowed_residuals->epoch_data[i].residuals.size());//获取窗口内最小的新息维度
     sum_AinvGamma=zeros(n,1);sum_Ainv=zeros(n,n);temp=zeros(1,n);
-    gamma=zeros(n,1);//初始化新息矩阵
-    A=zeros(n,n);//初始化协方差矩阵
+    gamma=mat(n,1);//初始化新息矩阵
+    A=mat(n,n);//初始化协方差矩阵
     AinvGamma=zeros(n,1);//初始化累加矩阵
 
     for(int i=0;i<windowed_residuals->valid_count;i++){
         for(int j=0;j<n;j++){
             gamma[j]=windowed_residuals->epoch_data[i].residuals[j];//新息赋值
-            A[j+j*n]=windowed_residuals->epoch_data[i].cov_diag[j];//协方差对角矩阵赋值
+            for(int k=0;k<n;k++) A[k+j*n]=windowed_residuals->epoch_data[i].CovA[k+j*n];//协方差矩阵赋值
         }
         matinv(A,n);//计算协方差矩阵的逆
         matmul("NN",n,1,n,1.0,A,gamma,0.0,AinvGamma);//计算统计量n*1
@@ -481,11 +481,11 @@ static int ChiSquareTestWS(WindowedResiduals *windowed_residuals){
         double lambda=0.0;
         int n=windowed_residuals->epoch_data[i].residuals.size();//残差数量
         gamma=zeros(n,1);//初始化新息矩阵
-        A=zeros(n,n);//初始化协方差矩阵
+        A=mat(n,n);//初始化协方差矩阵
         temp=zeros(1,n);
         for(int j=0;j<n;j++){
             gamma[j]=windowed_residuals->epoch_data[i].residuals[j];//新息赋值
-            A[j+j*n]=windowed_residuals->epoch_data[i].cov_diag[j];//协方差对角矩阵赋值
+            for(int k=0;k<n;k++) A[k+j*n]=windowed_residuals->epoch_data[i].CovA[k+j*n];//协方差矩阵赋值
         }
         matinv(A,n);//计算协方差矩阵的逆
         matmul("NN",1,n,n,1.0,gamma,A,0.0,temp);//计算统计量
@@ -498,16 +498,47 @@ static int ChiSquareTestWS(WindowedResiduals *windowed_residuals){
     return 0;
 }
 
+/*借鉴filter函数处理P阵和H阵，将最后的A阵存储在sol->CovA*/
+static int ProcessPH(sol_t *sol,const double *P,const double *H,const int n,const int m){
+    
+    double *P_,*H_,*R,*temp;
+    int i,j,k,*ix;
+    int nv=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//当前历元有效残差维度
+
+    ix=imat(n,1); for (i=k=0;i<n;i++) {
+        if (P[i+i*n]>0.0) ix[k++]=i;//仅确保P阵对角线元素大于0
+    }
+    P_=mat(k,k);H_=mat(k,m);
+    for (i=0;i<k;i++) {
+        for (j=0;j<k;j++) P_[i+j*k]=P[ix[i]+ix[j]*n];
+        for (j=0;j<m;j++) H_[i+j*k]=H[ix[i]+j*n];
+    }
+    double *Q=mat(nv,nv);
+    R=zeros(nv,nv);temp=zeros(k,nv);
+    for (i=0;i<nv;i++) R[i+i*nv]=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag[i];
+    matcpy(Q,R,nv,nv);
+    matmul("NN",k,nv,k,1.0,P_,H_,0.0,temp);
+    matmul("TN",nv,nv,k,1.0,H_,temp,1.0,Q);
+    
+    //存储协方差矩阵
+    for(i=0;i<nv*nv;i++) sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].CovA.push_back(Q[i]);
+        
+    free(ix);free(temp);free(R);
+    free(P_); free(H_);free(Q); 
+    return 0;
+}
+
 // 更新窗口化残差数据以进行欺骗检测,仅支持单频,实际当第11的历元才会解算，偶然解决第一个历元的用的是后验残差的问题
-static int SpoofingDetection(sol_t *sol, const double* v, const double *var,const int nv) {
-    int windows_size=10;int opt;
-    opt=1;      //0:the windowed statistic detector   1:the windowed innoviation detector
+static int SpoofingDetection(sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
+    int windows_size=10;
+    int opt=0;        //0:the windowed statistic detector   1:the windowed innoviation detector
     //数据存储
     if(sol->windowed_residuals.valid_count<windows_size){//不足窗口数
         for(int i=0;i<nv&&v[i]!=0.0;i++) {
             sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.push_back(v[i]);
             sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag.push_back(var[i]);
         }
+        ProcessPH(sol,P,H,nx,nv);//计算并存储协方差矩阵A
         sol->windowed_residuals.stat=0;
         sol->windowed_residuals.total_residuals+=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//总残差数更新
         sol->windowed_residuals.valid_count++;
@@ -520,6 +551,7 @@ static int SpoofingDetection(sol_t *sol, const double* v, const double *var,cons
             sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.push_back(v[i]);
             sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag.push_back(var[i]);
         }
+        ProcessPH(sol,P,H,nx,nv);//计算并存储协方差矩阵A
         sol->windowed_residuals.total_residuals+=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//总残差数更新
         if(!opt)ChiSquareTestWS(&sol->windowed_residuals);//the windowed statistic detector
         else ChiSquareTestWI(&sol->windowed_residuals);//the windowed innoviation detector
@@ -539,7 +571,8 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
                     int *vsat,double *resp, char *msg)
 {
     int i,nx,nv,ns,stat=0,irc=0,IP;
-    double *x,*R,*v,*H,*var,*P,*v_pre;//存储先验残差
+    double *x,*R,*v,*H,*var,*P,*v_pre,*H_pre,*P_pre;//存储先验残差
+
     const insopt_t *insopt=&opt->insopt;
     static insstate_t inss={0};
     
@@ -549,7 +582,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
     irc=xiRc(insopt); IP=xiP(insopt);
 
     x=zeros(nx,1); R=zeros(NFREQ*n+4,NFREQ*n+4);
-    H=zeros(nx,NFREQ*n+4); v=zeros(NFREQ*n+4,1);v_pre=zeros(NFREQ*n+4,1);
+    H=zeros(nx,NFREQ*n+4); v=zeros(NFREQ*n+4,1);v_pre=zeros(NFREQ*n+4,1);H_pre=zeros(nx,NFREQ*n+4);P_pre=mat(nx,nx);
     var=mat(NFREQ*n+4,1); P=mat(nx,nx);
 
     /* prefit residuals */
@@ -560,12 +593,12 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
     if (nv) {
 
         matcpy(P,ins->P,ins->nx,ins->nx);
-
+        matcpy(P_pre,ins->P,ins->nx,ins->nx);//保存先验协方差矩阵
         /* measurement variance */
         for (i=0;i<nv;i++) 
         {
             R[i+i*nv]=var[i];
-            v_pre[i]=v[i];
+            v_pre[i]=v[i];//保存先验残差
         }
 
         /* ekf filter */
@@ -586,9 +619,9 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
             nv=rescode(1,obs,n,rs,dts,vare,svh,nav,x,opt,&inss,v,H,
                        var,azel,vsat,resp,&ns);
             
-            /*spoofing detector*/
-            if(fabs(v_pre[0])>20000)SpoofingDetection(sol, v, var, nv);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
-            else SpoofingDetection(sol, v_pre, var, nv);//使用先验残差进行检测
+            /*spoofing detectorA阵错误*/
+            if(fabs(v_pre[0])>20000)SpoofingDetection(sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
+            else SpoofingDetection(sol, v_pre, var, nv,nx,P_pre,H_pre);//使用先验残差进行检测
 
             /* valid solutions */
             if (nv&&(stat=valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {
@@ -617,7 +650,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
     }
     
     free(v);free(v_pre); free(H); free(var);
-    free(x); free(R); free(P);
+    free(x); free(R); free(P);free(H_pre);free(P_pre);
     return stat;
 }
 /* estimate receiver position ------------------------------------------------*/

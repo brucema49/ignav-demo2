@@ -1588,6 +1588,7 @@ typedef struct {        /* NovAtel OEM6 velocity solution type */
 typedef struct{
     std::vector<double> residuals;      // 残差向量
     std::vector<double> cov_diag; // 协方差矩阵的对角向量
+    std::vector<double> CovA;
 }EpochData ;
 
 typedef struct{

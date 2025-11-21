@@ -1589,14 +1589,17 @@ typedef struct{
     std::vector<double> residuals;      // 残差向量
     std::vector<double> cov_diag; // 协方差矩阵的对角向量
     std::vector<double> CovA;
+    std::vector<double> H;        // 仅用于wi模式的观测矩阵
+    std::vector<double> P;        // 仅用于wi模式的先验状态协方差矩阵
+
 }EpochData ;
 
 typedef struct{
     std::array<EpochData, 10> epoch_data;  // 固定10个历元的数据，假设每个历元观测卫星一致
     int valid_count;                     // 有效历元数量
     int total_residuals;                  // 总残差数量
+    int windows_size;
     int current_index;                   // 当前写入历元位置索引
-    int stat;                            // 0:窗口数不足，1：窗口数足够
     double ws;                       /*the windowed statistic detector*/
     double wi;                       /*the windowed innoviation detector*/  
 } WindowedResiduals;        

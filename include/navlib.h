@@ -35,7 +35,8 @@
 #include <unistd.h>
 #include <array>
 #include <vector>
-
+#include <unordered_set>  // for std::unordered_set
+#include <algorithm>  // for std::sort
 
 /* define fixed-width datatypes for Visual Studio projects */
 #if defined(_MSC_VER)&&(_MSC_VER<1600)
@@ -1584,13 +1585,14 @@ typedef struct {        /* NovAtel OEM6 velocity solution type */
     int type;           /* velocity solution type (1: instantaneous doppler,2: difference from successive position) */
 } solvel_t;
 
-// 历元数据结构
+// 单历元数据结构
 typedef struct{
     std::vector<double> residuals;      // 残差向量
     std::vector<double> cov_diag; // 协方差矩阵的对角向量
     std::vector<double> CovA;
     std::vector<double> H;        // 仅用于wi模式的观测矩阵
     std::vector<double> P;        // 仅用于wi模式的先验状态协方差矩阵
+    std::vector<unsigned char> sat;     // 残差对应的卫星编号
 
 }EpochData ;
 
@@ -1602,6 +1604,7 @@ typedef struct{
     int current_index;                   // 当前写入历元位置索引
     double ws;                       /*the windowed statistic detector*/
     double wi;                       /*the windowed innoviation detector*/  
+    int commonSatNumberWi;          /*number of common satellites for windowed innoviation detector for debug*/
 } WindowedResiduals;        
 
 typedef struct {        /* solution type */

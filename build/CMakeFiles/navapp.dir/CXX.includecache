@@ -43,6 +43,10 @@ array
 -
 vector
 -
+unordered_set
+-
+algorithm
+-
 stdint.h
 -
 winsock2.h

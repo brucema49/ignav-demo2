@@ -236,7 +236,7 @@ static int rescode(int iter, const obsd_t *obs, int n, const double *rs,
                    const nav_t *nav, double *x, const prcopt_t *opt,
                    const insstate_t *ins,
                    double *v, double *H, double *var, double *azel, int *vsat,
-                   double *resp, int *ns)
+                   double *resp, int *ns,sol_t *sol)
 {
     const insopt_t *iopt=&opt->insopt;
     double r,dion,dtrp,vmeas,vion,vtrp,rr[3],pos[3],e[3],P,lam_L1;
@@ -256,6 +256,7 @@ static int rescode(int iter, const obsd_t *obs, int n, const double *rs,
         IP=xiP(iopt); NP=xnP(iopt);
         IA=xiA(iopt); NA=xnA(iopt);
         nx=xnX(iopt);
+        sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].sat.clear();// 清空当前历元卫星列表
     }
     /* xiRc(insopt)+0: GPS receiver clock
      * xiRc(insopt)+1: GLO receiver clock
@@ -317,6 +318,7 @@ static int rescode(int iter, const obsd_t *obs, int n, const double *rs,
 
         /* design matrix */
         if (tc) {
+            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].sat.push_back(obs[nv].sat);// 记录当前历元的卫星编号
             jacob_dp_da(e,ins->lever,ins->Cbe,dpda);
             jacob_dp_dl(e,ins->Cbe,dpdl);
 
@@ -508,12 +510,12 @@ static int ProcessWiPH(WindowedResiduals *windowed_residuals,const double *P,con
 }
 //计算每个历元的A矩阵
 static int computeWiA(WindowedResiduals *windowed_residuals,const int nx,const int n){
-    double *P,*H,*R,*temp;
     int i,j;
     int nv=n;//当前历元有效残差维度
 
     for(int epoch=0;epoch<windowed_residuals->valid_count;epoch++){
-        P=mat(nx,nx);H=mat(nx,nv);
+        double *R,*temp;
+        double *P=mat(nx,nx),*H=mat(nx,nv);
         for (i=0;i<nx;i++) {
             for (j=0;j<nx;j++) P[j+i*nx]=windowed_residuals->epoch_data[epoch].P[j+i*nx];
             for (j=0;j<nv;j++) H[i+j*nx]=windowed_residuals->epoch_data[epoch].H[i+j*nx];
@@ -535,10 +537,103 @@ static int computeWiA(WindowedResiduals *windowed_residuals,const int nx,const i
     return 0;
 }
 
+//计算每个历元中相同卫星的残差索引,返回相同卫星数量
+int computeIndexSat(WindowedResiduals *windowed_residuals, std::array<std::vector<int>, 10> &SatInd) {
+    // 清空结果容器
+    for (auto& vec : SatInd) {
+        vec.clear();
+    }
+    
+    // 步骤1: 找出所有历元中共同的卫星
+    std::unordered_set<unsigned char> common_sats;
+    
+    // 用第一个有效历元初始化共同卫星集合
+    const auto& first_epoch = windowed_residuals->epoch_data[0];
+    common_sats.insert(first_epoch.sat.begin(), first_epoch.sat.end());
+    
+    // 与其他历元求交集
+    for (int i = 1; i < windowed_residuals->valid_count; ++i) {
+        const auto& epoch = windowed_residuals->epoch_data[i];
+        std::unordered_set<unsigned char> current_sats(epoch.sat.begin(), epoch.sat.end());
+        
+        // 求交集
+        std::unordered_set<unsigned char> intersection;
+        for (auto sat : common_sats) {
+            if (current_sats.find(sat) != current_sats.end()) {
+                intersection.insert(sat);
+            }
+        }
+        common_sats = std::move(intersection);
+        
+        // 如果没有共同卫星，提前返回
+        if (common_sats.empty()) {
+            return 0;
+        }
+    }
+    
+    // 步骤2: 为每个历元记录公共卫星的残差索引位置
+    int common_sat_count = 0;
+    
+    for (int i = 0; i < windowed_residuals->valid_count; ++i) {
+        const auto& epoch = windowed_residuals->epoch_data[i];
+        const auto& sat_vector = epoch.sat;
+        
+        // 遍历当前历元的所有卫星，记录公共卫星的索引
+        for (int j = 0; j < sat_vector.size(); ++j) {
+            if (common_sats.find(sat_vector[j]) != common_sats.end()) {
+                SatInd[i].push_back(j);
+            }
+        }
+        
+        // 对索引进行排序（如果需要保持特定顺序）
+        std::sort(SatInd[i].begin(), SatInd[i].end());
+        
+        // 更新公共卫星数量（取最小值确保一致性）
+        if (i == 0) {
+            common_sat_count = SatInd[i].size();
+        } else {
+            common_sat_count = std::min(common_sat_count, (int)SatInd[i].size());
+        }
+    }
+    return common_sat_count;
+}
+
+//追踪动态卫星变化和存储相同卫星索引及其A矩阵
+static int computeDynamicWi(WindowedResiduals *windowed_residuals,const int nx,std::array<std::vector<int>, 10> &SatInd){
+    //计算相同卫星索引，返回相同卫星数量
+    int nv=computeIndexSat(windowed_residuals,SatInd);
+    //计算每个历元的A矩阵
+    for(int epoch=0;epoch<windowed_residuals->valid_count;epoch++){
+        double *R,*temp;
+        double *P=mat(nx,nx),*H=mat(nx,nv);
+        for (int i=0;i<nx;i++) {
+            for (int j=0;j<nx;j++) P[j+i*nx]=windowed_residuals->epoch_data[epoch].P[j+i*nx];
+            for(int j=0;j<nv;j++) H[i+j*nx]=windowed_residuals->epoch_data[epoch].H[i+SatInd[epoch][j]*nx];//提取相同卫星的H矩阵列
+        }
+        double *Q=mat(nv,nv);
+        R=zeros(nv,nv);temp=zeros(nx,nv);
+        for (int i=0;i<nv;i++) R[i+i*nv]=windowed_residuals->epoch_data[epoch].cov_diag[SatInd[epoch][i]];
+        matcpy(Q,R,nv,nv);
+        matmul("NN",nx,nv,nx,1.0,P,H,0.0,temp);
+        matmul("TN",nv,nv,nx,1.0,H,temp,1.0,Q);
+
+        //存储协方差矩阵
+        windowed_residuals->epoch_data[epoch].CovA.clear();
+        for(int i=0;i<nv*nv;i++) windowed_residuals->epoch_data[epoch].CovA.push_back(Q[i]);
+
+        free(temp);free(R);
+        free(P); free(H);free(Q); 
+    }
+    return nv;
+}
+
+
+
 /*the windowed innoviation detector   考虑历元间的动态变化,还需存储H和P，不在存储A*/
 static int ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const double* H,const int nx,const int m){
     ProcessWiPH(windowed_residuals,P,H,nx);//计算并存储H和P
-    if(windowed_residuals->valid_count==windowed_residuals->windows_size){//达到窗口数,进行统计 {
+    int opt=1;       //0:简单提取前n个 1:动态追踪卫星
+    if(windowed_residuals->valid_count==windowed_residuals->windows_size && opt==0){//达到窗口数,进行简单模式的统计 
         /*简单版：仅仅使用前n个残差，n为窗口里最小的新息维度*/
         double *sum_AinvGamma,*sum_Ainv,*temp;
         double *gamma,*A,*AinvGamma;
@@ -573,13 +668,50 @@ static int ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P
 
         free(gamma);free(A);free(AinvGamma);
         free(sum_Ainv);free(sum_AinvGamma);free(temp);
-    }else  return 0;
+
+        //达到窗口数,进行动态模式的统计
+    }else if(windowed_residuals->valid_count==windowed_residuals->windows_size && opt==1){ 
+        /*动态版：追踪每个历元的卫星编号，提取相同卫星的残差进行统计*/
+        //TODO
+        double *sum_AinvGamma,*sum_Ainv,*temp;
+        double *gamma,*A,*AinvGamma;
+        std::array<std::vector<int>, 10> SatInd; 
+        //计算相同卫星索引及其A矩阵
+        int n=computeDynamicWi(windowed_residuals,nx,SatInd);
+        windowed_residuals->commonSatNumberWi=n;
+        sum_AinvGamma=zeros(n,1);sum_Ainv=zeros(n,n);temp=zeros(1,n);
+        gamma=mat(n,1);//初始化新息矩阵
+        A=mat(n,n);//初始化协方差矩阵
+        AinvGamma=zeros(n,1);//初始化累加矩阵
+        //遍历窗口内每个历元
+        for(int i=0;i<windowed_residuals->valid_count;i++){
+            for(int j=0;j<n;j++){//赋值
+                gamma[j]=windowed_residuals->epoch_data[i].residuals[SatInd[i][j]];//新息赋值
+                for(int k=0;k<n;k++) A[k+j*n]=windowed_residuals->epoch_data[i].CovA[k+SatInd[i][j]*n];//协方差矩阵赋值
+            }
+            matinv(A,n);//计算当前历元协方差矩阵的逆
+            matmul("NN",n,1,n,1.0,A,gamma,0.0,AinvGamma);//计算统计量n*1
+
+            for(int j=0;j<n;j++){//括号内累加
+                sum_AinvGamma[j]+=AinvGamma[j];
+                for(int k=0;k<n;k++) sum_Ainv[k+j*n]+=A[k+j*n];
+            }
+        }
+        matinv(sum_Ainv,n);//计算协方差矩阵的逆
+        matmul("NN",1,n,n,1.0,sum_AinvGamma,sum_Ainv,0.0,temp);//计算统计量1*n
+        double reslt=dot(temp,sum_AinvGamma,n);
+        windowed_residuals->wi=reslt;
+
+        free(gamma);free(A);free(AinvGamma);
+        free(sum_Ainv);free(sum_AinvGamma);free(temp);
+
+    } else return 0;
 }
 
 // 更新窗口化残差数据以进行欺骗检测,仅支持单频,实际当第11的历元才会解算，偶然解决第一个历元的用的是后验残差的问题
 static int SpoofingDetection(sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
     sol->windowed_residuals.windows_size=10;
-    int opt=0;        //0:the windowed statistic detector   1:the windowed innoviation detector
+    int opt=1;        //0:the windowed statistic detector   1:the windowed innoviation detector
 
     sol->windowed_residuals.total_residuals-=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//总残差-旧残差
     sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.clear();
@@ -624,7 +756,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
 
     /* prefit residuals */
     nv=rescode(1,obs,n,rs,dts,vare,svh,nav,x,opt,ins,v,H,var,azel,vsat,
-               resp,&ns);
+               resp,&ns,sol);
 
     /* tightly coupled */
     if (nv) {
@@ -654,7 +786,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
 
             /* postfit residuals */
             nv=rescode(1,obs,n,rs,dts,vare,svh,nav,x,opt,&inss,v,H,
-                       var,azel,vsat,resp,&ns);
+                       var,azel,vsat,resp,&ns,sol);
             
             /*spoofing detectorA阵错误*/
             if(fabs(v_pre[0])>20000)SpoofingDetection(sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
@@ -710,7 +842,7 @@ static int estpos(const obsd_t *obs, int n, const double *rs, const double *dts,
         
         /* pseudorange residuals */
         nv=rescode(i,obs,n,rs,dts,vare,svh,nav,x,opt,NULL,v,H,var,azel,vsat,
-                   resp,&ns);
+                   resp,&ns,sol);
         
         if (nv<nx) {
             sprintf(msg,"lack of valid sats ns=%d",nv);

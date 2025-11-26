@@ -137,6 +137,7 @@ EXPORT opt_t sysopts[]={
     {"out-bg",          0,  (void *)&solopt_.outbg,      ""     },
     {"out-inspof",      0,  (void *)&solopt_.ins_posf,   ""     },
     {"out-imuraw",      0,  (void *)&solopt_.outimuraw,  ""     },
+    {"out-spoofing",    0,  (void *)&solopt_.spoofing_detector,  ""  },
     
     {"stats-eratio1",   1,  (void *)&prcopt_.eratio[0],  ""     },
     {"stats-eratio2",   1,  (void *)&prcopt_.eratio[1],  ""     },
@@ -154,7 +155,8 @@ EXPORT opt_t sysopts[]={
     {"stats-prntrop",   1,  (void *)&prcopt_.prn[2],     "m"    },
     {"stats-prnpos",    1,  (void *)&prcopt_.prn[5],     "m"    },
     {"stats-clkstab",   1,  (void *)&prcopt_.sclkstab,   "s/s"  },
-    
+    {"spoofing-detector",    0,  (void *)&prcopt_.spoofing_detector,  ""  },
+
     {"ant1-postype",    3,  (void *)&antpostype_[0],     POSOPT },
     {"ant1-pos1",       1,  (void *)&antpos_[0][0],      "deg|m"},
     {"ant1-pos2",       1,  (void *)&antpos_[0][1],      "deg|m"},

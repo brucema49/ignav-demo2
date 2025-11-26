@@ -1605,6 +1605,12 @@ static int outecef(unsigned char *buff, const char *s, const sol_t *sol,
                    sep,sqvar(sol->qv[3]),sep,sqvar(sol->qv[4]),sep,
                    sqvar(sol->qv[5]));
     }
+    if(opt->spoofing_detector==1){//windowed residuals  windowed statistic
+        p+=sprintf(p,"%s%5.1f",sep,sol->windowed_residuals.ws);
+    }
+    if(opt->spoofing_detector==2){// windowed innoviation
+        p+=sprintf(p,"%s%5.1f",sep,sol->windowed_residuals.wi);
+    }
     if (outmoni) p+=sprintf(p," %s",GNSPOSSTR);
     p+=sprintf(p,"\n");
     return p-(char *)buff;
@@ -1639,6 +1645,12 @@ static int outpos(unsigned char *buff, const char *s, const sol_t *sol,
                sep,pos[2],sep,sol->stat,sep,0,sep,sol->ns,sep,SQRT(Q[4]),sep,
                SQRT(Q[0]),sep,SQRT(Q[8]),sep,sqvar(Q[1]),sep,sqvar(Q[2]),
                sep,sqvar(Q[5]),sep,sol->age,sep,sol->ratio);
+    if(opt->spoofing_detector==1){//windowed residuals  windowed statistic
+        p+=sprintf(p,"%s%5.1f",sep,sol->windowed_residuals.ws);
+    }
+    if(opt->spoofing_detector==2){// windowed innoviation
+        p+=sprintf(p,"%s%5.1f",sep,sol->windowed_residuals.wi);
+    }
     if (opt->wlratio) {
         p+=sprintf(p,"%s%6.1f",sep,sol->wlratio);
     }
@@ -2065,6 +2077,12 @@ extern int outsolheads(unsigned char *buff, const solopt_t *opt)
                        "Q",sep,"Qins",sep,"ns",sep,"sdn(m)",sep,"sde(m)",sep,"sdu(m)",sep,
                        "sdne(m)",sep,"sdeu(m)",sep,"sdun(m)",sep,"age(s)",sep,"ratio");
         }
+        if(opt->spoofing_detector==1){//输出spoofing检测结果ws
+            p+=sprintf(p,"%s%6s",sep,"ws");
+        }
+        if(opt->spoofing_detector==2){//输出spoofing检测结果wi
+            p+=sprintf(p,"%s%6s",sep,"wi" );
+        }
         if (opt->wlratio) {
             p+=sprintf(p,"%s%6s",sep,"wl-ratio");
         }
@@ -2113,6 +2131,12 @@ extern int outsolheads(unsigned char *buff, const solopt_t *opt)
                    "x-ecef(m)",sep,"y-ecef(m)",sep,"z-ecef(m)",sep,"Q",sep,"Qins",sep,"ns",sep,
                    "sdx(m)",sep,"sdy(m)",sep,"sdz(m)",sep,"sdxy(m)",sep,
                    "sdyz(m)",sep,"sdzx(m)",sep,"age(s)",sep,"ratio");
+        if(opt->spoofing_detector==1){//输出spoofing检测结果ws
+            p+=sprintf(p,"%s%6s",sep,"ws");
+        }
+        if(opt->spoofing_detector==2){//输出spoofing检测结果wi
+            p+=sprintf(p,"%s%6s",sep,"wi" );
+        }
         if (opt->wlratio) {
             p+=sprintf(p,"%s%6s",sep,"wl-ratio");
         }
@@ -2157,6 +2181,7 @@ extern int outsolheads(unsigned char *buff, const solopt_t *opt)
                        sep,"gyrox(deg)",sep,"gyroy(deg)",sep,"gyroz(deg)",
                        sep,"acclx(m/s^2)",sep,"accly(m/s^2)",sep,"acclz(m/s^2)");
         }
+        
     }
     else if (opt->posf==SOLF_ENU) { /* e/n/u-baseline */
         p+=sprintf(p,"%14s%s%14s%s%14s%s%3s%s%4s%s%3s%s%8s%s%8s%s%8s%s%8s%s%8s%s%8s%s%6s%s%6s",

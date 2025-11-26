@@ -1819,6 +1819,7 @@ typedef struct {        /* processing options type */
     insopt_t insopt;      /* ins option */
     gtime_t ext[16][2];   /* exclude gnss measurement data (included gsof+observation data) for processing */
     sigind_t sind[2][7];  /* observation signal information,0: rover,1: base */
+    int spoofing_detector;  //0:off 1:ws  2:wi
 } prcopt_t;
 
 typedef struct {        /* solution options type */
@@ -1851,6 +1852,7 @@ typedef struct {        /* solution options type */
     int dopp;           /* doppler output options */
     int wlratio;        /* WL ambiguity fix ratio */
     int outimuraw;      /* output imu raw data option (0:no,1:yes) */
+    int spoofing_detector;  /*windowed innovation*/
 } solopt_t;
 
 typedef struct {              /* file options type */

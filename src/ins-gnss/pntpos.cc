@@ -709,9 +709,9 @@ static int ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P
 }
 
 // 更新窗口化残差数据以进行欺骗检测,仅支持单频,实际当第11的历元才会解算，偶然解决第一个历元的用的是后验残差的问题
-static int SpoofingDetection(sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
+static int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
     sol->windowed_residuals.windows_size=10;
-    int opt=1;        //0:the windowed statistic detector   1:the windowed innoviation detector
+    int opts=opt->spoofing_detector;        //1:the windowed statistic detector   2:the windowed innoviation detector
 
     sol->windowed_residuals.total_residuals-=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//总残差-旧残差
     sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.clear();
@@ -723,9 +723,9 @@ static int SpoofingDetection(sol_t *sol, const double* v, const double *var,cons
     //总残差数更新
     sol->windowed_residuals.total_residuals+=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();
     //the windowed statistic detector
-    if(!opt)ChiSquareTestWS(&sol->windowed_residuals,P,H,nx,nv);
+    if(opts==1)ChiSquareTestWS(&sol->windowed_residuals,P,H,nx,nv);
     //the windowed innoviation detector
-    else ChiSquareTestWI(&sol->windowed_residuals,P,H,nx,nv);
+    else if(opts==2)ChiSquareTestWI(&sol->windowed_residuals,P,H,nx,nv);
 
     if (++sol->windowed_residuals.current_index>9) sol->windowed_residuals.current_index-=10;//窗口环形索引
     
@@ -789,8 +789,8 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
                        var,azel,vsat,resp,&ns,sol);
             
             /*spoofing detectorA阵错误*/
-            if(fabs(v_pre[0])>20000)SpoofingDetection(sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
-            else SpoofingDetection(sol, v_pre, var, nv,nx,P_pre,H_pre);//使用先验残差进行检测
+            if(fabs(v_pre[0])>20000)SpoofingDetection(opt,sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
+            else SpoofingDetection(opt,sol, v_pre, var, nv,nx,P_pre,H_pre);//使用先验残差进行检测
 
             /* valid solutions */
             if (nv&&(stat=valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {

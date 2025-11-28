@@ -1,6 +1,6 @@
 {
     "cmake.debugConfig": {
-        "args": ["-s","-o", "../conf/spp_tc_data3.conf"],
+        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/texbat/navlib.conf"],
         "cwd": "${workspaceFolder}/bin"
     },
     "cmake.configureEnvironment": {

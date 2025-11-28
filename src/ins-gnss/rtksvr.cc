@@ -1563,7 +1563,8 @@ static void *rtksvrthread(void *arg)
             }
         }
         /* tightly coupled position start */
-        if (opt->mode==PMODE_INS_TGNSS) for (j=INSUPD_TIME,i=0;i<imus.n;
+        if (opt->mode==PMODE_INS_TGNSS) 
+        for (j=INSUPD_TIME,i=0;i<imus.n;
             i++,j=INSUPD_TIME) {
 
             /* match observation data */

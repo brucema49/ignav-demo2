@@ -712,6 +712,7 @@ static int ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P
 static int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
     sol->windowed_residuals.windows_size=10;
     int opts=opt->spoofing_detector;        //1:the windowed statistic detector   2:the windowed innoviation detector
+    if(opts==0) return 0;
 
     sol->windowed_residuals.total_residuals-=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//总残差-旧残差
     sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.clear();
@@ -788,10 +789,11 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
             nv=rescode(1,obs,n,rs,dts,vare,svh,nav,x,opt,&inss,v,H,
                        var,azel,vsat,resp,&ns,sol);
             
-            /*spoofing detectorA阵错误*/
-            if(fabs(v_pre[0])>20000)SpoofingDetection(opt,sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
-            else SpoofingDetection(opt,sol, v_pre, var, nv,nx,P_pre,H_pre);//使用先验残差进行检测
-
+            /*spoofing detector*/
+            if(opt->spoofing_detector>0){
+                if(fabs(v_pre[0])>20000)SpoofingDetection(opt,sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
+                else SpoofingDetection(opt,sol, v_pre, var, nv,nx,P_pre,H_pre);//使用先验残差进行检测
+            }
             /* valid solutions */
             if (nv&&(stat=valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {
 

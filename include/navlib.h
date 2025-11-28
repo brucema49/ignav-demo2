@@ -85,7 +85,7 @@ extern "C"{
 #define CPUTIME_IN_GPST
 #define EXTGSI
 #define LAPACK
-#define TRACE                           /* trace information for debug */
+#define TRACE                          /* trace information for debug */
 #define TRACE_INS     1                 /* trace ins updates information */
 #define TRACE_STDERR  0                 /* trace information to stderr if set */
 #define VIG_TRACE_MAT 1                 /* trace matrix for debugs */

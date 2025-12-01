@@ -1,0 +1,1 @@
+/usr/bin/c++ -msse3  -O0 -Wall -g -ggdb -rdynamic "CMakeFiles/lc-rts.dir/src/ins-gnss/app/lc-rts.cc.o" -o ../bin/lc-rts  ../lib/libnavlib.a -lpthread -lblas -llapack -lz 

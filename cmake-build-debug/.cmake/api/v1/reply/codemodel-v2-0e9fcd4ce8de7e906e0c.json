@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "navlib",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "lc-fbsm::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lc-fbsm-Debug-7e9b5ac10456c3c72fa1.json",
+					"name" : "lc-fbsm",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "lc-rts::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-lc-rts-Debug-c0c1c0596a6f9a923743.json",
+					"name" : "lc-rts",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "navapp::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-navapp-Debug-7d7c91fbe35704f46ac2.json",
+					"name" : "navapp",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "navlib::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-navlib-Debug-3ca0d97ce94096e5439e.json",
+					"name" : "navlib",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/mxl/workplace/ignav-debug/cmake-build-debug",
+		"source" : "/home/mxl/workplace/ignav-debug"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 4
+	}
+}

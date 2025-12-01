@@ -17,7 +17,7 @@
 
 /* constants ----------------------------------------------------------------*/
 #define MAXSOL       5                  /* max number of solution data */
-#define MINVEL       5.0                /* min velocity for initial ins states */
+#define MINVEL       4.0                /* min velocity for initial ins states */
 #define MAXGYRO      (30.0*D2R)         /* max rotation speed value for initial */
 #define MAXVAR_POSE  SQR(5.0*D2R)       /* max variance of pose measurement */
 #define MAXDIFF      10.0               /* max time difference between solution */
@@ -127,7 +127,9 @@ extern int insinitrt(rtksvr_t *svr,const sol_t *sol,const imud_t *imu)
 /* initialization position mode/ionosphere and troposphere option------------*/
 static void initrtkpos(rtk_t *rtk,prcopt_t *prcopt)
 {
-    prcopt->mode   =PMODE_KINEMA;
+    if(prcopt->mode==11) prcopt->mode=0;//如果是spp-ins紧组合模式，用单点解初始化
+    else prcopt->mode   =PMODE_KINEMA;//否则用差分动态解来初始化
+
     prcopt->ionoopt=IONOOPT_BRDC;
     prcopt->tropopt=TROPOPT_SAAS;
 #if ADJOBS
@@ -166,7 +168,8 @@ extern int insinirtobs(rtksvr_t *svr,const obsd_t *obs,int n,const imud_t *imu)
 
     /* save position solution to buffer */
     for (i=0;i<MAXSOL-1;i++) sols[i]=sols[i+1]; sols[i]=rtk.sol;
-    for (i=0;i<MAXSOL;i++) {
+
+    /*for (i=0;i<MAXSOL;i++) {
         if (sols[i].stat>popt.insopt.iisu||sols[i].stat==SOLQ_NONE) {
             trace(2,"check solution status fail\n");
             return 0;
@@ -176,15 +179,18 @@ extern int insinirtobs(rtksvr_t *svr,const obsd_t *obs,int n,const imud_t *imu)
         if (timediff(sols[i+1].time,sols[i].time)>MAXDIFF) {
             return 0;
         }
-    }
+    }*/
+
     /* compute velocity from solutions */
     matcpy(vr,sols[MAXSOL-1].rr+3,1,3);
     if (norm(vr,3)==0.0) {
         sol2vel(sols+MAXSOL-1,sols+MAXSOL-2,vr);
     }
+    /*  注释初始化限制
     if (norm(imu->gyro,3)>MAXGYRO||norm(vr,3)<MINVEL) {
         return 0;
     }
+        */
     /* initialize ins states */
     initinsrt(svr);
     if (!ant2inins(sols[MAXSOL-1].time,sols[MAXSOL-1].rr,vr,&popt.insopt,

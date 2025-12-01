@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeReloadState">
+    <option name="reloaded" value="true" />
+  </component>
+  <component name="CMakeRunConfigurationManager">
+    <generated>
+      <config projectName="navlib" targetName="lc-rts" />
+      <config projectName="navlib" targetName="navapp" />
+      <config projectName="navlib" targetName="lc-fbsm" />
+      <config projectName="navlib" targetName="navlib" />
+    </generated>
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="25238201-166b-472a-a2ea-6a767def4b0c" name="Changes" comment="Changes">
+      <change beforePath="$PROJECT_DIR$/.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/navapp" beforeDir="false" afterPath="$PROJECT_DIR$/bin/navapp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/.cmake/api/v1/reply/index-2025-11-28T09-34-34-0557.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeFiles/CMakeOutput.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.o" beforeDir="false" afterPath="$PROJECT_DIR$/build/CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/conf/spp_tc_data3.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libnavlib.a" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libnavlib.a" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ins-gnss/rtksvr.cc" beforeDir="false" afterPath="$PROJECT_DIR$/src/ins-gnss/rtksvr.cc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test1/JFNG00CHN_R_20213510000_01D_CN.rnx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test1/aloy3510.21o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test1/imu_adis16465.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test1/jfng3510.21n" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test1/spp_tc_data3.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test1/spp_tc_sol.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/texbat/GSDR332p58.10n" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/texbat/GSDR332p58.10o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/texbat/imuEuroc.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/texbat/navlib.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/texbat/rtkrcv.nav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/texbat/texbat.rslt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/ins-gnss/app/rtkrcv.cc" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="369ANkBB2VlT1uLRdks0bxUtdOD" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;cf.first.check.clang-format&quot;: &quot;false&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/mxl/workplace/ignav-debug/CMakeLists.txt&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  }
+}</component>
+  <component name="RunManager" selected="CMake 应用程序.navapp">
+    <configuration name="lc-fbsm" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="navlib" TARGET_NAME="lc-fbsm" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="navlib" RUN_TARGET_NAME="lc-fbsm">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="lc-rts" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="navlib" TARGET_NAME="lc-rts" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="navlib" RUN_TARGET_NAME="lc-rts">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="navapp" type="CMakeRunConfiguration" factoryName="Application" PROGRAM_PARAMS="-s -o $PROJECT_DIR$/a-texbat/texbat.conf" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" WORKING_DIR="file://$PROJECT_DIR$" PASS_PARENT_ENVS_2="true" PROJECT_NAME="navlib" TARGET_NAME="navapp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="navlib" RUN_TARGET_NAME="navapp">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="navlib" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="navlib" TARGET_NAME="navlib" CONFIG_NAME="Debug">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="CMake 应用程序.lc-fbsm" />
+      <item itemvalue="CMake 应用程序.lc-rts" />
+      <item itemvalue="CMake 应用程序.navapp" />
+      <item itemvalue="CMake 应用程序.navlib" />
+    </list>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="25238201-166b-472a-a2ea-6a767def4b0c" name="Changes" comment="" />
+      <created>1764408379834</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1764408379834</updated>
+      <workItem from="1764408385480" duration="317000" />
+      <workItem from="1764408704338" duration="1086000" />
+      <workItem from="1764409799727" duration="3135000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ins-gnss/rtksvr.cc</url>
+          <line>1419</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ins-gnss/rtksvr.cc</url>
+          <line>1422</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ins-gnss/rtksvr.cc</url>
+          <line>1411</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ins-gnss/app/rtkrcv.cc</url>
+          <line>578</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
+          <url>file://$PROJECT_DIR$/src/ins-gnss/rtksvr.cc</url>
+          <line>2017</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

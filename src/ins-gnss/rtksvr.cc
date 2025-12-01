@@ -586,6 +586,8 @@ static int inputobstc(rtksvr_t *svr,gtime_t time,obsd_t *obs)
     /* always input rover observation data despite base */
     return m;
 #else
+    /*当spp-ins紧组合且只有imu数据和rover数据时*/
+    if(svr->rtk.opt.insopt.tc==1&&flag==1) return m;
     /* ok when rover and base have input */
     if (flag!=2) return 0; else return m;
 #endif
@@ -1219,7 +1221,7 @@ static int imuobsalign(rtksvr_t *svr)
     p1=svr->obs[0];
     p2=svr->obs[1];
 
-    for (i=0;i<n&&svr->syn.tali[2]!=2;i++) { // start time alignment 
+    for (i=0;i<n&&svr->syn.tali[2]!=2;i++) { // start time alignment 当imu数据存在时且对齐标志为2
 
         sow1=time2gpst(svr->imu[i].time,NULL);
 
@@ -1234,6 +1236,12 @@ static int imuobsalign(rtksvr_t *svr)
             psyn->tali[2]=1;
             break;
         }
+        if(psyn->tali[2]==1&&svr->rtk.opt.insopt.tc==INSTC_SINGLE) {//当只有imu和rover数据时
+            tracet(3,"imu and rover align ok\n");
+            psyn->tali[2]=2;//对其标志为2
+            return 1;
+        }
+        
         //match base observation 
         if (psyn->tali[2]==1) {
             for (k=0;k<(psyn->of[1]?MAXOBSBUF:psyn->nb);k++) {
@@ -1910,8 +1918,8 @@ extern int rtksvrstart(rtksvr_t *svr, int cycle, int buffsize, int *strs,
     svr->nsol=0;
     svr->prcout=0;
     rtkfree(&svr->rtk);
-    rtkinit(&svr->rtk,prcopt);
-    
+    rtkinit(&svr->rtk,prcopt); 
+
     if (prcopt->initrst) { /* init averaging pos by restart */
         svr->nave=0;
         for (i=0;i<3;i++) svr->rb_ave[i]=0.0;

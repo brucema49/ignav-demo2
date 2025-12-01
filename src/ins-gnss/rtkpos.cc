@@ -3124,7 +3124,7 @@ extern int rtkpos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
         }
     }
     if (time.time!=0) rtk->tt=timediff(rtk->sol.time,time);
-    if (fabs(rtk->tt)<DTTOL&&opt->mode<=PMODE_FIXED) return stat;
+    //if (fabs(rtk->tt)<DTTOL&&opt->mode<=PMODE_FIXED) return stat;
 
     /* single point positioning */
     if (opt->mode==PMODE_SINGLE||tcs) {

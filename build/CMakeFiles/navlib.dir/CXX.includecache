@@ -58,7 +58,7 @@ pthread.h
 
 ../include/queue.h
 
-/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-init-rt.cc
+/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss.cc
 navlib.h
 -
 

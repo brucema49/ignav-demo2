@@ -16,7 +16,7 @@
 #include <navlib.h>
 
 /* constants ----------------------------------------------------------------*/
-#define MAXSOL       5                  /* max number of solution data */
+#define MAXSOL       3                  /* max number of solution data */
 #define MINVEL       4.0                /* min velocity for initial ins states */
 #define MAXGYRO      (30.0*D2R)         /* max rotation speed value for initial */
 #define MAXVAR_POSE  SQR(5.0*D2R)       /* max variance of pose measurement */
@@ -137,6 +137,8 @@ static void initrtkpos(rtk_t *rtk,prcopt_t *prcopt)
 #endif
     rtkinit(rtk,prcopt);
 }
+
+
 /* initialization ins states for real-time navigation use observation--------
  * args   :  rtksvr_t *svr  IO  rtk server
  *           obsd_t *obs    I   observation data
@@ -167,36 +169,54 @@ extern int insinirtobs(rtksvr_t *svr,const obsd_t *obs,int n,const imud_t *imu)
     rtkpos(&rtk,obs,n,&svr->nav);
 
     /* save position solution to buffer */
-    for (i=0;i<MAXSOL-1;i++) sols[i]=sols[i+1]; sols[i]=rtk.sol;
+    for (i=0;i<MAXSOL-1;i++)sols[i]=sols[i+1]; 
+    sols[i]=rtk.sol;
 
-    /*for (i=0;i<MAXSOL;i++) {
-        if (sols[i].stat>popt.insopt.iisu||sols[i].stat==SOLQ_NONE) {
-            trace(2,"check solution status fail\n");
+    if(popt.insopt.istat==2){//使用rtk初始化时
+        for (i=0;i<MAXSOL;i++) {
+            if (sols[i].stat>popt.insopt.iisu||sols[i].stat==SOLQ_NONE) {
+                trace(2,"check solution status fail\n");
+                return 0;
+            }
+        }
+        for (i=0;i<MAXSOL-1;i++) {
+            if (timediff(sols[i+1].time,sols[i].time)>MAXDIFF) {
+                return 0;
+            }
+        }
+        /* compute velocity from solutions */
+        matcpy(vr,sols[MAXSOL-1].rr+3,1,3);
+        if (norm(vr,3)==0.0) {
+            sol2vel(sols+MAXSOL-1,sols+MAXSOL-2,vr);
+        }
+        if (norm(imu->gyro,3)>MAXGYRO||norm(vr,3)<MINVEL) {
             return 0;
         }
-    }
-    for (i=0;i<MAXSOL-1;i++) {
-        if (timediff(sols[i+1].time,sols[i].time)>MAXDIFF) {
-            return 0;
+    }else if(popt.insopt.istat==1){//用spp初始化，用GNSS轨迹计算偏航角，即vr强制从解获得
+        for (i=0;i<MAXSOL;i++) {
+            if (sols[i].stat==SOLQ_NONE) {
+                trace(2,"check solution status fail\n");
+                return 0;
+            }
         }
-    }*/
+        sol2vel(sols+MAXSOL-1,sols+MAXSOL-3,vr);//通过轨迹赋值速度
+    }else{//spp用多普勒测速
+        if (sols[MAXSOL-1].stat==SOLQ_NONE) {
+                trace(2,"check solution status fail\n");
+                return 0;
+            }
+        /* compute velocity from solutions */
+        matcpy(vr,sols[MAXSOL-1].rr+3,1,3);
+    }
 
-    /* compute velocity from solutions */
-    matcpy(vr,sols[MAXSOL-1].rr+3,1,3);
-    if (norm(vr,3)==0.0) {
-        sol2vel(sols+MAXSOL-1,sols+MAXSOL-2,vr);
-    }
-    /*  注释初始化限制
-    if (norm(imu->gyro,3)>MAXGYRO||norm(vr,3)<MINVEL) {
-        return 0;
-    }
-        */
     /* initialize ins states */
     initinsrt(svr);
     if (!ant2inins(sols[MAXSOL-1].time,sols[MAXSOL-1].rr,vr,&popt.insopt,
-                   NULL,ins,NULL)) {
-        return 0;
+                    NULL,ins,NULL)) {
+            return 0;
     }
+
+
     ins->time=sols[MAXSOL-1].time;
 
     /* update ins state in n-frame */

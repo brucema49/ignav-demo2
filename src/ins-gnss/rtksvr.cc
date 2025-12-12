@@ -412,11 +412,11 @@ static void updateimu(rtksvr_t *svr, const imud_t *imu, int iimu)
 static void updatepvt(rtksvr_t *svr, const sol_t *sol ,int isol)
 {
     trace(3,"updatepvt:\n");
-
+    double dttol=1 / svr->rtk.opt.insopt.hz /2;
     time2gpst(sol->time,&svr->week);
     
     if (isol>=MAXSOLBUF) return;
-    if (fabs(timediff(svr->pvt[isol-1].time,sol->time))<DTTOL
+    if (fabs(timediff(svr->pvt[isol-1].time,sol->time))<dttol
         &&isol>=1) return;
 
     svr->pvt[isol]=*sol;
@@ -455,10 +455,11 @@ static void updateimg(rtksvr_t *svr, const img_t *img ,int iimg)
 /* update pose measurement data-----------------------------------------------*/
 static void updatepose(rtksvr_t *svr,const pose_meas_t *pose,int ipose)
 {
+    double dttol=1 / svr->rtk.opt.insopt.hz /2;
     trace(3,"updatepose:\n");
     if (ipose>=MAXPOSEBUF) return;
     if (ipose>=1&&fabs(timediff(svr->pose[ipose-1].time,svr->pose[ipose].time))
-                  <DTTOL) {
+                  <dttol) {
         return;
     }
     svr->pose[ipose]=*pose;
@@ -546,7 +547,7 @@ static int inputobstc(rtksvr_t *svr,gtime_t time,obsd_t *obs)
     int i,j,k,n=0,m=0,flag=0;
     double dt;
     gtime_t tr={0};
-
+    double dttol=1 / svr->rtk.opt.insopt.hz /2;
     const obs_t *robs=svr->obs[0],*bobs=svr->obs[1];
 
     /* match rover observation data */
@@ -558,7 +559,7 @@ static int inputobstc(rtksvr_t *svr,gtime_t time,obsd_t *obs)
         if (dt&&fabs(dt)<fabs(timediff(time,robs[j].data[0].time))) {
             break;
         }
-        if (fabs((dt=timediff(time,robs[j].data[0].time)))<DTTOL
+        if (fabs((dt=timediff(time,robs[j].data[0].time)))<dttol
             &&robs[j].n!=0) {
             for (k=0,m=0;k<robs[j].n;k++) obs[m++]=robs[j].data[k];
             svr->syn.rover=j; tr=obs[0].time;
@@ -617,7 +618,7 @@ static int inputimu(rtksvr_t *svr,imud_t *data)
 static int inputpvt(rtksvr_t *svr,gtime_t t0,sol_t *sol)
 {
     tracet(3,"inputpvt:\n");
-
+    double dttol=1 / svr->rtk.opt.insopt.hz /2;
     sol_t sol0={0}; *sol=sol0;
     int i,j,n=0; double dt;
 
@@ -630,7 +631,7 @@ static int inputpvt(rtksvr_t *svr,gtime_t t0,sol_t *sol)
         if (dt&&fabs(dt)<fabs(timediff(t0,svr->pvt[j].time))) {
             break;
         }
-        if (fabs((dt=timediff(t0,svr->pvt[j].time)))<DTTOL
+        if (fabs((dt=timediff(t0,svr->pvt[j].time)))<dttol
             &&svr->pvt[j].time.time!=0
             &&svr->pvt[j].stat!=SOLQ_NONE) {
             memcpy(sol,&svr->pvt[j],sizeof(sol_t));
@@ -687,7 +688,7 @@ static int inputpose(rtksvr_t *svr,gtime_t time,pose_meas_t *pose)
 {
     double dt=0.0;
     int i,j,np;
-
+    double dttol=1 / svr->rtk.opt.insopt.hz /2;
     np=NS(svr->syn.pose,svr->syn.np,MAXPOSEBUF);
 
     for (i=0;i<np+1;i++) {
@@ -696,7 +697,7 @@ static int inputpose(rtksvr_t *svr,gtime_t time,pose_meas_t *pose)
         if (dt&&fabs(dt)<fabs(timediff(time,svr->pose[j].time))) {
             break;
         }
-        if (fabs((dt=timediff(time,svr->pose[j].time)))<DTTOL
+        if (fabs((dt=timediff(time,svr->pose[j].time)))<dttol
             &&svr->pose[j].time.time
             &&svr->pose[j].stat
             &&norm(svr->pose[j].rpy,3)>0.0) {
@@ -1015,11 +1016,11 @@ static void outrslt(rtksvr_t *svr,gmea_t *gm,int tick,int index)
 {
     double tt;
     insstate_t *ins=&svr->rtk.ins;
-
+    
     trace(3,"outrslt: tick=%d\n",tick);
-
+    double dttol=1 / svr->rtk.opt.insopt.hz /2;
     /* adjust current time */
-    tt=(int)(tickget()-tick)/1000.0+DTTOL;
+    tt=(int)(tickget()-tick)/1000.0+dttol;
     timeset(gpst2utc(timeadd(svr->rtk.sol.time,tt)));
 
     /* update ins solution status */
@@ -1188,6 +1189,7 @@ static int solimualign(rtksvr_t *svr)
 {
     int i,j; double sow1,sow2;
     syn_t *syn=&svr->syn;
+    double dttol=1 / svr->rtk.opt.insopt.hz /2;
 
     for (i=0;i<(syn->of[2]?MAXIMUBUF:syn->ni)&&!syn->tali[1];i++) {
         sow1=time2gpst(svr->imu[i].time,NULL);
@@ -1196,7 +1198,7 @@ static int solimualign(rtksvr_t *svr)
         for (j=0;j<(syn->of[3]?MAXSOLBUF:syn->ns);j++) {
 
             sow2=time2gpst(svr->pvt[j].time,&svr->week);
-            if (sow1==0.0||sow2==0.0||fabs(sow1-sow2)>DTTOL) continue;
+            if (sow1==0.0||sow2==0.0||fabs(sow1-sow2)>dttol) continue;
 
             trace(3,"imu and pvt solution time align ok\n");
             syn->imu=i;
@@ -1220,8 +1222,8 @@ static int imuobsalign(rtksvr_t *svr)
     n=psyn->of[2]?MAXIMUBUF:psyn->ni;
     p1=svr->obs[0];
     p2=svr->obs[1];
-
-    for (i=0;i<n&&svr->syn.tali[2]!=2;i++) { // start time alignment 当imu数据存在时且对齐标志为2
+    double dttol=1.0 / svr->rtk.opt.insopt.hz /2;
+    for (i=0;i<n&&svr->syn.tali[2]!=2;i++) { // start time alignment 当imu数据存在时且对齐标志不为2
 
         sow1=time2gpst(svr->imu[i].time,NULL);
 
@@ -1229,7 +1231,7 @@ static int imuobsalign(rtksvr_t *svr)
         for (j=0;j<(psyn->of[0]?MAXOBSBUF:psyn->nr);j++) {
             sow2=time2gpst(p1[j].data[0].time,NULL);
             if (p1[j].n) {
-                if (fabs(sow1-sow2)>DTTOL) continue;
+                if (fabs(sow1-sow2)>dttol) continue;
             }
             psyn->imu    =i;
             psyn->rover  =j;
@@ -1270,7 +1272,7 @@ static int imuimgalign(rtksvr_t *svr)
 {
     int i,j; double sow1,sow2;
     syn_t *psyn=&svr->syn;
-
+    double dttol=1 / svr->rtk.opt.insopt.hz /2;
     /* alignment of imu and image measurement data */
     for (i=0;i<(psyn->of[2]?MAXIMUBUF:psyn->ni)&&svr->syn.tali[3]!=1;i++) {
         sow1=time2gpst(svr->imu[i].time,NULL);
@@ -1279,7 +1281,7 @@ static int imuimgalign(rtksvr_t *svr)
         for (j=0;j<(psyn->of[4]?MAXIMGBUF:psyn->nm);j++) {
             sow2=time2gpst(svr->img[j].time,NULL);
             if (svr->img[j].flag||svr->img[j].h==0||svr->img[j].w==0) continue;
-            if (fabs(sow1-sow2)>DTTOL) continue;
+            if (fabs(sow1-sow2)>dttol) continue;
 
             psyn->imu=i;
             psyn->img=j;

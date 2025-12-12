@@ -1588,11 +1588,11 @@ extern int ant2inins(gtime_t time,const double *rr,const double *vr,
 
     ned2xyz(llh,C);
     matmul("NN",3,3,3,1.0,C,ins->Cbn,0.0,ins->Cbe);
-
+    double dttol=1 / opt->hz /2;
     /* find closest imu measurement index */
     if (imu) {
         for (i=0;i<imu->n;i++)  {
-            if (fabs(timediff(time,imu->data[i].time))<DTTOL) {
+            if (fabs(timediff(time,imu->data[i].time))<dttol) {
                 break;
             }
         }

@@ -81,7 +81,7 @@ extern "C"{
 
 #define COPYRIGHT_RTKLIB \
             "Copyright (C) 2007-2017 T.Takasu\nAll rights reserved."
-#define OBS_200HZ
+//#define OBS_200HZ
 #define CPUTIME_IN_GPST
 #define EXTGSI
 #define LAPACK
@@ -258,10 +258,11 @@ extern "C"{
 #define MAXRCV      64                  /* max receiver number (1 to MAXRCV) */
 #define MAXOBSTYPE  64                  /* max number of obs type in RINEX */
 
+#define  OBS_200HZ
 #ifdef  OBS_200HZ
 #define DTTOL       0.0025              /* tolerance of time difference (s) */
 #else
-#define DTTOL       0.005               /* tolerance of time difference (s) */
+#define DTTOL       0.010               /* tolerance of time difference (s) */
 #endif
 
 #define MAXDTOE     7200.0              /* max time difference to GPS Toe (s) */
@@ -1148,6 +1149,7 @@ typedef struct {            /* ins options type */
     int exphi;              /* use precise system propagate matrix for ekf */
     int exvm;               /* extend method to velocity matching for ins navigation initial */
     int iisu;               /* initial ins state use rtk options (SOLQ_???)*/
+    int istat;              /*initial ins state use static:1 or move:2 */
 
     int nhc;                /* non-holonomic constraint options */
     int zvu;                /* zero velocity update options */

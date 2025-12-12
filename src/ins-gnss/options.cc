@@ -242,6 +242,7 @@ EXPORT opt_t insopts[]={
     {"ins-exphi",       0, (void *)&prcopt_.insopt.exphi,    "" },
     {"ins-exvm",        0, (void *)&prcopt_.insopt.exvm,     "" },
     {"ins-iisu",        0, (void *)&prcopt_.insopt.iisu,     "" },
+    {"ins-istat",       0, (void *)&prcopt_.insopt.istat,    "" },
     {"ins-nhc",         0, (void *)&prcopt_.insopt.nhc,      "" },
     {"ins-zvu",         0, (void *)&prcopt_.insopt.zvu,      "" },
     {"ins-zaru",        0, (void *)&prcopt_.insopt.zaru,     "" },

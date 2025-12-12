@@ -1,6 +1,6 @@
 {
     "cmake.debugConfig": {
-        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/a-texbat/texbat.conf"],
+        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/a-cpt/cpt.conf"],
         "cwd": "${workspaceFolder}/bin"
     },
     "cmake.configureEnvironment": {

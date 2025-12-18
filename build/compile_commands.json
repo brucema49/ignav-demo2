@@ -16,6 +16,11 @@
 },
 {
   "directory": "/home/mxl/workplace/ignav-debug/build",
+  "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/SpoofingDet.cc",
+  "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/SpoofingDet.cc"
+},
+{
+  "directory": "/home/mxl/workplace/ignav-debug/build",
   "command": "/usr/bin/c++   -I/home/mxl/workplace/ignav-debug/include  -msse3  -O0 -Wall -g -ggdb   -std=gnu++11 -o CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ar.cc",
   "file": "/home/mxl/workplace/ignav-debug/src/ins-gnss/ar.cc"
 },

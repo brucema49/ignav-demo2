@@ -2077,12 +2077,7 @@ extern int outsolheads(unsigned char *buff, const solopt_t *opt)
                        "Q",sep,"Qins",sep,"ns",sep,"sdn(m)",sep,"sde(m)",sep,"sdu(m)",sep,
                        "sdne(m)",sep,"sdeu(m)",sep,"sdun(m)",sep,"age(s)",sep,"ratio");
         }
-        if(opt->spoofing_detector==1){//输出spoofing检测结果ws
-            p+=sprintf(p,"%s%6s",sep,"ws");
-        }
-        if(opt->spoofing_detector==2){//输出spoofing检测结果wi
-            p+=sprintf(p,"%s%6s",sep,"wi" );
-        }
+        
         if (opt->wlratio) {
             p+=sprintf(p,"%s%6s",sep,"wl-ratio");
         }
@@ -2091,6 +2086,13 @@ extern int outsolheads(unsigned char *buff, const solopt_t *opt)
                        sep,"vn(m/s)",sep,"ve(m/s)",sep,"vu(m/s)",sep,"sdvn",sep,
                        "sdve",sep,"sdvu",sep,"sdvne",sep,"sdveu",sep,"sdvun");
         }
+        if(opt->spoofing_detector==1){//输出spoofing检测结果ws
+            p+=sprintf(p,"%s%6s",sep,"ws");
+        }
+        if(opt->spoofing_detector==2){//输出spoofing检测结果wi
+            p+=sprintf(p,"%s%6s",sep,"wi" );
+        }
+
         if (opt->outatt&&opt->posf==SOLF_INS) {
             p+=sprintf(p,"%s%10s%s%10s%s%10s%s%10s%s%10s%s%10s",
                        sep,"roll(deg)",sep,"pitch(deg)",sep,"yaw(deg)",
@@ -2131,12 +2133,7 @@ extern int outsolheads(unsigned char *buff, const solopt_t *opt)
                    "x-ecef(m)",sep,"y-ecef(m)",sep,"z-ecef(m)",sep,"Q",sep,"Qins",sep,"ns",sep,
                    "sdx(m)",sep,"sdy(m)",sep,"sdz(m)",sep,"sdxy(m)",sep,
                    "sdyz(m)",sep,"sdzx(m)",sep,"age(s)",sep,"ratio");
-        if(opt->spoofing_detector==1){//输出spoofing检测结果ws
-            p+=sprintf(p,"%s%6s",sep,"ws");
-        }
-        if(opt->spoofing_detector==2){//输出spoofing检测结果wi
-            p+=sprintf(p,"%s%6s",sep,"wi" );
-        }
+        
         if (opt->wlratio) {
             p+=sprintf(p,"%s%6s",sep,"wl-ratio");
         }
@@ -2144,6 +2141,12 @@ extern int outsolheads(unsigned char *buff, const solopt_t *opt)
             p+=sprintf(p,"%s%10s%s%10s%s%10s%s%10s%s%10s%s%10s%s%10s%s%10s%s%10s",
                        sep,"vx(m/s)",sep,"vy(m/s)",sep,"vz(m/s)",sep,"sdvx",sep,
                        "sdvy",sep,"sdvz",sep,"sdvxy",sep,"sdvyz",sep,"sdvzx");
+        }
+        if(opt->spoofing_detector==1){//输出spoofing检测结果ws
+            p+=sprintf(p,"%s%6s",sep,"ws");
+        }
+        if(opt->spoofing_detector==2){//输出spoofing检测结果wi
+            p+=sprintf(p,"%s%6s",sep,"wi" );
         }
         if (opt->outatt&&opt->posf==SOLF_INS) {
             p+=sprintf(p,"%s%10s%s%10s%s%10s%s%10s%s%10s%s%10s",

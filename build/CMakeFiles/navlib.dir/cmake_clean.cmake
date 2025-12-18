@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "../lib/libnavlib.a"
   "../lib/libnavlib.pdb"
+  "CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o"
   "CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o"
   "CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o"
   "CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o"

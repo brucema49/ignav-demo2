@@ -1439,7 +1439,7 @@ static void *rtksvrthread(void *arg)
                 for (i=0;i<6;i++) svr->rtk.opt.rb[i]=sol.rr[i];
             }
         }
-        /* input imu measurement data */
+        /* input imu measurement data 仅当时间对齐后才能输入imu数据*/
         if (fobs[4]) {
             imus.n=inputimu(svr,imus.data);
         }

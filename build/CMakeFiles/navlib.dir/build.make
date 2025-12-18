@@ -57,9 +57,22 @@ include CMakeFiles/navlib.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/navlib.dir/flags.make
 
+CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o: CMakeFiles/navlib.dir/flags.make
+CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o: ../src/ins-gnss/SpoofingDet.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/SpoofingDet.cc
+
+CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mxl/workplace/ignav-debug/src/ins-gnss/SpoofingDet.cc > CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.i
+
+CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mxl/workplace/ignav-debug/src/ins-gnss/SpoofingDet.cc -o CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.s
+
 CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o: ../src/ins-gnss/ar.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ar.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.i: cmake_force
@@ -72,7 +85,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o: ../src/ins-gnss/convgpx.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/convgpx.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.i: cmake_force
@@ -85,7 +98,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o: ../src/ins-gnss/convkml.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/convkml.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.i: cmake_force
@@ -98,7 +111,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/convrnx.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/convrnx.cc.o: ../src/ins-gnss/convrnx.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/convrnx.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/convrnx.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/convrnx.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/convrnx.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/convrnx.cc.i: cmake_force
@@ -111,7 +124,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/convrnx.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/datum.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/datum.cc.o: ../src/ins-gnss/datum.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/datum.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/datum.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/datum.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/datum.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/datum.cc.i: cmake_force
@@ -124,7 +137,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/datum.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ephemeris.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ephemeris.cc.o: ../src/ins-gnss/ephemeris.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ephemeris.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ephemeris.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ephemeris.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ephemeris.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ephemeris.cc.i: cmake_force
@@ -137,7 +150,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ephemeris.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/geoid.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/geoid.cc.o: ../src/ins-gnss/geoid.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/geoid.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/geoid.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/geoid.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/geoid.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/geoid.cc.i: cmake_force
@@ -150,7 +163,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/geoid.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/geomag.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/geomag.cc.o: ../src/ins-gnss/geomag.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/geomag.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/geomag.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/geomag.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/geomag.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/geomag.cc.i: cmake_force
@@ -163,7 +176,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/geomag.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/gis.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/gis.cc.o: ../src/ins-gnss/gis.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/gis.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/gis.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/gis.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/gis.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/gis.cc.i: cmake_force
@@ -176,7 +189,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/gis.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-align.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-align.cc.o: ../src/ins-gnss/ins-align.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-align.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-align.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-align.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-align.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-align.cc.i: cmake_force
@@ -189,7 +202,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-align.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-back-mech.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-back-mech.cc.o: ../src/ins-gnss/ins-back-mech.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-back-mech.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-back-mech.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-back-mech.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-back-mech.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-back-mech.cc.i: cmake_force
@@ -202,7 +215,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-back-mech.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-camera.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-camera.cc.o: ../src/ins-gnss/ins-camera.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-camera.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-camera.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-camera.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-camera.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-camera.cc.i: cmake_force
@@ -215,7 +228,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-camera.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-doppler.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-doppler.cc.o: ../src/ins-gnss/ins-doppler.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-doppler.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-doppler.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-doppler.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-doppler.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-doppler.cc.i: cmake_force
@@ -228,7 +241,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-doppler.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-dualant-calib.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-dualant-calib.cc.o: ../src/ins-gnss/ins-dualant-calib.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-dualant-calib.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-dualant-calib.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-dualant-calib.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-dualant-calib.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-dualant-calib.cc.i: cmake_force
@@ -241,7 +254,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-dualant-calib.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-geomag.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-geomag.cc.o: ../src/ins-gnss/ins-geomag.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-geomag.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-geomag.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-geomag.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-geomag.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-geomag.cc.i: cmake_force
@@ -254,7 +267,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-geomag.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-fbsm.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-fbsm.cc.o: ../src/ins-gnss/ins-gnss-fbsm.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-fbsm.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-fbsm.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-fbsm.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-fbsm.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-fbsm.cc.i: cmake_force
@@ -267,7 +280,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-fbsm.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-psi.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-psi.cc.o: ../src/ins-gnss/ins-gnss-psi.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-psi.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-psi.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-psi.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-psi.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-psi.cc.i: cmake_force
@@ -280,7 +293,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-psi.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-rts.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-rts.cc.o: ../src/ins-gnss/ins-gnss-rts.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-rts.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-rts.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-rts.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-rts.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-rts.cc.i: cmake_force
@@ -293,7 +306,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-rts.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-state.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-state.cc.o: ../src/ins-gnss/ins-gnss-state.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-state.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-state.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-state.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-state.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-state.cc.i: cmake_force
@@ -306,7 +319,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-state.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-tc.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-tc.cc.o: ../src/ins-gnss/ins-gnss-tc.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-tc.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-tc.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-tc.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss-tc.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-tc.cc.i: cmake_force
@@ -319,7 +332,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss-tc.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss.cc.o: ../src/ins-gnss/ins-gnss.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss.cc.i: cmake_force
@@ -332,7 +345,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-gnss.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-init-rt.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-init-rt.cc.o: ../src/ins-gnss/ins-init-rt.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-init-rt.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-init-rt.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-init-rt.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-init-rt.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-init-rt.cc.i: cmake_force
@@ -345,7 +358,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-init-rt.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-nhc.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-nhc.cc.o: ../src/ins-gnss/ins-nhc.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-nhc.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-nhc.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-nhc.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-nhc.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-nhc.cc.i: cmake_force
@@ -358,7 +371,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-nhc.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-odo.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-odo.cc.o: ../src/ins-gnss/ins-odo.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-odo.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-odo.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-odo.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-odo.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-odo.cc.i: cmake_force
@@ -371,7 +384,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-odo.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-pose.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-pose.cc.o: ../src/ins-gnss/ins-pose.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-pose.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-pose.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-pose.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-pose.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-pose.cc.i: cmake_force
@@ -384,7 +397,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-pose.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-sim.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-sim.cc.o: ../src/ins-gnss/ins-sim.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-sim.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-sim.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-sim.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-sim.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-sim.cc.i: cmake_force
@@ -397,7 +410,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-sim.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-static-detect.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-static-detect.cc.o: ../src/ins-gnss/ins-static-detect.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-static-detect.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-static-detect.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-static-detect.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-static-detect.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-static-detect.cc.i: cmake_force
@@ -410,7 +423,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-static-detect.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vel-match-align.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vel-match-align.cc.o: ../src/ins-gnss/ins-vel-match-align.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-vel-match-align.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-vel-match-align.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-vel-match-align.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vel-match-align.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vel-match-align.cc.i: cmake_force
@@ -423,7 +436,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-vel-match-align.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vo-aid.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vo-aid.cc.o: ../src/ins-gnss/ins-vo-aid.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-vo-aid.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-vo-aid.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-vo-aid.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vo-aid.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vo-aid.cc.i: cmake_force
@@ -436,7 +449,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-vo-aid.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vo.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vo.cc.o: ../src/ins-gnss/ins-vo.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-vo.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-vo.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-vo.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-vo.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-vo.cc.i: cmake_force
@@ -449,7 +462,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-vo.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-zaru.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-zaru.cc.o: ../src/ins-gnss/ins-zaru.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-zaru.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-zaru.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-zaru.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-zaru.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-zaru.cc.i: cmake_force
@@ -462,7 +475,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-zaru.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-zvu.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins-zvu.cc.o: ../src/ins-gnss/ins-zvu.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-zvu.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins-zvu.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins-zvu.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins-zvu.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins-zvu.cc.i: cmake_force
@@ -475,7 +488,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins-zvu.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ins.cc.o: ../src/ins-gnss/ins.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ins.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ins.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ins.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ins.cc.i: cmake_force
@@ -488,7 +501,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ins.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ionex.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ionex.cc.o: ../src/ins-gnss/ionex.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ionex.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ionex.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ionex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ionex.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ionex.cc.i: cmake_force
@@ -501,7 +514,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ionex.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/lambda.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/lambda.cc.o: ../src/ins-gnss/lambda.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/lambda.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/lambda.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/lambda.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/lambda.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/lambda.cc.i: cmake_force
@@ -514,7 +527,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/lambda.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/options.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/options.cc.o: ../src/ins-gnss/options.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_36) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/options.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/options.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/options.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/options.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/options.cc.i: cmake_force
@@ -527,7 +540,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/options.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/pntpos.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/pntpos.cc.o: ../src/ins-gnss/pntpos.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_37) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/pntpos.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/pntpos.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/pntpos.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/pntpos.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/pntpos.cc.i: cmake_force
@@ -540,7 +553,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/pntpos.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/postpos.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/postpos.cc.o: ../src/ins-gnss/postpos.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_38) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/postpos.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/postpos.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/postpos.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/postpos.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/postpos.cc.i: cmake_force
@@ -553,7 +566,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/postpos.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ppp.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ppp.cc.o: ../src/ins-gnss/ppp.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_39) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ppp.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ppp.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ppp.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ppp.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ppp.cc.i: cmake_force
@@ -566,7 +579,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ppp.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ppp_ar.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ppp_ar.cc.o: ../src/ins-gnss/ppp_ar.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_40) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ppp_ar.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ppp_ar.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ppp_ar.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ppp_ar.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ppp_ar.cc.i: cmake_force
@@ -579,7 +592,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ppp_ar.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/ppp_corr.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/ppp_corr.cc.o: ../src/ins-gnss/ppp_corr.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_41) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ppp_corr.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/ppp_corr.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/ppp_corr.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/ppp_corr.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/ppp_corr.cc.i: cmake_force
@@ -592,7 +605,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/ppp_corr.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/preceph.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/preceph.cc.o: ../src/ins-gnss/preceph.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_42) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/preceph.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/preceph.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/preceph.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/preceph.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/preceph.cc.i: cmake_force
@@ -605,7 +618,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/preceph.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/quaternion.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/quaternion.cc.o: ../src/ins-gnss/quaternion.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_43) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/quaternion.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/quaternion.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/quaternion.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/quaternion.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/quaternion.cc.i: cmake_force
@@ -618,7 +631,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/quaternion.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/qzslex.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/qzslex.cc.o: ../src/ins-gnss/qzslex.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_44) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/qzslex.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/qzslex.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/qzslex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/qzslex.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/qzslex.cc.i: cmake_force
@@ -631,7 +644,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/qzslex.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/binex.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/binex.cc.o: ../src/ins-gnss/rcv/binex.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_45) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/binex.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/binex.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/binex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/binex.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/binex.cc.i: cmake_force
@@ -644,7 +657,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/binex.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/cmr.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/cmr.cc.o: ../src/ins-gnss/rcv/cmr.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_46) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/cmr.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/cmr.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/cmr.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/cmr.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/cmr.cc.i: cmake_force
@@ -657,7 +670,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/cmr.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/crescent.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/crescent.cc.o: ../src/ins-gnss/rcv/crescent.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_47) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/crescent.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/crescent.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/crescent.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/crescent.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/crescent.cc.i: cmake_force
@@ -670,7 +683,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/crescent.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/euroc.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/euroc.cc.o: ../src/ins-gnss/rcv/euroc.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/euroc.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/euroc.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/euroc.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/euroc.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/euroc.cc.i: cmake_force
@@ -683,7 +696,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/euroc.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ground-truth.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ground-truth.cc.o: ../src/ins-gnss/rcv/ground-truth.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/ground-truth.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/ground-truth.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/ground-truth.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ground-truth.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ground-truth.cc.i: cmake_force
@@ -696,7 +709,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/ground-truth.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/gsof.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/gsof.cc.o: ../src/ins-gnss/rcv/gsof.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_50) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/gsof.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/gsof.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/gsof.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/gsof.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/gsof.cc.i: cmake_force
@@ -709,7 +722,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/gsof.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/gw10.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/gw10.cc.o: ../src/ins-gnss/rcv/gw10.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_51) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/gw10.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/gw10.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/gw10.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/gw10.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/gw10.cc.i: cmake_force
@@ -722,7 +735,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/gw10.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/imu.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/imu.cc.o: ../src/ins-gnss/rcv/imu.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_52) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/imu.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/imu.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/imu.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/imu.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/imu.cc.i: cmake_force
@@ -735,7 +748,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/imu.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/javad.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/javad.cc.o: ../src/ins-gnss/rcv/javad.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_53) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/javad.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/javad.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/javad.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/javad.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/javad.cc.i: cmake_force
@@ -748,7 +761,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/javad.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/karl.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/karl.cc.o: ../src/ins-gnss/rcv/karl.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_54) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/karl.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/karl.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/karl.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/karl.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/karl.cc.i: cmake_force
@@ -761,7 +774,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/karl.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/kitti.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/kitti.cc.o: ../src/ins-gnss/rcv/kitti.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_55) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/kitti.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/kitti.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/kitti.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/kitti.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/kitti.cc.i: cmake_force
@@ -774,7 +787,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/kitti.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/m39-mix.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/m39-mix.cc.o: ../src/ins-gnss/rcv/m39-mix.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_56) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/m39-mix.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/m39-mix.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/m39-mix.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/m39-mix.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/m39-mix.cc.i: cmake_force
@@ -787,7 +800,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/m39-mix.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/malaga.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/malaga.cc.o: ../src/ins-gnss/rcv/malaga.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_57) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/malaga.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/malaga.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/malaga.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/malaga.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/malaga.cc.i: cmake_force
@@ -800,7 +813,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/malaga.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel-oem6.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel-oem6.cc.o: ../src/ins-gnss/rcv/novatel-oem6.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_58) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel-oem6.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel-oem6.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel-oem6.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/novatel-oem6.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel-oem6.cc.i: cmake_force
@@ -813,7 +826,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel-oem6.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel.cc.o: ../src/ins-gnss/rcv/novatel.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_59) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/novatel.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel.cc.i: cmake_force
@@ -826,7 +839,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/novatel.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/nvs.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/nvs.cc.o: ../src/ins-gnss/rcv/nvs.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_60) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/nvs.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/nvs.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/nvs.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/nvs.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/nvs.cc.i: cmake_force
@@ -839,7 +852,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/nvs.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/odo.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/odo.cc.o: ../src/ins-gnss/rcv/odo.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_61) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/odo.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/odo.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/odo.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/odo.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/odo.cc.i: cmake_force
@@ -852,7 +865,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/odo.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rcvlex.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rcvlex.cc.o: ../src/ins-gnss/rcv/rcvlex.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_62) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/rcvlex.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/rcvlex.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/rcvlex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rcvlex.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rcvlex.cc.i: cmake_force
@@ -865,7 +878,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/rcvlex.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rinex-rt.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rinex-rt.cc.o: ../src/ins-gnss/rcv/rinex-rt.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_63) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/rinex-rt.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/rinex-rt.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/rinex-rt.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rinex-rt.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rinex-rt.cc.i: cmake_force
@@ -878,7 +891,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/rinex-rt.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rt17.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rt17.cc.o: ../src/ins-gnss/rcv/rt17.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_64) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/rt17.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/rt17.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/rt17.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/rt17.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/rt17.cc.i: cmake_force
@@ -891,7 +904,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/rt17.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/septentrio.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/septentrio.cc.o: ../src/ins-gnss/rcv/septentrio.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_65) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/septentrio.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/septentrio.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/septentrio.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/septentrio.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/septentrio.cc.i: cmake_force
@@ -904,7 +917,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/septentrio.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/serialisation.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/serialisation.cc.o: ../src/ins-gnss/rcv/serialisation.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_66) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/serialisation.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/serialisation.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/serialisation.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/serialisation.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/serialisation.cc.i: cmake_force
@@ -917,7 +930,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/serialisation.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/skytraq.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/skytraq.cc.o: ../src/ins-gnss/rcv/skytraq.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_67) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/skytraq.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/skytraq.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/skytraq.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/skytraq.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/skytraq.cc.i: cmake_force
@@ -930,7 +943,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/skytraq.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ss2.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ss2.cc.o: ../src/ins-gnss/rcv/ss2.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_68) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/ss2.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/ss2.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/ss2.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ss2.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ss2.cc.i: cmake_force
@@ -943,7 +956,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/ss2.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/tersus.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/tersus.cc.o: ../src/ins-gnss/rcv/tersus.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_69) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/tersus.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/tersus.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/tersus.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/tersus.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/tersus.cc.i: cmake_force
@@ -956,7 +969,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/tersus.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ublox.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ublox.cc.o: ../src/ins-gnss/rcv/ublox.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_70) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/ublox.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcv/ublox.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcv/ublox.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcv/ublox.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcv/ublox.cc.i: cmake_force
@@ -969,7 +982,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcv/ublox.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcvraw.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rcvraw.cc.o: ../src/ins-gnss/rcvraw.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_71) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcvraw.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rcvraw.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rcvraw.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rcvraw.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rcvraw.cc.i: cmake_force
@@ -982,7 +995,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rcvraw.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rinex.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rinex.cc.o: ../src/ins-gnss/rinex.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_72) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rinex.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rinex.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rinex.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rinex.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rinex.cc.i: cmake_force
@@ -995,7 +1008,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rinex.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm.cc.o: ../src/ins-gnss/rtcm.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_73) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtcm.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtcm.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rtcm.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm.cc.i: cmake_force
@@ -1008,7 +1021,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rtcm.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm2.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm2.cc.o: ../src/ins-gnss/rtcm2.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_74) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtcm2.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtcm2.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rtcm2.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm2.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm2.cc.i: cmake_force
@@ -1021,7 +1034,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rtcm2.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm3.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm3.cc.o: ../src/ins-gnss/rtcm3.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_75) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtcm3.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtcm3.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rtcm3.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm3.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm3.cc.i: cmake_force
@@ -1034,7 +1047,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rtcm3.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm3e.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm3e.cc.o: ../src/ins-gnss/rtcm3e.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_76) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtcm3e.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtcm3e.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rtcm3e.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtcm3e.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtcm3e.cc.i: cmake_force
@@ -1047,7 +1060,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rtcm3e.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtk-utils.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rtk-utils.cc.o: ../src/ins-gnss/rtk-utils.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_77) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtk-utils.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtk-utils.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rtk-utils.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtk-utils.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtk-utils.cc.i: cmake_force
@@ -1060,7 +1073,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rtk-utils.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtkcmn.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rtkcmn.cc.o: ../src/ins-gnss/rtkcmn.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_78) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtkcmn.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtkcmn.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rtkcmn.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtkcmn.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtkcmn.cc.i: cmake_force
@@ -1073,7 +1086,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rtkcmn.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtkpos.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rtkpos.cc.o: ../src/ins-gnss/rtkpos.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_79) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtkpos.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtkpos.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rtkpos.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtkpos.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtkpos.cc.i: cmake_force
@@ -1086,7 +1099,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rtkpos.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.o: ../src/ins-gnss/rtksvr.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_80) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/rtksvr.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.i: cmake_force
@@ -1099,7 +1112,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/rtksvr.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/sbas.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/sbas.cc.o: ../src/ins-gnss/sbas.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_81) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/sbas.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/sbas.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/sbas.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/sbas.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/sbas.cc.i: cmake_force
@@ -1112,7 +1125,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/sbas.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/se3.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/se3.cc.o: ../src/ins-gnss/se3.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_82) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/se3.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/se3.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/se3.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/se3.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/se3.cc.i: cmake_force
@@ -1125,7 +1138,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/se3.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/so3.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/so3.cc.o: ../src/ins-gnss/so3.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_83) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/so3.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/so3.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/so3.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/so3.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/so3.cc.i: cmake_force
@@ -1138,7 +1151,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/so3.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/solution.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/solution.cc.o: ../src/ins-gnss/solution.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_84) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/solution.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/solution.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/solution.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/solution.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/solution.cc.i: cmake_force
@@ -1151,7 +1164,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/solution.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/stream.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/stream.cc.o: ../src/ins-gnss/stream.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_85) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/stream.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/stream.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/stream.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/stream.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/stream.cc.i: cmake_force
@@ -1164,7 +1177,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/stream.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/streamsvr.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/streamsvr.cc.o: ../src/ins-gnss/streamsvr.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_86) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/streamsvr.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/streamsvr.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/streamsvr.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/streamsvr.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/streamsvr.cc.i: cmake_force
@@ -1177,7 +1190,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/streamsvr.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/svd.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/svd.cc.o: ../src/ins-gnss/svd.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_87) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/svd.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/svd.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/svd.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/svd.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/svd.cc.i: cmake_force
@@ -1190,7 +1203,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/svd.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/tides.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/tides.cc.o: ../src/ins-gnss/tides.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_88) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/tides.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/tides.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/tides.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/tides.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/tides.cc.i: cmake_force
@@ -1203,7 +1216,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/tides.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/tle.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/tle.cc.o: ../src/ins-gnss/tle.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_89) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/tle.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/tle.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/tle.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/tle.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/tle.cc.i: cmake_force
@@ -1216,7 +1229,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/tle.cc.s: cmake_force
 
 CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.o: CMakeFiles/navlib.dir/flags.make
 CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.o: ../src/ins-gnss/vt.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_90) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Building CXX object CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.o -c /home/mxl/workplace/ignav-debug/src/ins-gnss/vt.cc
 
 CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.i: cmake_force
@@ -1229,6 +1242,7 @@ CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.s: cmake_force
 
 # Object files for target navlib
 navlib_OBJECTS = \
+"CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o" \
 "CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o" \
 "CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o" \
 "CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o" \
@@ -1323,6 +1337,7 @@ navlib_OBJECTS = \
 # External object files for target navlib
 navlib_EXTERNAL_OBJECTS =
 
+../lib/libnavlib.a: CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o
 ../lib/libnavlib.a: CMakeFiles/navlib.dir/src/ins-gnss/ar.cc.o
 ../lib/libnavlib.a: CMakeFiles/navlib.dir/src/ins-gnss/convgpx.cc.o
 ../lib/libnavlib.a: CMakeFiles/navlib.dir/src/ins-gnss/convkml.cc.o
@@ -1415,7 +1430,7 @@ navlib_EXTERNAL_OBJECTS =
 ../lib/libnavlib.a: CMakeFiles/navlib.dir/src/ins-gnss/vt.cc.o
 ../lib/libnavlib.a: CMakeFiles/navlib.dir/build.make
 ../lib/libnavlib.a: CMakeFiles/navlib.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_91) "Linking CXX static library ../lib/libnavlib.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mxl/workplace/ignav-debug/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_92) "Linking CXX static library ../lib/libnavlib.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/navlib.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/navlib.dir/link.txt --verbose=$(VERBOSE)
 

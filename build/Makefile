@@ -162,6 +162,33 @@ navlib/fast:
 	$(MAKE) -f CMakeFiles/navlib.dir/build.make CMakeFiles/navlib.dir/build
 .PHONY : navlib/fast
 
+src/ins-gnss/SpoofingDet.o: src/ins-gnss/SpoofingDet.cc.o
+
+.PHONY : src/ins-gnss/SpoofingDet.o
+
+# target to build an object file
+src/ins-gnss/SpoofingDet.cc.o:
+	$(MAKE) -f CMakeFiles/navlib.dir/build.make CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.o
+.PHONY : src/ins-gnss/SpoofingDet.cc.o
+
+src/ins-gnss/SpoofingDet.i: src/ins-gnss/SpoofingDet.cc.i
+
+.PHONY : src/ins-gnss/SpoofingDet.i
+
+# target to preprocess a source file
+src/ins-gnss/SpoofingDet.cc.i:
+	$(MAKE) -f CMakeFiles/navlib.dir/build.make CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.i
+.PHONY : src/ins-gnss/SpoofingDet.cc.i
+
+src/ins-gnss/SpoofingDet.s: src/ins-gnss/SpoofingDet.cc.s
+
+.PHONY : src/ins-gnss/SpoofingDet.s
+
+# target to generate assembly for a file
+src/ins-gnss/SpoofingDet.cc.s:
+	$(MAKE) -f CMakeFiles/navlib.dir/build.make CMakeFiles/navlib.dir/src/ins-gnss/SpoofingDet.cc.s
+.PHONY : src/ins-gnss/SpoofingDet.cc.s
+
 src/ins-gnss/app/lc-fbsm.o: src/ins-gnss/app/lc-fbsm.cc.o
 
 .PHONY : src/ins-gnss/app/lc-fbsm.o
@@ -2685,6 +2712,9 @@ help:
 	@echo "... lc-rts"
 	@echo "... navapp"
 	@echo "... navlib"
+	@echo "... src/ins-gnss/SpoofingDet.o"
+	@echo "... src/ins-gnss/SpoofingDet.i"
+	@echo "... src/ins-gnss/SpoofingDet.s"
 	@echo "... src/ins-gnss/app/lc-fbsm.o"
 	@echo "... src/ins-gnss/app/lc-fbsm.i"
 	@echo "... src/ins-gnss/app/lc-fbsm.s"

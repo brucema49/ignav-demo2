@@ -6,7 +6,9 @@
 
 #IncludeRegexTransform: 
 
-../include/navlib.h
+../include/queue.h
+
+/home/mxl/workplace/ignav-debug/include/navlib.h
 stdio.h
 -
 stdlib.h
@@ -56,9 +58,7 @@ windows.h
 pthread.h
 -
 
-../include/queue.h
-
-/home/mxl/workplace/ignav-debug/src/ins-gnss/ins-gnss.cc
-navlib.h
--
+/home/mxl/workplace/ignav-debug/src/ins-gnss/SpoofingDet.cc
+../../include/navlib.h
+/home/mxl/workplace/ignav-debug/include/navlib.h
 

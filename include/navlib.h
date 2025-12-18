@@ -2837,6 +2837,9 @@ EXPORT int lambda_reduction(int n, const double *Q, double *Z);
 EXPORT int lambda_search(int n, int m, const double *a, const double *Q,
                          double *F, double *s);
 
+/*spoofing detector*/
+EXPORT int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H);
+
 /* standard positioning ------------------------------------------------------*/
 EXPORT int pntpos(const obsd_t *obs, int n, const nav_t *nav,
                   const prcopt_t *opt, sol_t *sol, insstate_t *ins,double *azel,

@@ -1,6 +1,6 @@
 {
     "cmake.debugConfig": {
-        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/a-cpt/cpt.conf"],
+        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/b-cpt-spoofing/north_2m_s/cpt.conf"],
         "cwd": "${workspaceFolder}/bin"
     },
     "cmake.configureEnvironment": {

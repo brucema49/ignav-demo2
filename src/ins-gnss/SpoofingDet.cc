@@ -295,7 +295,7 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
 
 // 更新窗口化残差数据以进行欺骗检测,仅支持单频,实际当第11的历元才会解算，偶然解决第一个历元的用的是后验残差的问题
 EXPORT int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
-    sol->windowed_residuals.windows_size=10;
+    sol->windowed_residuals.windows_size=opt->windowed_size; //窗口大小
     int opts=opt->spoofing_detector;        //1:the windowed statistic detector   2:the windowed innoviation detector
     if(opts==0) return 0;
 

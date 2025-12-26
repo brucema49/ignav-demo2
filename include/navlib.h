@@ -1822,6 +1822,7 @@ typedef struct {        /* processing options type */
     gtime_t ext[16][2];   /* exclude gnss measurement data (included gsof+observation data) for processing */
     sigind_t sind[2][7];  /* observation signal information,0: rover,1: base */
     int spoofing_detector;  //0:off 1:ws  2:wi
+    int windowed_size;       /*window size for spoofing detector*/
 } prcopt_t;
 
 typedef struct {        /* solution options type */

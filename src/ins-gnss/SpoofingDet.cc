@@ -1,4 +1,4 @@
-#include "../../include/navlib.h"
+#include "navlib.h"
 
 
 /*借鉴filter函数处理P阵和H阵，将最后的A阵存储在sol->CovA*/
@@ -26,7 +26,7 @@ int ProcessWsPH(WindowedResiduals *windowed_residuals,const double *P,const doub
     //存储协方差矩阵
     windowed_residuals->epoch_data[windowed_residuals->current_index].CovA.clear();//清空A阵
     for(i=0;i<nv*nv;i++) windowed_residuals->epoch_data[windowed_residuals->current_index].CovA.push_back(Q[i]);
-    if(windowed_residuals->valid_count<10) windowed_residuals->valid_count++;//有效历元数更新
+    if(windowed_residuals->valid_count<windowed_residuals->windows_size) windowed_residuals->valid_count++;//有效历元数更新
 
     free(ix);free(temp);free(R);
     free(P_); free(H_);free(Q); 
@@ -86,7 +86,7 @@ int ProcessWiPH(WindowedResiduals *windowed_residuals,const double *P,const doub
     for(int i=0;i<nv;i++) for(int j=0;j<nx;j++) windowed_residuals->epoch_data[windowed_residuals->current_index].H.push_back(H[j+i*nx]);
     for(int i=0;i<nx;i++) for(int j=0;j<nx;j++) windowed_residuals->epoch_data[windowed_residuals->current_index].P.push_back(P[j+i*nx]);
     
-    if(windowed_residuals->valid_count<10) windowed_residuals->valid_count++;//有效历元数更新
+    if(windowed_residuals->valid_count<windowed_residuals->windows_size) windowed_residuals->valid_count++;//有效历元数更新
 
     return 0;
 }
@@ -120,7 +120,7 @@ int computeWiA(WindowedResiduals *windowed_residuals,const int nx,const int n){
 }
 
 //计算每个历元中相同卫星的残差索引,返回相同卫星数量
-int computeIndexSat(WindowedResiduals *windowed_residuals, std::array<std::vector<int>, 10> &SatInd) {
+int computeIndexSat(WindowedResiduals *windowed_residuals, std::vector<std::vector<int>> &SatInd) {
     // 清空结果容器
     for (auto& vec : SatInd) {
         vec.clear();
@@ -181,7 +181,7 @@ int computeIndexSat(WindowedResiduals *windowed_residuals, std::array<std::vecto
 }
 
 //追踪动态卫星变化和存储相同卫星索引及其A矩阵
-int computeDynamicWi(WindowedResiduals *windowed_residuals,const int nx,std::array<std::vector<int>, 10> &SatInd){
+int computeDynamicWi(WindowedResiduals *windowed_residuals,const int nx,std::vector<std::vector<int>> &SatInd){
     //计算相同卫星索引，返回相同卫星数量
     int nv=computeIndexSat(windowed_residuals,SatInd);
     //计算每个历元的A矩阵
@@ -217,7 +217,7 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
         /*简单版：仅仅使用前n个残差，n为窗口里最小的新息维度*/
         double *sum_AinvGamma,*sum_Ainv,*temp;
         double *gamma,*A,*AinvGamma;
-        int n=100;
+        int n=windowed_residuals->epoch_data[0].residuals.size(); // 初始化为第一个历元的残差数量
         for(int i=0;i<windowed_residuals->valid_count;i++) n=MIN(n,(int)windowed_residuals->epoch_data[i].residuals.size());//获取窗口内最小的新息维度
 
         //根据n计算每个历元的A矩阵
@@ -255,7 +255,7 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
         //TODO
         double *sum_AinvGamma,*sum_Ainv,*temp;
         double *gamma,*A,*AinvGamma;
-        std::array<std::vector<int>, 10> SatInd; 
+        std::vector<std::vector<int>> SatInd(windowed_residuals->windows_size);
         //计算相同卫星索引及其A矩阵
         int n=computeDynamicWi(windowed_residuals,nx,SatInd);
         windowed_residuals->commonSatNumberWi=n;
@@ -293,9 +293,9 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
     } 
 }
 
-// 更新窗口化残差数据以进行欺骗检测,仅支持单频,实际当第11的历元才会解算，偶然解决第一个历元的用的是后验残差的问题
+// 更新窗口化残差数据以进行欺骗检测,仅支持单频
 EXPORT int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
-    sol->windowed_residuals.windows_size=opt->windowed_size; //窗口大小
+    sol->windowed_residuals.windows_size=opt->windowed_size<11?opt->windowed_size:10; //窗口大小，最大为10
     int opts=opt->spoofing_detector;        //1:the windowed statistic detector   2:the windowed innoviation detector
     if(opts==0) return 0;
 
@@ -313,7 +313,7 @@ EXPORT int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, co
     //the windowed innoviation detector
     else if(opts==2)ChiSquareTestWI(&sol->windowed_residuals,P,H,nx,nv);
 
-    if (++sol->windowed_residuals.current_index>9) sol->windowed_residuals.current_index-=10;//窗口环形索引
+    if (++sol->windowed_residuals.current_index==sol->windowed_residuals.windows_size) sol->windowed_residuals.current_index-=sol->windowed_residuals.windows_size;//窗口环形索引
     
     return 0;
 }

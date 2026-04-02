@@ -294,7 +294,7 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
 }
 
 // 更新窗口化残差数据以进行欺骗检测,仅支持单频
-EXPORT int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
+extern int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
     sol->windowed_residuals.windows_size=opt->windowed_size<11?opt->windowed_size:10; //窗口大小，最大为10
     int opts=opt->spoofing_detector;        //1:the windowed statistic detector   2:the windowed innoviation detector
     if(opts==0) return 0;

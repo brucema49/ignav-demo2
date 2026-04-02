@@ -1561,13 +1561,8 @@ extern int filter(double *x, double *P, const double *H, const double *v,
     double *x_,*xp_,*P_,*Pp_,*H_;
     int i,j,k,info,*ix;
 
-    for (i=0;i<n;i++) if (x[i]==0.0) x[i]=1E-20;
-    
-    ix=imat(n,1); for (i=k=0;i<n;i++) {
-        if ((x[i]!=0.0&&P[i+i*n]>0.0)&&x[i]!=DISFLAG) ix[k++]=i;
-    }
-    x_=mat(k,1); xp_=mat(k,1); P_=mat(k,k);
-    Pp_=mat(k,k); H_=mat(k,m);
+    ix=imat(n,1); for (i=k=0;i<n;i++) if (x[i]!=0.0&&P[i+i*n]>0.0) ix[k++]=i;
+    x_=mat(k,1); xp_=mat(k,1); P_=mat(k,k); Pp_=mat(k,k); H_=mat(k,m);
     for (i=0;i<k;i++) {
         x_[i]=x[ix[i]];
         for (j=0;j<k;j++) P_[i+j*k]=P[ix[i]+ix[j]*n];
@@ -1575,12 +1570,11 @@ extern int filter(double *x, double *P, const double *H, const double *v,
     }
     info=filter_(x_,P_,H_,v,R,k,m,xp_,Pp_);
 
-    if (!info) for (i=0;i<k;i++) {
+    for (i=0;i<k;i++) {
         x[ix[i]]=xp_[i];
         for (j=0;j<k;j++) P[ix[i]+ix[j]*n]=Pp_[i+j*k];
     }
-    free(ix); free(x_); free(xp_);
-    free(P_); free(Pp_); free(H_);
+    free(ix); free(x_); free(xp_); free(P_); free(Pp_); free(H_);
     return info;
 }
 /* smoother --------------------------------------------------------------------

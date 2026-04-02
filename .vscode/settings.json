@@ -1,12 +1,13 @@
 {
     "cmake.debugConfig": {
-        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/b-cpt-spoofing/Window3_north2m/cpt.conf",
-         "-m","52030" ],
+        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/a-cpt/cpt-rtktc.conf",
+         "-t","3","-m","52030" ],
         "cwd": "${workspaceFolder}/bin"
     },
     "cmake.configureEnvironment": {
         "BUILD_TYPE": "Debug"
     },
     "cmake.buildDirectory": "${workspaceFolder}/build",
-    "cmake.installPrefix": "${workspaceFolder}/bin"
+    "cmake.installPrefix": "${workspaceFolder}/bin",
+    "ROS2.distro": "noetic"
 }

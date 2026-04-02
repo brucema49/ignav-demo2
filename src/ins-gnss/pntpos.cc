@@ -499,8 +499,8 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
                 if(fabs(v_pre[0])>20000)SpoofingDetection(opt,sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
                 else SpoofingDetection(opt,sol, v_pre, var, nv,nx,P_pre,H_pre);//使用先验残差进行检测
             }
-            /* valid solutions */
-            if (nv&&(stat=valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {
+            /* valid solutions 在欺骗检测模式下不进行valins*/
+            if (nv&&(stat=opt->spoofing_detector?1:valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {
 
                 matcpy(ins->P,P,nx,nx);
 
@@ -510,8 +510,8 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
                 /* correction for receiver clock */
                 for (i=0;i<4;i++) ins->dtr[i]=x[irc+i]/CLIGHT;
 
-                ins->ns=(unsigned char)ns;
-                ins->age=0.0;
+                ins->ns=(unsigned char)ns;//记录当前历元的卫星数量
+                ins->age=0.0;//记录当前历元的差分龄期
                 ins->gstat=opt->sateph==EPHOPT_SBAS?SOLQ_SBAS:SOLQ_SINGLE;
             }
             else {
@@ -817,10 +817,12 @@ extern int pntpos(const obsd_t *obs, int n, const nav_t *nav,const prcopt_t *opt
         stat=estpos(obs,n,rs,dts,var,svh,nav,&opt_,
                     sol,azel_,vsat,resp,msg); /* common single position */
     }
-    /* raim fde */
+    /* raim fde --for spp*/
+    if(!tc)
     if (!stat&&n>=6&&opt->posopt[4]) {
         stat=raim_fde(obs,n,rs,dts,var,svh,nav,&opt_,sol,azel_,vsat,resp,msg);
     }
+    
     /* estimate receiver velocity with doppler */
     if (stat) estvel(obs,n,rs,dts,nav,&opt_,sol,azel_,vsat);
     

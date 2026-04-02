@@ -47,7 +47,7 @@
 
 - **多系统集成**: 支持INS、GNSS、视觉传感器的紧耦合和松耦合集成
 - **高精度定位**: 支持RTK、PPP等多种定位模式
-- **欺骗检测**: 内置两种先进的GNSS欺骗信号检测算法
+- **欺骗检测**: 内置两种GNSS欺骗信号检测算法
 - **多传感器支持**: 支持IMU、相机、里程计等多种传感器
 - **实时处理**: 支持实时数据流处理和离线数据处理
 - **跨平台**: 基于C++开发，支持Linux系统
@@ -66,9 +66,8 @@
 
 - **BLAS** (Basic Linear Algebra Subprograms)
 - **LAPACK** (Linear Algebra Package)
-- **zlib** (数据压缩库)
 
-在Ubuntu/Debian系统上安装依赖：
+在Ubuntu系统上安装依赖：
 
 ```bash
 sudo apt-get update
@@ -225,7 +224,7 @@ out-spoofing = 2            # 欺骗检测输出
 #### 基本INS设置
 
 ```ini
-# 紧耦合模式
+# 紧耦合模式，spp-tc仅支持单频
 pos1-posmode = ins-tightly-coupled
 
 # IMU参数

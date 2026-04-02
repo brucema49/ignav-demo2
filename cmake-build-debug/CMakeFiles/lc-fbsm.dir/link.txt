@@ -1,1 +1,0 @@
-/usr/bin/c++ -msse3  -O0 -Wall -g -ggdb -rdynamic "CMakeFiles/lc-fbsm.dir/src/ins-gnss/app/lc-fbsm.cc.o" -o ../bin/lc-fbsm  ../lib/libnavlib.a -lpthread -lblas -llapack -lz 

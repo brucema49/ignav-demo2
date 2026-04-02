@@ -61,7 +61,7 @@ static char snrmask_[NFREQ][1024];
 #define CAMOPT  "0:pinhole"
 #define DISOPT  "0:radial-tangential"
 
-EXPORT opt_t sysopts[]={
+EXPORT opt_t sysopts[]={ //0:int,1:double,2:string,3:enum)
     {"pos1-posmode",    3,  (void *)&prcopt_.mode,       MODOPT },
     {"pos1-frequency",  3,  (void *)&prcopt_.nf,         FRQOPT },
     {"pos1-soltype",    3,  (void *)&prcopt_.soltype,    TYPOPT },

@@ -1,6 +1,0 @@
-/home/mxl/workplace/ignav-debug/cmake-build-debug/CMakeFiles/navlib.dir
-/home/mxl/workplace/ignav-debug/cmake-build-debug/CMakeFiles/navapp.dir
-/home/mxl/workplace/ignav-debug/cmake-build-debug/CMakeFiles/lc-rts.dir
-/home/mxl/workplace/ignav-debug/cmake-build-debug/CMakeFiles/lc-fbsm.dir
-/home/mxl/workplace/ignav-debug/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/mxl/workplace/ignav-debug/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -53,10 +53,10 @@ void ChiSquareTestWS(WindowedResiduals *windowed_residuals,const double* P,const
             }
 
             // 在存储或使用前确保对称性
-            for (int i = 0; i < n; i++) {
-                for (int j = i+1; j < n; j++) {
-                    double avg = 0.5 * (A[i*n+j] + A[j*n+i]);
-                    A[i*n+j] = A[j*n+i] = avg;
+            for (int r = 0; r < n; r++) {
+                for (int c = r+1; c < n; c++) {
+                    double avg = 0.5 * (A[r*n+c] + A[c*n+r]);
+                    A[r*n+c] = A[c*n+r] = avg;
                 }
             }
 
@@ -127,19 +127,26 @@ int computeIndexSat(WindowedResiduals *windowed_residuals, std::vector<std::vect
     }
     
     // 步骤1: 找出所有历元中共同的卫星
-    std::unordered_set<unsigned char> common_sats;
+    std::unordered_set<uint16_t> common_sats;
     
     // 用第一个有效历元初始化共同卫星集合
     const auto& first_epoch = windowed_residuals->epoch_data[0];
-    common_sats.insert(first_epoch.sat.begin(), first_epoch.sat.end());
+    for (size_t j = 0; j < first_epoch.sat.size(); ++j) {
+        uint16_t sys = (j < first_epoch.sys.size()) ? first_epoch.sys[j] : 0;
+        common_sats.insert((sys << 8) | first_epoch.sat[j]);
+    }
     
     // 与其他历元求交集
     for (int i = 1; i < windowed_residuals->valid_count; ++i) {
         const auto& epoch = windowed_residuals->epoch_data[i];
-        std::unordered_set<unsigned char> current_sats(epoch.sat.begin(), epoch.sat.end());
+        std::unordered_set<uint16_t> current_sats;
+        for (size_t j = 0; j < epoch.sat.size(); ++j) {
+            uint16_t sys = (j < epoch.sys.size()) ? epoch.sys[j] : 0;
+            current_sats.insert((sys << 8) | epoch.sat[j]);
+        }
         
         // 求交集
-        std::unordered_set<unsigned char> intersection;
+        std::unordered_set<uint16_t> intersection;
         for (auto sat : common_sats) {
             if (current_sats.find(sat) != current_sats.end()) {
                 intersection.insert(sat);
@@ -162,7 +169,8 @@ int computeIndexSat(WindowedResiduals *windowed_residuals, std::vector<std::vect
         
         // 遍历当前历元的所有卫星，记录公共卫星的索引
         for (unsigned int j = 0; j < sat_vector.size(); ++j) {
-            if (common_sats.find(sat_vector[j]) != common_sats.end()) {
+            uint16_t sys = (j < epoch.sys.size()) ? epoch.sys[j] : 0;
+            if (common_sats.find((sys << 8) | sat_vector[j]) != common_sats.end()) {
                 SatInd[i].push_back(j);
             }
         }
@@ -233,7 +241,7 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
                 gamma[j]=windowed_residuals->epoch_data[i].residuals[j];//新息赋值
                 for(int k=0;k<n;k++) A[k+j*n]=windowed_residuals->epoch_data[i].CovA[k+j*n];//协方差矩阵赋值
             }
-            matinv(A,n);//计算当前历元协方差矩阵的逆
+            if (matinv(A,n) != 0) continue; //计算当前历元协方差矩阵的逆，失败跳过
             matmul("NN",n,1,n,1.0,A,gamma,0.0,AinvGamma);//计算统计量n*1
 
             for(int j=0;j<n;j++){//括号内累加
@@ -241,10 +249,11 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
                 for(int k=0;k<n;k++) sum_Ainv[k+j*n]+=A[k+j*n];
             }
         }
-        matinv(sum_Ainv,n);//计算协方差矩阵的逆
-        matmul("NN",1,n,n,1.0,sum_AinvGamma,sum_Ainv,0.0,temp);//计算统计量1*n
-        double reslt=dot(temp,sum_AinvGamma,n);
-        windowed_residuals->wi=reslt;
+        if (matinv(sum_Ainv,n) == 0) { //计算协方差矩阵的逆
+            matmul("NN",1,n,n,1.0,sum_AinvGamma,sum_Ainv,0.0,temp);//计算统计量1*n
+            double reslt=dot(temp,sum_AinvGamma,n);
+            windowed_residuals->wi=reslt;
+        }
 
         free(gamma);free(A);free(AinvGamma);
         free(sum_Ainv);free(sum_AinvGamma);free(temp);
@@ -271,8 +280,7 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
             }
             int info = matinv(A, n);
             if (info != 0) {
-                // 求逆失败，跳过这个历元
-                free(gamma); free(A); free(temp);
+                // 求逆失败，跳过这个历元，不释放外层分配的内存
                 continue;
             }
             matmul("NN",n,1,n,1.0,A,gamma,0.0,AinvGamma);//计算统计量n*1
@@ -282,10 +290,11 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
                 for(int k=0;k<n;k++) sum_Ainv[k+j*n]+=A[k+j*n];
             }
         }
-        matinv(sum_Ainv,n);//计算协方差矩阵的逆
-        matmul("NN",1,n,n,1.0,sum_AinvGamma,sum_Ainv,0.0,temp);//计算统计量1*n
-        double reslt=dot(temp,sum_AinvGamma,n);
-        windowed_residuals->wi=reslt;
+        if (matinv(sum_Ainv,n) == 0) { //计算协方差矩阵的逆
+            matmul("NN",1,n,n,1.0,sum_AinvGamma,sum_Ainv,0.0,temp);//计算统计量1*n
+            double reslt=dot(temp,sum_AinvGamma,n);
+            windowed_residuals->wi=reslt;
+        }
 
         free(gamma);free(A);free(AinvGamma);
         free(sum_Ainv);free(sum_AinvGamma);free(temp);
@@ -295,19 +304,23 @@ void ChiSquareTestWI(WindowedResiduals *windowed_residuals,const double* P,const
 
 // 更新窗口化残差数据以进行欺骗检测,仅支持单频
 extern int SpoofingDetection(const prcopt_t *opt,sol_t *sol, const double* v, const double *var,const int nv,const int nx,const double *P,const double *H) {
-    sol->windowed_residuals.windows_size=opt->windowed_size<11?opt->windowed_size:10; //窗口大小，最大为10
+    if (!opt || !sol || !v || !var || !P || !H) return 0;
+    sol->windowed_residuals.windows_size = opt->windowed_size < 1 ? 10 : (opt->windowed_size > 10 ? 10 : opt->windowed_size); //窗口大小，最大为10
     int opts=opt->spoofing_detector;        //1:the windowed statistic detector   2:the windowed innoviation detector
     if(opts==0) return 0;
 
-    sol->windowed_residuals.total_residuals-=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();//总残差-旧残差
+    if (sol->windowed_residuals.current_index >= sol->windowed_residuals.windows_size) {
+        sol->windowed_residuals.current_index %= sol->windowed_residuals.windows_size;
+    }
+
     sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.clear();
     sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag.clear();
-    for(int i=0;i<nv&&v[i]!=0.0;i++) {
+    
+    int num_sats = sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].sat.size();
+    for(int i=0;i<nv && i<num_sats;i++) {
             sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.push_back(v[i]);
             sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].cov_diag.push_back(var[i]);
         }
-    //总残差数更新
-    sol->windowed_residuals.total_residuals+=sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].residuals.size();
     //the windowed statistic detector
     if(opts==1)ChiSquareTestWS(&sol->windowed_residuals,P,H,nx,nv);
     //the windowed innoviation detector

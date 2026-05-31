@@ -1595,6 +1595,8 @@ typedef struct{
     std::vector<double> H;        // 仅用于wi模式的观测矩阵
     std::vector<double> P;        // 仅用于wi模式的先验状态协方差矩阵
     std::vector<unsigned char> sat;     // 残差对应的卫星编号
+    std::vector<unsigned char> sys;     // 卫星的系统类型
+    std::vector<unsigned char> frq;     // 频率索引(多频预留)
 
 }EpochData ;
 

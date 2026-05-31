@@ -257,6 +257,8 @@ static int rescode(int iter, const obsd_t *obs, int n, const double *rs,
         IA=xiA(iopt); NA=xnA(iopt);
         nx=xnX(iopt);
         sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].sat.clear();// 清空当前历元卫星列表
+        sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].sys.clear();
+        sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].frq.clear();
     }
     /* xiRc(insopt)+0: GPS receiver clock
      * xiRc(insopt)+1: GLO receiver clock
@@ -318,7 +320,9 @@ static int rescode(int iter, const obsd_t *obs, int n, const double *rs,
 
         /* design matrix */
         if (tc) {
-            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].sat.push_back(obs[nv].sat);// 记录当前历元的卫星编号
+            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].sat.push_back(obs[i].sat);// 记录当前历元的卫星编号
+            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].sys.push_back((unsigned char)sys);
+            sol->windowed_residuals.epoch_data[sol->windowed_residuals.current_index].frq.push_back(0); // 当前仅单频
             jacob_dp_da(e,ins->lever,ins->Cbe,dpda);
             jacob_dp_dl(e,ins->Cbe,dpdl);
 
@@ -458,7 +462,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
 
     x=zeros(nx,1); R=zeros(NFREQ*n+4,NFREQ*n+4);
     H=zeros(nx,NFREQ*n+4); v=zeros(NFREQ*n+4,1);v_pre=zeros(NFREQ*n+4,1);H_pre=zeros(nx,NFREQ*n+4);P_pre=mat(nx,nx);
-    var=mat(NFREQ*n+4,1); P=mat(nx,nx);
+    var=mat(NFREQ*n+4,1); P=mat(nx,nx); double *var_pre=mat(NFREQ*n+4,1);
 
     /* prefit residuals */
     nv=rescode(1,obs,n,rs,dts,vare,svh,nav,x,opt,ins,v,H,var,azel,vsat,
@@ -469,11 +473,14 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
 
         matcpy(P,ins->P,ins->nx,ins->nx);
         matcpy(P_pre,ins->P,ins->nx,ins->nx);//保存先验协方差矩阵
+        int nv_pre = nv;
+        matcpy(H_pre, H, nx, nv);
         /* measurement variance */
         for (i=0;i<nv;i++) 
         {
             R[i+i*nv]=var[i];
             v_pre[i]=v[i];//保存先验残差
+            var_pre[i]=var[i];
         }
 
         /* ekf filter */
@@ -496,8 +503,8 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
             
             /*spoofing detector*/
             if(opt->spoofing_detector>0){
-                if(fabs(v_pre[0])>20000)SpoofingDetection(opt,sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
-                else SpoofingDetection(opt,sol, v_pre, var, nv,nx,P_pre,H_pre);//使用先验残差进行检测
+                if(fabs(v_pre[0])>20000 || (fabs(v_pre[0])>fabs(v[0])*10.0 && fabs(v[0]) > 1e-6)) SpoofingDetection(opt,sol, v, var, nv,nx,P,H);//先验残差过大时（GNSS中断后的第一个历元），使用后验残差进行检测
+                else SpoofingDetection(opt,sol, v_pre, var_pre, nv_pre,nx,P_pre,H_pre);//使用先验残差进行检测
             }
             /* valid solutions 在欺骗检测模式下不进行valins*/
             if (nv&&(stat=opt->spoofing_detector?1:valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {
@@ -525,7 +532,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
         stat=0;
     }
     
-    free(v);free(v_pre); free(H); free(var);
+    free(v);free(v_pre); free(H); free(var); free(var_pre);
     free(x); free(R); free(P);free(H_pre);free(P_pre);
     return stat;
 }

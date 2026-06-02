@@ -62,7 +62,6 @@
 #define TRACEFILE   "rtkrcv_%Y%m%d%h%M.trace" /* debug trace file */
 #define INTKEEPALIVE 1000               /* keep alive interval (ms) */
 #define OPENPLOT    0                   /* real time plot for solutions */
-完
 #define ESC_CLEAR   "\033[H\033[2J"     /* ansi/vt100 escape: erase screen */
 #define ESC_RESET   "\033[0m"           /* ansi/vt100: reset attribute */
 #define ESC_BOLD    "\033[1m"           /* ansi/vt100: bold */
@@ -381,7 +380,7 @@ static int confwrite(vt_t *vt, const char *file)
     
     strcpy(buff,file);
     if ((p=strstr(buff,"::"))) *p='\0'; /* omit options in path */
-    if (!vt->state||!(fp=fopen(buff,"r"))) return 1; /* no existing file */
+    if (!vt||!vt->state||!(fp=fopen(buff,"r"))) return 1; /* no existing file */
     fclose(fp);
 
 #if DEBUG
@@ -1902,7 +1901,7 @@ int main(int argc, char **argv)
     }
 #endif
 #if DEBUG
-    vt_t *pvt=con[0]->vt;
+    vt_t *pvt=con[0]?con[0]->vt:NULL;
 #else
     vt_t *pvt=NULL;
 #endif

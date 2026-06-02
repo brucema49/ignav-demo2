@@ -2,6 +2,8 @@
 
 该分支（main）的任务：①完成ignav GNSS部分的更新（更新到b34版本），放弃视觉部分和PPP部分。②组合导航的抗差估计
 
+仅使用可以伪实时的rtkrcv(navapp)、不维护lc-fbsm和lc-rts
+
 master分支完成了（基于spp-ins紧组合的欺骗检测）
 
 ## spp-ins紧组合

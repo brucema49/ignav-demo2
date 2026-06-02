@@ -10,4 +10,5 @@ rtklib_b34/
 example/
 skills/
 README-master.md
-*.log
+.idea/
+.claude/

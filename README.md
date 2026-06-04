@@ -72,3 +72,5 @@ static int imuobsalign(rtksvr_t *svr)
 
 ## b34更新应用
 
+初步完成b34的更新
+计划验证北斗三代卫星和rinex2文件的输入；计划参考rtklib-demo5的snr计算R阵

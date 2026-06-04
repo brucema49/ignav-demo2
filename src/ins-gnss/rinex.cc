@@ -789,7 +789,7 @@ static int decode_obsdata(FILE *fp, char *buff, double ver, int mask,
             case 0: obs->P[p[i]]=val[i]; obs->code[p[i]]=ind->code[i]; break;
             case 1: obs->L[p[i]]=val[i]; obs->LLI [p[i]]=lli[i];       break;
             case 2: obs->D[p[i]]=(float)val[i];                        break;
-            case 3: obs->SNR[p[i]]=(unsigned char)(val[i]*4.0+0.5);    break;
+            case 3: obs->SNR[p[i]]=(unsigned char)(val[i]/SNR_UNIT+0.5);    break;
         }
     }
     trace(4,"decode_obsdata: time=%s sat=%2d\n",time_str(obs->time,0),obs->sat);
@@ -860,7 +860,8 @@ static void set_index(double ver, int sys, const char *opt,
     int i,j,k,n;
     
     for (i=n=0;*tobs[i];i++,n++) {
-        ind->code[i]=obs2code(tobs[i]+1,ind->frq+i);
+        ind->code[i]=obs2code(tobs[i]+1);
+        ind->frq[i]=code2idx(sys,ind->code[i])+1;
         ind->type[i]=(p=strchr(obscodes,tobs[i][0]))?(int)(p-obscodes):0;
         ind->pri[i]=getcodepri(sys,ind->code[i],opt);
         ind->pos[i]=-1;
@@ -884,7 +885,7 @@ static void set_index(double ver, int sys, const char *opt,
     for (p=opt;p&&(p=strchr(p,'-'));p++) {
         if (sscanf(p,optstr,str,&shift)<2) continue;
         for (i=0;i<n;i++) {
-            if (strcmp(code2obs(ind->code[i],NULL),str)) continue;
+            if (strcmp(code2obs(ind->code[i]),str)) continue;
             ind->shift[i]=shift;
             trace(2,"phase shift: sys=%2d tobs=%s shift=%.3f\n",sys,
                   tobs[i],shift);
@@ -2029,12 +2030,12 @@ static int obsindex(double ver, int sys, const unsigned char *code,
                     return i;
             }
             else {
-                id=code2obs(code[i],NULL);
+                id=code2obs(code[i]);
                 if (id[0]==tobs[1]) return i;
             }
         }
         else { /* ver.3 */
-            id=code2obs(code[i],NULL);
+            id=code2obs(code[i]);
             if (!strcmp(id,tobs+1)) return i;
         }
     }
@@ -2118,7 +2119,7 @@ extern int outrnxobsb(FILE *fp, const rnxopt_t *opt, const obsd_t *obs, int n,
                 case 'P': outrnxobsf(fp,obs[ind[i]].P[k],-1); break;
                 case 'L': outrnxobsf(fp,obs[ind[i]].L[k],obs[ind[i]].LLI[k]); break;
                 case 'D': outrnxobsf(fp,obs[ind[i]].D[k],-1); break;
-                case 'S': outrnxobsf(fp,obs[ind[i]].SNR[k]*0.25,-1); break;
+                case 'S': outrnxobsf(fp,obs[ind[i]].SNR[k]*SNR_UNIT,-1); break;
             }
         }
         if (opt->rnxver>2.99&&fprintf(fp,"\n")==EOF) return 0;

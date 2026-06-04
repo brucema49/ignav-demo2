@@ -978,7 +978,8 @@ static unsigned char *decode_bnx_7f_05_obs(raw_t *raw, unsigned char *buff,
     
     /* get code priority */
     for (i=0;i<nobs;i++) {
-        code2obs(codes[code[i]&0x3F],freq+i);
+        code2obs(codes[code[i]&0x3F]);
+        freq[i]=code2idx(sys,codes[code[i]&0x3F])+1;
         pri[i]=getcodepri(sys,codes[code[i]&0x3F],raw->opt);
         
         /* frequency index for beidou */
@@ -1006,7 +1007,7 @@ static unsigned char *decode_bnx_7f_05_obs(raw_t *raw, unsigned char *buff,
             data->P[i]=range[k];
             data->L[i]=wl<=0.0?0.0:phase[k]/wl;
             data->D[i]=dopp[k];
-            data->SNR[i]=(unsigned char)(cnr[k]/0.25+0.5);
+            data->SNR[i]=(unsigned char)(cnr[k]/SNR_UNIT+0.5);
             data->code[i]=codes[code[k]&0x3F];
             data->LLI[i]=slip[k]?1:0;
             mask[k]=1;
@@ -1031,7 +1032,7 @@ static unsigned char *decode_bnx_7f_05_obs(raw_t *raw, unsigned char *buff,
             data->P[i]=range[k];
             data->L[i]=wl<=0.0?0.0:phase[k]/wl;
             data->D[i]=dopp[k];
-            data->SNR[i]=(unsigned char)(cnr[k]/0.25+0.5);
+            data->SNR[i]=(unsigned char)(cnr[k]/SNR_UNIT+0.5);
             data->code[i]=codes[code[k]&0x3F];
             data->LLI[i]=slip[k]?1:0;
             mask[k]=1;

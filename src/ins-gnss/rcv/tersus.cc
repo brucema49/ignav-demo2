@@ -324,7 +324,7 @@ static int decode_rangecmpb(raw_t *raw)
         
         if ((wavelen=satwavelen(sat,freq,&raw->nav))<=0.0) {
             if (sys==SYS_GLO) wavelen=CLIGHT/(freq==0?FREQ1_GLO:FREQ2_GLO);
-            else wavelen=lam_carr[freq];
+            else wavelen=CLIGHT/code2freq(SYS_GPS,CODE_L1C+freq,0);
         }
         adr=I4(p+12)/256.0;
         adr_rolls=(psr/wavelen+adr)/MAXVAL;

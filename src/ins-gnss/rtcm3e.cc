@@ -1715,7 +1715,8 @@ static int to_sigid(int sys, unsigned char code, int *freq)
         else if (code==CODE_L2M) code=CODE_L2P;
         else if (code==CODE_L2N) code=CODE_L2P;
     }
-    if (!*(sig=code2obs(code,freq))) return 0;
+    if (!*(sig=code2obs(code))) return 0;
+    *freq=code2idx(sys,code)+1;
     
     switch (sys) {
         case SYS_GPS: msm_sig=msm_sig_gps; break;
@@ -1856,7 +1857,7 @@ static void gen_msm_sig(rtcm_t *rtcm, int sys, int nsat, int nsig, int ncell,
             if (rate &&rate_s !=0.0) rate [cell-1]=rate_s;
             if (lock) lock[cell-1]=lt;
             if (half) half[cell-1]=(data->LLI[j]&2)?1:0;
-            if (cnr ) cnr [cell-1]=(float)(data->SNR[j]*0.25);
+            if (cnr ) cnr [cell-1]=(float)(data->SNR[j]*SNR_UNIT);
         }
     }
 }

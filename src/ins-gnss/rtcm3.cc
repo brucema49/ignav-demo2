@@ -166,7 +166,7 @@ static int lossoflock(rtcm_t *rtcm, int sat, int freq, int lock)
 /* s/n ratio -----------------------------------------------------------------*/
 static unsigned char snratio(double snr)
 {
-    return (unsigned char)(snr<=0.0||255.5<=snr?0.0:snr*4.0+0.5);
+    return (unsigned char)(snr<=0.0||255.5<=snr?0.0:snr/SNR_UNIT+0.5);
 }
 /* get observation data index ------------------------------------------------*/
 static int obsindex(obs_t *obs, gtime_t time, int sat)
@@ -289,11 +289,11 @@ static int decode_type1002(rtcm_t *rtcm)
         pr1=pr1*0.02+amb*PRUNIT_GPS;
         if (ppr1!=(int)0xFFF80000) {
             rtcm->obs.data[index].P[0]=pr1;
-            cp1=adjcp(rtcm,sat,0,ppr1*0.0005/lam_carr[0]);
-            rtcm->obs.data[index].L[0]=pr1/lam_carr[0]+cp1;
+            cp1=adjcp(rtcm,sat,0,ppr1*0.0005/(CLIGHT/FREQ1));
+            rtcm->obs.data[index].L[0]=pr1/(CLIGHT/FREQ1)+cp1;
         }
         rtcm->obs.data[index].LLI[0]=lossoflock(rtcm,sat,0,lock1);
-        rtcm->obs.data[index].SNR[0]=snratio(cnr1*0.25);
+        rtcm->obs.data[index].SNR[0]=snratio(cnr1*SNR_UNIT);
         rtcm->obs.data[index].code[0]=code?CODE_L1P:CODE_L1C;
     }
     return sync?0:1;
@@ -347,22 +347,22 @@ static int decode_type1004(rtcm_t *rtcm)
         pr1=pr1*0.02+amb*PRUNIT_GPS;
         if (ppr1!=(int)0xFFF80000) {
             rtcm->obs.data[index].P[0]=pr1;
-            cp1=adjcp(rtcm,sat,0,ppr1*0.0005/lam_carr[0]);
-            rtcm->obs.data[index].L[0]=pr1/lam_carr[0]+cp1;
+            cp1=adjcp(rtcm,sat,0,ppr1*0.0005/(CLIGHT/FREQ1));
+            rtcm->obs.data[index].L[0]=pr1/(CLIGHT/FREQ1)+cp1;
         }
         rtcm->obs.data[index].LLI[0]=lossoflock(rtcm,sat,0,lock1);
-        rtcm->obs.data[index].SNR[0]=snratio(cnr1*0.25);
+        rtcm->obs.data[index].SNR[0]=snratio(cnr1*SNR_UNIT);
         rtcm->obs.data[index].code[0]=code1?CODE_L1P:CODE_L1C;
         
         if (pr21!=(int)0xFFFFE000) {
             rtcm->obs.data[index].P[1]=pr1+pr21*0.02;
         }
         if (ppr2!=(int)0xFFF80000) {
-            cp2=adjcp(rtcm,sat,1,ppr2*0.0005/lam_carr[1]);
-            rtcm->obs.data[index].L[1]=pr1/lam_carr[1]+cp2;
+            cp2=adjcp(rtcm,sat,1,ppr2*0.0005/(CLIGHT/FREQ2));
+            rtcm->obs.data[index].L[1]=pr1/(CLIGHT/FREQ2)+cp2;
         }
         rtcm->obs.data[index].LLI[1]=lossoflock(rtcm,sat,1,lock2);
-        rtcm->obs.data[index].SNR[1]=snratio(cnr2*0.25);
+        rtcm->obs.data[index].SNR[1]=snratio(cnr2*SNR_UNIT);
         rtcm->obs.data[index].code[1]=L2codes[code2];
     }
     rtcm->obsflag=!sync;
@@ -592,7 +592,7 @@ static int decode_type1010(rtcm_t *rtcm)
             rtcm->obs.data[index].L[0]=pr1/lam1+cp1;
         }
         rtcm->obs.data[index].LLI[0]=lossoflock(rtcm,sat,0,lock1);
-        rtcm->obs.data[index].SNR[0]=snratio(cnr1*0.25);
+        rtcm->obs.data[index].SNR[0]=snratio(cnr1*SNR_UNIT);
         rtcm->obs.data[index].code[0]=code?CODE_L1P:CODE_L1C;
     }
     return sync?0:1;
@@ -645,7 +645,7 @@ static int decode_type1012(rtcm_t *rtcm)
             rtcm->obs.data[index].L[0]=pr1/lam1+cp1;
         }
         rtcm->obs.data[index].LLI[0]=lossoflock(rtcm,sat,0,lock1);
-        rtcm->obs.data[index].SNR[0]=snratio(cnr1*0.25);
+        rtcm->obs.data[index].SNR[0]=snratio(cnr1*SNR_UNIT);
         rtcm->obs.data[index].code[0]=code1?CODE_L1P:CODE_L1C;
         
         if (pr21!=(int)0xFFFFE000) {
@@ -657,7 +657,7 @@ static int decode_type1012(rtcm_t *rtcm)
             rtcm->obs.data[index].L[1]=pr1/lam2+cp2;
         }
         rtcm->obs.data[index].LLI[1]=lossoflock(rtcm,sat,1,lock2);
-        rtcm->obs.data[index].SNR[1]=snratio(cnr2*0.25);
+        rtcm->obs.data[index].SNR[1]=snratio(cnr2*SNR_UNIT);
         rtcm->obs.data[index].code[1]=code2?CODE_L2P:CODE_L2C;
     }
     rtcm->obsflag=!sync;
@@ -1881,7 +1881,8 @@ static void save_msm_obs(rtcm_t *rtcm, int sys, msm_h_t *h, const double *r,
             default: sig[i]=""; break;
         }
         /* signal to rinex obs type */
-        code[i]=obs2code(sig[i],freq+i);
+        code[i]=obs2code(sig[i]);
+        freq[i]=code2idx(sys,code[i])+1;
         
         /* freqency index for beidou */
         if (sys==SYS_CMP) {
@@ -1946,7 +1947,7 @@ static void save_msm_obs(rtcm_t *rtcm, int sys, msm_h_t *h, const double *r,
                 }
                 rtcm->obs.data[index].LLI[ind[k]]=
                     lossoflock(rtcm,sat,ind[k],lock[j])+(half[j]?3:0);
-                rtcm->obs.data[index].SNR [ind[k]]=(unsigned char)(cnr[j]*4.0);
+                rtcm->obs.data[index].SNR [ind[k]]=(unsigned char)(cnr[j]/SNR_UNIT);
                 rtcm->obs.data[index].code[ind[k]]=code[k];
             }
             j++;

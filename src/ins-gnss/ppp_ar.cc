@@ -303,7 +303,7 @@ static int fix_amb_ROUND(rtk_t *rtk, int *sat1, int *sat2, const int *NW, int n)
     double C1,C2,B1,v1,BC,v,vc,*NC,*var,lam_NL=lam_LC(1,1,0),lam1,lam2;
     int i,j,k,m=0,N1,stat;
 
-    lam1=lam_carr[0]; lam2=lam_carr[1];
+    lam1=CLIGHT/FREQ1; lam2=CLIGHT/FREQ2;
 
     C1= SQR(lam2)/(SQR(lam2)-SQR(lam1));
     C2=-SQR(lam1)/(SQR(lam2)-SQR(lam1));
@@ -355,7 +355,7 @@ static int fix_amb_ILS(rtk_t *rtk, int *sat1, int *sat2, int *NW, int n)
     double C1,C2,*B1,*N1,*NC,*D,*E,*Q,s[2],lam_NL=lam_LC(1,1,0),lam1,lam2;
     int i,j,k,m=0,info,stat,flgs[MAXSAT]={0},max_flg=0;
 
-    lam1=lam_carr[0]; lam2=lam_carr[1];
+    lam1=CLIGHT/FREQ1; lam2=CLIGHT/FREQ2;
 
     C1= SQR(lam2)/(SQR(lam2)-SQR(lam1));
     C2=-SQR(lam1)/(SQR(lam2)-SQR(lam1));

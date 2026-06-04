@@ -289,9 +289,9 @@ static int decode_measepoch(raw_t *raw){
 
         /* signal to noise ratio in dBHz */
         if ((signType1==1) || (signType1==2)){
-            SNR_DBHZ=((double)U1(p+15))*0.25;
+            SNR_DBHZ=((double)U1(p+15))*SNR_UNIT;
         }
-        else SNR_DBHZ=(((double)U1(p+15))*0.25)+10;
+        else SNR_DBHZ=(((double)U1(p+15))*SNR_UNIT)+10;
 
         /* Compute the carrier phase measurement (a little complicated) */
         LockTime = U2(p+16);             /* Duration of contin. carrier phase */
@@ -399,7 +399,7 @@ static int decode_measepoch(raw_t *raw){
             raw->obs.data[n].L[h]    = adr;
             raw->obs.data[n].P[h]    = psr;
             raw->obs.data[n].D[h]    = (float)dopplerType1;
-            raw->obs.data[n].SNR[h]  = (unsigned char)(SNR_DBHZ*4.0);
+            raw->obs.data[n].SNR[h]  = (unsigned char)(SNR_DBHZ/SNR_UNIT);
             raw->obs.data[n].code[h] = code;
 
             /* lock to signal indication */
@@ -424,9 +424,9 @@ static int decode_measepoch(raw_t *raw){
 
             /* Signal to noise ratio in dbHz */
             if ((signType2==1) || (signType2==2)){
-                SNR2_DBHZ=((double)U1(p+2))*0.25;
+                SNR2_DBHZ=((double)U1(p+2))*SNR_UNIT;
             }
-            else SNR2_DBHZ=(((double)U1(p+2))*0.25)+10;
+            else SNR2_DBHZ=(((double)U1(p+2))*SNR_UNIT)+10;
 
             offsetMSB = U1(p+3);
             CodeOffsetMSB=((offsetMSB&0x04)==0x04)?offsetMSB| ~((int32_t)0x03):offsetMSB&0x03;                 /* bit[0-2] */
@@ -481,7 +481,7 @@ static int decode_measepoch(raw_t *raw){
                 raw->obs.data[n].L[h]    = Ltype2;
                 raw->obs.data[n].P[h]    = PRtype2;
                 raw->obs.data[n].D[h]    = (float)dopplerType2;
-                raw->obs.data[n].SNR[h]  = (unsigned char)(SNR2_DBHZ*4.0);
+                raw->obs.data[n].SNR[h]  = (unsigned char)(SNR2_DBHZ/SNR_UNIT);
                 raw->obs.data[n].code[h] = getSignalCode(signType2);
 
                 /* lock to signal indication */

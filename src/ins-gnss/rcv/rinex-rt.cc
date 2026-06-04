@@ -91,8 +91,94 @@ static int sat2code(int sat, char *code)
     }
     return 1;
 }
+/* convert ver.2 observation code to ver.3 ----------------------------------*/
+static void convcode(double ver, int sys, const char *str, char *type)
+{
+    strcpy(type,"   ");
+    
+    if      (!strcmp(str,"P1")) { /* ver.2 GPS L1PY,GLO L1P */
+        if      (sys==SYS_GPS) sprintf(type,"%c1W",'C');
+        else if (sys==SYS_GLO) sprintf(type,"%c1P",'C');
+    }
+    else if (!strcmp(str,"P2")) { /* ver.2 GPS L2PY,GLO L2P */
+        if      (sys==SYS_GPS) sprintf(type,"%c2W",'C');
+        else if (sys==SYS_GLO) sprintf(type,"%c2P",'C');
+    }
+    else if (!strcmp(str,"C1")) { /* ver.2 GPS L1C,GLO L1C/A */
+        if      (ver>=2.12) ; /* reject C1 for 2.12 */
+        else if (sys==SYS_GPS) sprintf(type,"%c1C",'C');
+        else if (sys==SYS_GLO) sprintf(type,"%c1C",'C');
+        else if (sys==SYS_GAL) sprintf(type,"%c1X",'C');
+        else if (sys==SYS_QZS) sprintf(type,"%c1C",'C');
+        else if (sys==SYS_SBS) sprintf(type,"%c1C",'C');
+    }
+    else if (!strcmp(str,"C2")) {
+        if (sys==SYS_GPS) {
+            if (ver>=2.12) sprintf(type,"%c2W",'C');
+            else           sprintf(type,"%c2X",'C');
+        }
+        else if (sys==SYS_GLO) sprintf(type,"%c2C",'C');
+        else if (sys==SYS_QZS) sprintf(type,"%c2X",'C');
+        else if (sys==SYS_CMP) sprintf(type,"%c2X",'C');
+    }
+    else if (ver>=2.12&&str[1]=='A') {
+        if      (sys==SYS_GPS) sprintf(type,"%c1C",str[0]);
+        else if (sys==SYS_GLO) sprintf(type,"%c1C",str[0]);
+        else if (sys==SYS_QZS) sprintf(type,"%c1C",str[0]);
+        else if (sys==SYS_SBS) sprintf(type,"%c1C",str[0]);
+    }
+    else if (ver>=2.12&&str[1]=='B') {
+        if      (sys==SYS_GPS) sprintf(type,"%c1X",str[0]);
+        else if (sys==SYS_QZS) sprintf(type,"%c1X",str[0]);
+    }
+    else if (ver>=2.12&&str[1]=='C') {
+        if      (sys==SYS_GPS) sprintf(type,"%c2X",str[0]);
+        else if (sys==SYS_QZS) sprintf(type,"%c2X",str[0]);
+    }
+    else if (ver>=2.12&&str[1]=='D') {
+        if      (sys==SYS_GLO) sprintf(type,"%c2C",str[0]);
+    }
+    else if (ver>=2.12&&str[1]=='1') {
+        if      (sys==SYS_GPS) sprintf(type,"%c1W",str[0]);
+        else if (sys==SYS_GLO) sprintf(type,"%c1P",str[0]);
+        else if (sys==SYS_GAL) sprintf(type,"%c1X",str[0]);
+        else if (sys==SYS_CMP) sprintf(type,"%c2X",str[0]);
+    }
+    else if (ver<2.12&&str[1]=='1') {
+        if      (sys==SYS_GPS) sprintf(type,"%c1C",str[0]);
+        else if (sys==SYS_GLO) sprintf(type,"%c1C",str[0]);
+        else if (sys==SYS_GAL) sprintf(type,"%c1X",str[0]);
+        else if (sys==SYS_QZS) sprintf(type,"%c1C",str[0]);
+        else if (sys==SYS_SBS) sprintf(type,"%c1C",str[0]);
+    }
+    else if (str[1]=='2') {
+        if      (sys==SYS_GPS) sprintf(type,"%c2W",str[0]);
+        else if (sys==SYS_GLO) sprintf(type,"%c2P",str[0]);
+        else if (sys==SYS_QZS) sprintf(type,"%c2X",str[0]);
+        else if (sys==SYS_CMP) sprintf(type,"%c2X",str[0]);
+    }
+    else if (str[1]=='5') {
+        if      (sys==SYS_GPS) sprintf(type,"%c5X",str[0]);
+        else if (sys==SYS_GAL) sprintf(type,"%c5X",str[0]);
+        else if (sys==SYS_QZS) sprintf(type,"%c5X",str[0]);
+        else if (sys==SYS_SBS) sprintf(type,"%c5X",str[0]);
+    }
+    else if (str[1]=='6') {
+        if      (sys==SYS_GAL) sprintf(type,"%c6X",str[0]);
+        else if (sys==SYS_QZS) sprintf(type,"%c6X",str[0]);
+        else if (sys==SYS_CMP) sprintf(type,"%c6X",str[0]);
+    }
+    else if (str[1]=='7') {
+        if      (sys==SYS_GAL) sprintf(type,"%c7X",str[0]);
+        else if (sys==SYS_CMP) sprintf(type,"%c7X",str[0]);
+    }
+    else if (str[1]=='8') {
+        if      (sys==SYS_GAL) sprintf(type,"%c8X",str[0]);
+    }
+    trace(3,"convcode: ver=%.2f sys=%2d type=%s -> %s\n",ver,sys,str,type);
+}
 /* decode obs header ---------------------------------------------------------*/
-static void decode_obsh(char *buff,int *tsys,char tobs[][MAXOBSTYPE][4],
+static void decode_obsh(char *buff,double ver,int *tsys,char tobs[][MAXOBSTYPE][4],
                         nav_t *nav, sta_t *sta)
 {
     /* default codes for unknown code */
@@ -175,6 +261,24 @@ static void decode_obsh(char *buff,int *tsys,char tobs[][MAXOBSTYPE][4],
                   tobs[i][j]);
         }
     }
+    else if (strstr(label,"# / TYPES OF OBSERV" )) { /* ver.2 */
+        n=(int)str2num(buff,0,6);
+        for (i=nt=0,j=10;i<n;i++,j+=6) {
+            if (nt>=MAXOBSTYPE-1) continue;
+            if (ver<=2.99) {
+                char str[8]="";
+                setstr(str,buff+j,2);
+                convcode(ver,SYS_GPS,str,tobs[0][nt]);
+                convcode(ver,SYS_GLO,str,tobs[1][nt]);
+                convcode(ver,SYS_GAL,str,tobs[2][nt]);
+                convcode(ver,SYS_QZS,str,tobs[3][nt]);
+                convcode(ver,SYS_SBS,str,tobs[4][nt]);
+                convcode(ver,SYS_CMP,str,tobs[5][nt]);
+            }
+            nt++;
+        }
+        *tobs[0][nt]='\0';
+    }
     else if (strstr(label,"WAVELENGTH FACT L1/2")) ; /* opt ver.2 */
     else if (strstr(label,"SIGNAL STRENGTH UNIT")) ; /* opt ver.3 */
     else if (strstr(label,"INTERVAL"            )) ; /* opt */
@@ -227,21 +331,40 @@ static int syncnewline(unsigned char *buff, int nb)
     return 0;
 }
 /* decode obs epoch ----------------------------------------------------------*/
-static int decode_obsepoch(char *buff,gtime_t *time,int *flag)
+static int decode_obsepoch(char *buff,double ver,gtime_t *time,int *flag,
+                           int *sats)
 {
-    int n;
+    int i,j,n;
+    char satid[8]="";
 
-    if ((n=(int)str2num(buff,32,3))<=0) return 0;
-    *flag=(int)str2num(buff,31,1);
-
-    if (3<=*flag&&*flag<=5) return n;
-    if (buff[0]!='>'||str2time(buff,1,28,time)) {
-        return 0;
+    if (ver<=2.99) { /* ver.2 */
+        if ((n=(int)str2num(buff,29,3))<=0) return 0;
+        *flag=(int)str2num(buff,28,1);
+        if (3<=*flag&&*flag<=5) return n;
+        if (str2time(buff,0,26,time)) {
+            trace(2,"rinex obs invalid epoch: epoch=%26.26s\n",buff);
+            return 0;
+        }
+        for (i=0,j=32;i<n;i++,j+=3) {
+            if (i<MAXOBS) {
+                strncpy(satid,buff+j,3);
+                sats[i]=satid2no(satid);
+            }
+        }
+    }
+    else { /* ver.3 */
+        if ((n=(int)str2num(buff,32,3))<=0) return 0;
+        *flag=(int)str2num(buff,31,1);
+        if (3<=*flag&&*flag<=5) return n;
+        if (buff[0]!='>'||str2time(buff,1,28,time)) {
+            return 0;
+        }
     }
     return n;
 }
 /* decode obs data -----------------------------------------------------------*/
-static int decode_obsdata(char *buff, int mask,sigind_t *index, obsd_t *obs)
+static int decode_obsdata(char *buff, double ver, int mask,sigind_t *index,
+                          obsd_t *obs)
 {
     sigind_t *ind;
     double val[MAXOBSTYPE]={0};
@@ -249,8 +372,11 @@ static int decode_obsdata(char *buff, int mask,sigind_t *index, obsd_t *obs)
     char satid[8]="";
     int i,j,n,m,stat=1,p[MAXOBSTYPE],k[16],l[16];
 
-    strncpy(satid,buff,3);
-    obs->sat=(unsigned char)satid2no(satid);
+    if (ver>2.99) { /* ver.3 */
+        strncpy(satid,buff,3);
+        obs->sat=(unsigned char)satid2no(satid);
+    }
+    /* for ver.2, sat is set from sats[] in input_rinex */
 
     if (!obs->sat) {
         trace(4,"decode_obsdata: unsupported sat sat=%s\n",satid);
@@ -266,9 +392,14 @@ static int decode_obsdata(char *buff, int mask,sigind_t *index, obsd_t *obs)
         case SYS_QZS: ind=index+3; break;
         case SYS_SBS: ind=index+4; break;
         case SYS_CMP: ind=index+5; break;
+        case SYS_IRN: ind=index+6; break;
         default:      ind=index  ; break;
     }
-    for (i=0,j=3;i<ind->n;i++,j+=16) {
+    for (i=0,j=ver<=2.99?0:3;i<ind->n;i++,j+=16) {
+        if (ver<=2.99&&j>=80) { /* ver.2: 80-column line wrap */
+            /* skip wrapped line handling for real-time stream */
+            break;
+        }
         if (stat) {
             val[i]=str2num(buff,j,14)+ind->shift[i];
             lli[i]=(unsigned char)str2num(buff,j+14,1)&3;
@@ -283,10 +414,47 @@ static int decode_obsdata(char *buff, int mask,sigind_t *index, obsd_t *obs)
     /* assign position in obs data */
     for (i=n=m=0;i<ind->n;i++) {
 
-        p[i]=ind->pos[i];
+        p[i]=(ver<=2.11)?ind->pos[i]:ind->pos[i];
 
         if (ind->type[i]==0&&p[i]==0) k[n++]=i; /* C1? index */
         if (ind->type[i]==0&&p[i]==1) l[m++]=i; /* C2? index */
+    }
+    if (ver<=2.11) {
+        /* if multiple codes (C1/P1,C2/P2), select higher priority */
+        if (n>=2) {
+            if (val[k[0]]==0.0&&val[k[1]]==0.0) {
+                p[k[0]]=-1; p[k[1]]=-1;
+            }
+            else if (val[k[0]]!=0.0&&val[k[1]]==0.0) {
+                p[k[0]]=0; p[k[1]]=-1;
+            }
+            else if (val[k[0]]==0.0&&val[k[1]]!=0.0) {
+                p[k[0]]=-1; p[k[1]]=0;
+            }
+            else if (ind->pri[k[1]]>ind->pri[k[0]]) {
+                p[k[1]]=0; p[k[0]]=NEXOBS<1?-1:NFREQ;
+            }
+            else {
+                p[k[0]]=0; p[k[1]]=NEXOBS<1?-1:NFREQ;
+            }
+        }
+        if (m>=2) {
+            if (val[l[0]]==0.0&&val[l[1]]==0.0) {
+                p[l[0]]=-1; p[l[1]]=-1;
+            }
+            else if (val[l[0]]!=0.0&&val[l[1]]==0.0) {
+                p[l[0]]=1; p[l[1]]=-1;
+            }
+            else if (val[l[0]]==0.0&&val[l[1]]!=0.0) {
+                p[l[0]]=-1; p[l[1]]=1;
+            }
+            else if (ind->pri[l[1]]>ind->pri[l[0]]) {
+                p[l[1]]=1; p[l[0]]=NEXOBS<2?-1:NFREQ+1;
+            }
+            else {
+                p[l[0]]=1; p[l[1]]=NEXOBS<2?-1:NFREQ+1;
+            }
+        }
     }
     /* save obs data */
     for (i=0;i<ind->n;i++) {
@@ -295,7 +463,7 @@ static int decode_obsdata(char *buff, int mask,sigind_t *index, obsd_t *obs)
             case 0: obs->P[p[i]]=val[i]; obs->code[p[i]]=ind->code[i]; break;
             case 1: obs->L[p[i]]=val[i]; obs->LLI [p[i]]=lli[i];       break;
             case 2: obs->D[p[i]]=(float)val[i];                        break;
-            case 3: obs->SNR[p[i]]=(unsigned char)(val[i]*4.0+0.5);    break;
+            case 3: obs->SNR[p[i]]=(unsigned char)(val[i]/SNR_UNIT+0.5);    break;
         }
     }
     return 1;
@@ -310,7 +478,8 @@ static void sigindex(int sys, const char *opt,char tobs[MAXOBSTYPE][4],
     int i,j,k,n;
 
     for (i=n=0;*tobs[i];i++,n++) {
-        ind->code[i]=obs2code(tobs[i]+1,ind->frq+i);
+        ind->code[i]=obs2code(tobs[i]+1);
+        ind->frq[i]=code2idx(sys,ind->code[i])+1;
         ind->type[i]=(p=strchr(obscodes,tobs[i][0]))?(int)(p-obscodes):0;
         ind->pri[i]=getcodepri(sys,ind->code[i],opt);
         ind->pos[i]=-1;
@@ -334,7 +503,7 @@ static void sigindex(int sys, const char *opt,char tobs[MAXOBSTYPE][4],
     for (p=opt;p&&(p=strchr(p,'-'));p++) {
         if (sscanf(p,optstr,str,&shift)<2) continue;
         for (i=0;i<n;i++) {
-            if (strcmp(code2obs(ind->code[i],NULL),str)) continue;
+            if (strcmp(code2obs(ind->code[i]),str)) continue;
             ind->shift[i]=shift;
             trace(2,"phase shift: sys=%2d tobs=%s shift=%.3f\n",sys,
                   tobs[i],shift);
@@ -401,7 +570,7 @@ static void setsigindex(raw_t *raw)
  *                   6: pvt solution data
  *                   9: input ion/utc parameter)
  *                  32: update signal index
- * notes  : now it only support rinex version 3.02
+ * notes  : support rinex version 2.x and 3.x
  *----------------------------------------------------------------------------*/
 extern int input_rinex(raw_t *raw, unsigned char data)
 {
@@ -420,6 +589,11 @@ extern int input_rinex(raw_t *raw, unsigned char data)
     if (!syncnewline(raw->buff,raw->nbyte)) {
         return 0;
     }
+    /* detect RINEX version from first header line */
+    if (!raw->rinex.endhead&&!raw->rinex.ver&&strstr(p,"RINEX VERSION")) {
+        raw->rinex.ver=str2num(p,0,9);
+        trace(3,"input_rinex: ver=%.2f\n",raw->rinex.ver);
+    }
     if (strstr(p,"END OF HEADER")) { /* end header */
 
         clearbuff(raw);
@@ -428,12 +602,13 @@ extern int input_rinex(raw_t *raw, unsigned char data)
     }
     if (!raw->rinex.endhead) {
         /* decode rinex obs header */
-        decode_obsh(p,&tsys,raw->rinex.tobs,&raw->nav,NULL);
+        decode_obsh(p,raw->rinex.ver,&tsys,raw->rinex.tobs,&raw->nav,NULL);
     }
     else {
         /* decode rinex obs data */
         if (!raw->rinex.start
-            &&(raw->rinex.nsat=decode_obsepoch(p,&raw->rinex.time,&flag))) {
+            &&(raw->rinex.nsat=decode_obsepoch(p,raw->rinex.ver,&raw->rinex.time,
+                                                &flag,raw->rinex.sats))) {
             raw->rinex.start=1;
             clearbuff(raw);
             return 0;
@@ -442,15 +617,22 @@ extern int input_rinex(raw_t *raw, unsigned char data)
 
             raw->rinex.obs[raw->rinex.n].time=raw->rinex.time;
 
+            /* for ver.2, set sat from epoch satellite list */
+            if (raw->rinex.ver<=2.99&&raw->rinex.i<MAXOBS) {
+                raw->rinex.obs[raw->rinex.n].sat=
+                    (unsigned char)raw->rinex.sats[raw->rinex.i];
+            }
+
             /* decode obs data */
-            if (decode_obsdata(p,mask,raw->rinex.index,raw->rinex.obs+raw->rinex.n)
+            if (decode_obsdata(p,raw->rinex.ver,mask,raw->rinex.index,
+                               raw->rinex.obs+raw->rinex.n)
                 &&raw->rinex.n<MAXOBS) raw->rinex.n++;
         }
         /* new site or header info follows */
         else if (flag==3||flag==4) {
 
             /* decode obs header */
-            decode_obsh(p,&tsys,raw->rinex.tobs,NULL,NULL);
+            decode_obsh(p,raw->rinex.ver,&tsys,raw->rinex.tobs,NULL,NULL);
         }
         if (++raw->rinex.i>=raw->rinex.nsat) {
             

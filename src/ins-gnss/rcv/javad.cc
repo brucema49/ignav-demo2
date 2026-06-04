@@ -175,7 +175,7 @@ static double freq_sys(int sys, int freq, int freqn)
         return 0.0;
     }
     else {
-        return CLIGHT/lam_carr[freq];
+        return code2freq(SYS_GPS,CODE_L1C+freq,0);
     }
 }
 /* checksum ------------------------------------------------------------------*/
@@ -1540,7 +1540,7 @@ static int decode_Ex(raw_t *raw, char code)
         
         if ((j=checkpri(raw->opt,sys,type,freq))>=0) {
             if (!settag(raw->obuf.data+i,raw->time)) continue;
-            raw->obuf.data[i].SNR[j]=(unsigned char)(cnr*4.0+0.5);
+            raw->obuf.data[i].SNR[j]=(unsigned char)(cnr/SNR_UNIT+0.5);
         }
     }
     return 0;

@@ -172,10 +172,12 @@ extern int resamb_WLNL(rtk_t *rtk, const obsd_t *obs, const int *sat,
 
     trace(3,"resamb_WLNL: time=%s ns=%d\n",time_str(obs[0].time,0),ns);
 
+    double lam1=CLIGHT/sat2freq(sat[0],obs[iu[0]].code[0],nav);
+    double lam2=CLIGHT/sat2freq(sat[0],obs[iu[0]].code[1],nav);
     lam_N=lam_LC(1, 1,0);
     lam_W=lam_LC(1,-1,0);
-    C1= SQR(lam_carr[1])/(SQR(lam_carr[1])-SQR(lam_carr[0]));
-    C2=-SQR(lam_carr[0])/(SQR(lam_carr[1])-SQR(lam_carr[0]));
+    C1= SQR(lam2)/(SQR(lam2)-SQR(lam1));
+    C2=-SQR(lam1)/(SQR(lam2)-SQR(lam1));
 
     v=zeros(ns,1); H=zeros(rtk->nx,ns);
 
@@ -206,7 +208,7 @@ extern int resamb_WLNL(rtk_t *rtk, const obsd_t *obs, const int *sat,
         /* narrow lane ambiguity (cycle) */
         BC=rtk->x[k]-rtk->x[l];
         vC=rtk->P[k+k*rtk->nx]+rtk->P[l+l*rtk->nx]-2.0*rtk->P[k+l*rtk->nx];
-        B1=(BC+C2*lam_carr[1]*NW)/lam_N;
+        B1=(BC+C2*lam2*NW)/lam_N;
         v1=vC/SQR(lam_N);
         N1=ROUND(B1); N2=N1-NW;
 
@@ -220,7 +222,7 @@ extern int resamb_WLNL(rtk_t *rtk, const obsd_t *obs, const int *sat,
         if (!fix||++ambj->fixcnt<MIN_FIX_CNT) continue;
 
         /* constraint to dd-ambiguity */
-        v[nv]=(C1*lam_carr[0]*N1+C2*lam_carr[1]*N2)-(rtk->x[k]-rtk->x[l]);
+        v[nv]=(C1*lam1*N1+C2*lam2*N2)-(rtk->x[k]-rtk->x[l]);
         H[k+nv*rtk->nx]= 1.0;
         H[l+nv*rtk->nx]=-1.0;
         nv++;
@@ -244,11 +246,13 @@ extern int resamb_TCAR(rtk_t *rtk, const obsd_t *obs, const int *sat,
 
     trace(3,"resamb_TCAR: time=%s ns=%d\n",time_str(obs[0].time,0),ns);
 
+    double lam1=CLIGHT/sat2freq(sat[0],obs[iu[0]].code[0],nav);
+    double lam2=CLIGHT/sat2freq(sat[0],obs[iu[0]].code[1],nav);
     lam_E=lam_LC(0,1,-1);
     lam_F=lam_LC(1,-6,5);
     lam_N=lam_LC(1, 1,0);
-    C1= SQR(lam_carr[1])/(SQR(lam_carr[1])-SQR(lam_carr[0]));
-    C2=-SQR(lam_carr[0])/(SQR(lam_carr[1])-SQR(lam_carr[0]));
+    C1= SQR(lam2)/(SQR(lam2)-SQR(lam1));
+    C2=-SQR(lam1)/(SQR(lam2)-SQR(lam1));
 
     v=zeros(ns,1); H=zeros(rtk->nx,ns);
 
@@ -281,7 +285,7 @@ extern int resamb_TCAR(rtk_t *rtk, const obsd_t *obs, const int *sat,
         /* narrow lane ambiguity (cycle) */
         BC=rtk->x[k]-rtk->x[l];
         vC=rtk->P[k+k*rtk->nx]+rtk->P[l+l*rtk->nx]-2.0*rtk->P[k+l*rtk->nx];
-        B1=(BC+C2*lam_carr[1]*NW)/lam_N;
+        B1=(BC+C2*lam2*NW)/lam_N;
         v1=vC/SQR(lam_N);
         N1=ROUND(B1); N2=N1-NW;
 
@@ -296,7 +300,7 @@ extern int resamb_TCAR(rtk_t *rtk, const obsd_t *obs, const int *sat,
         if (!fix||++ambj->fixcnt<MIN_FIX_CNT) continue;
 
         /* constraint to dd-ambiguity */
-        v[nv]=(C1*lam_carr[0]*N1+C2*lam_carr[1]*N2)-(rtk->x[k]-rtk->x[l]);
+        v[nv]=(C1*lam1*N1+C2*lam2*N2)-(rtk->x[k]-rtk->x[l]);
         H[k+nv*rtk->nx]= 1.0;
         H[l+nv*rtk->nx]=-1.0;
         nv++;

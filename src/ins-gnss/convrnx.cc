@@ -425,8 +425,8 @@ static void sort_codes(unsigned char *codes, unsigned char *types, int n)
     int i,j;
     
     for (i=0;i<n-1;i++) for (j=i+1;j<n;j++) {
-       obs1=code2obs(codes[i],NULL);
-       obs2=code2obs(codes[j],NULL);
+       obs1=code2obs(codes[i]);
+       obs2=code2obs(codes[j]);
        if (strcmp(obs1,obs2)<=0) continue;
        tmp=codes[i]; codes[i]=codes[j]; codes[j]=tmp;
        tmp=types[i]; types[i]=types[j]; types[j]=tmp;
@@ -448,7 +448,8 @@ static void setopt_obstype(const unsigned char *codes,
     
     for (i=0;codes[i];i++) {
         
-        if (!(id=code2obs(codes[i],&freq))) continue;
+        if (!(id=code2obs(codes[i]))) continue;
+        freq=code2idx(sys,codes[i])+1;
         
         if (!(opt->freqtype&(1<<(freq-1)))||opt->mask[sys][codes[i]-1]=='0') {
             continue;
@@ -655,7 +656,7 @@ static int scan_obstype(int format, char **files, int nf, rnxopt_t *opt,
         return 0;
     }
     for (i=0;i<NSATSYS;i++) for (j=0;j<n[i];j++) {
-        trace(2,"scan_obstype: sys=%d code=%s type=%d\n",i,code2obs(codes[i][j],NULL),types[i][j]);
+        trace(2,"scan_obstype: sys=%d code=%s type=%d\n",i,code2obs(codes[i][j]),types[i][j]);
     }
     for (i=0;i<NSATSYS;i++) {
         
@@ -666,7 +667,7 @@ static int scan_obstype(int format, char **files, int nf, rnxopt_t *opt,
         setopt_obstype(codes[i],types[i],i,opt);
         
         for (j=0;j<n[i];j++) {
-            trace(3,"scan_obstype: sys=%d code=%s\n",i,code2obs(codes[i][j],NULL));
+            trace(3,"scan_obstype: sys=%d code=%s\n",i,code2obs(codes[i][j]));
         }
     }
     return 1;

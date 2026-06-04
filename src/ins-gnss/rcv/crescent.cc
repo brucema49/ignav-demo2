@@ -137,9 +137,9 @@ static int decode_cresraw(raw_t *raw)
         raw->obs.data[n].time=time;
         raw->obs.data[n].sat =sat;
         raw->obs.data[n].P[0]=pr;
-        raw->obs.data[n].L[0]=cp/lam_carr[0];
-        raw->obs.data[n].D[0]=-(float)(dop/lam_carr[0]);
-        raw->obs.data[n].SNR[0]=(unsigned char)(snr*4.0+0.5);
+        raw->obs.data[n].L[0]=cp/CLIGHT/FREQ1;
+        raw->obs.data[n].D[0]=-(float)(dop/CLIGHT/FREQ1);
+        raw->obs.data[n].SNR[0]=(unsigned char)(snr/SNR_UNIT+0.5);
         raw->obs.data[n].LLI[0]=(unsigned char)lli;
         raw->obs.data[n].code[0]=CODE_L1C;
         
@@ -208,10 +208,10 @@ static int decode_cresraw2(raw_t *raw)
         dop[0]=((word2>>1)&0x7FFFFF)/512.0;
         if ((word2>>24)&1) dop[0]=-dop[0];
         pr[0]=pr1+(word3&0xFFFF)/256.0;
-        cp[0]=floor(pr[0]/lam_carr[0]/8192.0)*8192.0;
+        cp[0]=floor(pr[0]/CLIGHT/FREQ1/8192.0)*8192.0;
         cp[0]+=((word2&0xFE000000)+((word3&0xFFFF0000)>>7))/524288.0;
-        if      (cp[0]-pr[0]/lam_carr[0]<-4096.0) cp[0]+=8192.0;
-        else if (cp[0]-pr[0]/lam_carr[0]> 4096.0) cp[0]-=8192.0;
+        if      (cp[0]-pr[0]/CLIGHT/FREQ1<-4096.0) cp[0]+=8192.0;
+        else if (cp[0]-pr[0]/CLIGHT/FREQ1> 4096.0) cp[0]-=8192.0;
         
         if (i<12) {
             word1=U4(p  +12*i); /* L2PSatObs */
@@ -235,10 +235,10 @@ static int decode_cresraw2(raw_t *raw)
                 pr[1]+=pr1;
                 if      (pr[1]-pr[0]<-128.0) pr[1]+=256.0;
                 else if (pr[1]-pr[0]> 128.0) pr[1]-=256.0;
-                cp[1]=floor(pr[1]/lam_carr[1]/8192.0)*8192.0;
+                cp[1]=floor(pr[1]/CLIGHT/FREQ2/8192.0)*8192.0;
                 cp[1]+=((word2&0xFE000000)+((word3&0xFFFF0000)>>7))/524288.0;
-                if      (cp[1]-pr[1]/lam_carr[1]<-4096.0) cp[1]+=8192.0;
-                else if (cp[1]-pr[1]/lam_carr[1]> 4096.0) cp[1]-=8192.0;
+                if      (cp[1]-pr[1]/CLIGHT/FREQ2<-4096.0) cp[1]+=8192.0;
+                else if (cp[1]-pr[1]/CLIGHT/FREQ2> 4096.0) cp[1]-=8192.0;
             }
             else cp[1]=0.0;
         }
@@ -247,9 +247,9 @@ static int decode_cresraw2(raw_t *raw)
         for (j=0;j<NFREQ;j++) {
             if (j==0||(j==1&&i<12)) {
                 raw->obs.data[n].P[j]=pr[j]==0.0?0.0:pr[j]-toff;
-                raw->obs.data[n].L[j]=cp[j]==0.0?0.0:cp[j]-toff/lam_carr[j];
+                raw->obs.data[n].L[j]=cp[j]==0.0?0.0:cp[j]-toff/CLIGHT/(j==0?FREQ1:FREQ2);
                 raw->obs.data[n].D[j]=-(float)dop[j];
-                raw->obs.data[n].SNR[j]=(unsigned char)(snr[j]*4.0+0.5);
+                raw->obs.data[n].SNR[j]=(unsigned char)(snr[j]/SNR_UNIT+0.5);
                 raw->obs.data[n].LLI[j]=(unsigned char)lli[j];
                 raw->obs.data[n].code[j]=j==0?CODE_L1C:CODE_L2P;
             }
@@ -412,10 +412,10 @@ static int decode_cresgloraw(raw_t *raw)
         dop[0]=((word2>>1)&0x7FFFFF)/512.0;
         if ((word2>>24)&1) dop[0]=-dop[0];
         pr[0]=pr1+(word3&0xFFFF)/256.0;
-        cp[0]=floor(pr[0]/lam_carr[0]/8192.0)*8192.0;
+        cp[0]=floor(pr[0]/CLIGHT/FREQ1/8192.0)*8192.0;
         cp[0]+=((word2&0xFE000000)+((word3&0xFFFF0000)>>7))/524288.0;
-        if      (cp[0]-pr[0]/lam_carr[0]<-4096.0) cp[0]+=8192.0;
-        else if (cp[0]-pr[0]/lam_carr[0]> 4096.0) cp[0]-=8192.0;
+        if      (cp[0]-pr[0]/CLIGHT/FREQ1<-4096.0) cp[0]+=8192.0;
+        else if (cp[0]-pr[0]/CLIGHT/FREQ1> 4096.0) cp[0]-=8192.0;
         
         /* L2Obs */
         word1=U4(p+144+12*i);
@@ -439,19 +439,19 @@ static int decode_cresgloraw(raw_t *raw)
             pr[1]+=pr1;
             if      (pr[1]-pr[0]<-128.0) pr[1]+=256.0;
             else if (pr[1]-pr[0]> 128.0) pr[1]-=256.0;
-            cp[1]=floor(pr[1]/lam_carr[1]/8192.0)*8192.0;
+            cp[1]=floor(pr[1]/CLIGHT/FREQ2/8192.0)*8192.0;
             cp[1]+=((word2&0xFE000000)+((word3&0xFFFF0000)>>7))/524288.0;
-            if      (cp[1]-pr[1]/lam_carr[1]<-4096.0) cp[1]+=8192.0;
-            else if (cp[1]-pr[1]/lam_carr[1]> 4096.0) cp[1]-=8192.0;
+            if      (cp[1]-pr[1]/CLIGHT/FREQ2<-4096.0) cp[1]+=8192.0;
+            else if (cp[1]-pr[1]/CLIGHT/FREQ2> 4096.0) cp[1]-=8192.0;
         }
         raw->obs.data[n].time=time;
         raw->obs.data[n].sat =sat;
         for (j=0;j<NFREQ;j++) {
             if (j==0||(j==1&&i<12)) {
                 raw->obs.data[n].P[j]=pr[j]==0.0?0.0:pr[j]-toff;
-                raw->obs.data[n].L[j]=cp[j]==0.0?0.0:cp[j]-toff/lam_carr[j];
+                raw->obs.data[n].L[j]=cp[j]==0.0?0.0:cp[j]-toff/CLIGHT/(j==0?FREQ1:FREQ2);
                 raw->obs.data[n].D[j]=-(float)dop[j];
-                raw->obs.data[n].SNR[j]=(unsigned char)(snr[j]*4.0+0.5);
+                raw->obs.data[n].SNR[j]=(unsigned char)(snr[j]/SNR_UNIT+0.5);
                 raw->obs.data[n].LLI[j]=(unsigned char)lli[j];
                 raw->obs.data[n].code[j]=j==0?CODE_L1C:CODE_L2P;
             }

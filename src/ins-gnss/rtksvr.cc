@@ -170,10 +170,6 @@ static void writesol(rtksvr_t *svr, int index)
 /* update navigation data ----------------------------------------------------*/
 static void updatenav(nav_t *nav)
 {
-    int i,j;
-    for (i=0;i<MAXSAT;i++) for (j=0;j<NFREQ;j++) {
-        nav->lam[i][j]=satwavelen(i+1,j,nav);
-    }
 }
 /* update glonass frequency channel number in raw data struct ----------------*/
 static void updatefcn(rtksvr_t *svr)
@@ -2151,7 +2147,7 @@ extern int rtksvrostat(rtksvr_t *svr, int rcv, gtime_t *time, int *sat,
         az  [i]=svr->rtk.ssat[sat[i]-1].azel[0];
         el  [i]=svr->rtk.ssat[sat[i]-1].azel[1];
         for (j=0;j<NFREQ;j++) {
-            snr[i][j]=(int)(svr->obs[rcv][0].data[i].SNR[j]*0.25);
+            snr[i][j]=(int)(svr->obs[rcv][0].data[i].SNR[j]*SNR_UNIT);
         }
         if (svr->rtk.sol.stat==SOLQ_NONE||svr->rtk.sol.stat==SOLQ_SINGLE) {
             vsat[i]=svr->rtk.ssat[sat[i]-1].vs;

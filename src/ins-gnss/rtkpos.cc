@@ -482,14 +482,18 @@ static double sdobspins(const rtk_t* rtk,const obsd_t *obs,const double *rs,
     else return sdg;
 }
 /* single-differenced geometry-free linear combination of phase --------------*/
-static double gfobs_L1L2(const obsd_t *obs, int i, int j, const double *lam)
+static double gfobs_L1L2(const obsd_t *obs, int i, int j, const nav_t *nav)
 {
-    double pi=sdobs(obs,i,j,0)*lam[0],pj=sdobs(obs,i,j,1)*lam[1];
+    double lam1=CLIGHT/sat2freq(obs[i].sat,obs[i].code[0],nav);
+    double lam2=CLIGHT/sat2freq(obs[i].sat,obs[i].code[1],nav);
+    double pi=sdobs(obs,i,j,0)*lam1,pj=sdobs(obs,i,j,1)*lam2;
     return pi==0.0||pj==0.0?0.0:pi-pj;
 }
-static double gfobs_L1L5(const obsd_t *obs, int i, int j, const double *lam)
+static double gfobs_L1L5(const obsd_t *obs, int i, int j, const nav_t *nav)
 {
-    double pi=sdobs(obs,i,j,0)*lam[0],pj=sdobs(obs,i,j,2)*lam[2];
+    double lam1=CLIGHT/sat2freq(obs[i].sat,obs[i].code[0],nav);
+    double lam5=CLIGHT/sat2freq(obs[i].sat,obs[i].code[2],nav);
+    double pi=sdobs(obs,i,j,0)*lam1,pj=sdobs(obs,i,j,2)*lam5;
     return pi==0.0||pj==0.0?0.0:pi-pj;
 }
 /* single-differenced measurement error variance -----------------------------*/
@@ -785,7 +789,7 @@ extern void corr_phase_bias_ssr(obsd_t *obs, int n, const nav_t *nav)
 
     for (i=0;i<n;i++) for (j=0;j<NFREQ;j++) {
             if (!(code=obs[i].code[j])) continue;
-            if ((lam=nav->lam[obs[i].sat-1][j])==0.0) continue;
+            if ((lam=CLIGHT/sat2freq(obs[i].sat,obs[i].code[j],nav))==0.0) continue;
 
             /* correct phase bias (cyc) */
             obs[i].L[j]-=nav->ssr[obs[i].sat-1].pbias[code-1]/lam;
@@ -848,7 +852,7 @@ static void detslp_gf_L1L2(rtk_t *rtk, const obsd_t *obs, int i, int j,
     
     trace(3,"detslp_gf_L1L2: i=%d j=%d\n",i,j);
     
-    if (rtk->opt.nf<=1||(g1=gfobs_L1L2(obs,i,j,nav->lam[sat-1]))==0.0) return;
+    if (rtk->opt.nf<=1||(g1=gfobs_L1L2(obs,i,j,nav))==0.0) return;
     
     g0=rtk->ssat[sat-1].gf; rtk->ssat[sat-1].gf=g1;
     if (g0!=0.0&&fabs(g1-g0)>rtk->opt.thresslip) {
@@ -867,7 +871,7 @@ static void detslp_gf_L1L5(rtk_t *rtk, const obsd_t *obs, int i, int j,
     
     trace(3,"detslp_gf_L1L5: i=%d j=%d\n",i,j);
     
-    if (rtk->opt.nf<=2||(g1=gfobs_L1L5(obs,i,j,nav->lam[sat-1]))==0.0) return;
+    if (rtk->opt.nf<=2||(g1=gfobs_L1L5(obs,i,j,nav))==0.0) return;
     
     g0=rtk->ssat[sat-1].gf2; rtk->ssat[sat-1].gf2=g1;
     if (g0!=0.0&&fabs(g1-g0)>rtk->opt.thresslip) {
@@ -880,20 +884,23 @@ static void detslp_gf_L1L5(rtk_t *rtk, const obsd_t *obs, int i, int j,
 /* Melbourne-Wubbena linear combination --------------------------------------*/
 static double mwmeas(const obsd_t *obs, int iu, int ir, const nav_t *nav)
 {
-    const double *lam=nav->lam[obs->sat-1];
-    double l1,l2,p1,p2;
+    double lam1,lam2,l1,l2,p1,p2;
     register int i=(satsys(obs->sat,NULL)&(SYS_GAL|SYS_SBS))?2:1;
 
     if (obs[ir].L[0]==0.0||obs[iu].L[0]==0.0) return 0.0;
     if (obs[ir].P[i]==0.0||obs[iu].P[i]==0.0) return 0.0;
+
+    lam1=CLIGHT/sat2freq(obs->sat,obs->code[0],nav);
+    lam2=CLIGHT/sat2freq(obs->sat,obs->code[i],nav);
+    if (lam1==0.0||lam2==0.0) return 0.0;
 
     l1=sdobs(obs,iu,ir,0);
     l2=sdobs(obs,iu,ir,i);
     p1=sdobs(obs,iu,ir,0+NFREQ);
     p2=sdobs(obs,iu,ir,i+NFREQ);
 
-    return lam[0]*lam[i]*(l1-l2)/(lam[i]-lam[0])-
-           (lam[i]*p1+lam[0]*p2)/(lam[i]+lam[0]);
+    return lam1*lam2*(l1-l2)/(lam2-lam1)-
+           (lam2*p1+lam1*p2)/(lam2+lam1);
 }
 /* detect slip by Melbourne-Wubbena linear combination jump ------------------*/
 static void detslp_mw(rtk_t *rtk, const obsd_t *obs, int iu, int ir,
@@ -1010,7 +1017,7 @@ static void udbias(rtk_t *rtk, double tt, const obsd_t *obs, const int *sat, con
 
                 rtk->ssat[sat[i]-1].sdi[f]=sdobspins(rtk,obs,rs,iu[i],ir[i],f+NFREQ);
                 rtk->ssat[sat[i]-1].sdg[f]=pr;
-                lami=nav->lam[sat[i]-1][f];
+                lami=CLIGHT/sat2freq(sat[i],obs[iu[i]].code[f],nav);
                 if (cp==0.0||pr==0.0||lami<=0.0) continue;
                 
                 bias[i]=cp-pr/lami;
@@ -1020,8 +1027,8 @@ static void udbias(rtk_t *rtk, double tt, const obsd_t *obs, const int *sat, con
                 cp2=sdobs(obs,iu[i],ir[i],1);
                 pr1=sdobs(obs,iu[i],ir[i],NFREQ);
                 pr2=sdobs(obs,iu[i],ir[i],NFREQ+1);
-                lam1=nav->lam[sat[i]-1][0];
-                lam2=nav->lam[sat[i]-1][1];
+                lam1=CLIGHT/sat2freq(sat[i],obs[iu[i]].code[0],nav);
+                lam2=CLIGHT/sat2freq(sat[i],obs[iu[i]].code[1],nav);
                 
                 if (cp1==0.0||cp2==0.0||
                     pr1==0.0||pr2==0.0||
@@ -1113,24 +1120,23 @@ static void zdres_sat(int base, double r, const obsd_t *obs, const nav_t *nav,
                       const double *azel, const double *dant,
                       const prcopt_t *opt, double *y)
 {
-    const double *lam=nav->lam[obs->sat-1];
-    double f1,f2,C1,C2,dant_if;
+    double freq1,freq2,C1,C2,dant_if;
     register int i,nf=NF(opt);
     
     if (opt->ionoopt==IONOOPT_IFLC) { /* iono-free linear combination */
-        if (lam[0]==0.0||lam[1]==0.0) return;
+        freq1=sat2freq(obs->sat,obs->code[0],nav);
+        freq2=sat2freq(obs->sat,obs->code[1],nav);
+        if (freq1==0.0||freq2==0.0) return;
         
-        if (testsnr(base,0,azel[1],obs->SNR[0]*0.25,&opt->snrmask)||
-            testsnr(base,1,azel[1],obs->SNR[1]*0.25,&opt->snrmask)) return;
+        if (testsnr(base,0,azel[1],obs->SNR[0]*SNR_UNIT,&opt->snrmask)||
+            testsnr(base,1,azel[1],obs->SNR[1]*SNR_UNIT,&opt->snrmask)) return;
         
-        f1=CLIGHT/lam[0];
-        f2=CLIGHT/lam[1];
-        C1= SQR(f1)/(SQR(f1)-SQR(f2));
-        C2=-SQR(f2)/(SQR(f1)-SQR(f2));
+        C1= SQR(freq1)/(SQR(freq1)-SQR(freq2));
+        C2=-SQR(freq2)/(SQR(freq1)-SQR(freq2));
         dant_if=C1*dant[0]+C2*dant[1];
         
         if (obs->L[0]!=0.0&&obs->L[1]!=0.0) {
-            y[0]=C1*obs->L[0]*lam[0]+C2*obs->L[1]*lam[1]-r-dant_if;
+            y[0]=C1*obs->L[0]*CLIGHT/freq1+C2*obs->L[1]*CLIGHT/freq2-r-dant_if;
         }
         if (obs->P[0]!=0.0&&obs->P[1]!=0.0) {
             y[1]=C1*obs->P[0]+C2*obs->P[1]-r-dant_if;
@@ -1138,14 +1144,15 @@ static void zdres_sat(int base, double r, const obsd_t *obs, const nav_t *nav,
     }
     else {
         for (i=0;i<nf;i++) {
-            if (lam[i]==0.0) continue;
+            double freq=sat2freq(obs->sat,obs->code[i],nav);
+            if (freq==0.0) continue;
             
             /* check snr mask */
-            if (testsnr(base,i,azel[1],obs->SNR[i]*0.25,&opt->snrmask)) {
+            if (testsnr(base,i,azel[1],obs->SNR[i]*SNR_UNIT,&opt->snrmask)) {
                 continue;
             }
             /* residuals = observable - pseudorange */
-            if (obs->L[i]!=0.0) y[i   ]=obs->L[i]*lam[i]-r-dant[i];
+            if (obs->L[i]!=0.0) y[i   ]=obs->L[i]*CLIGHT/freq-r-dant[i];
             if (obs->P[i]!=0.0) y[i+nf]=obs->P[i]       -r-dant[i];
         }
     }
@@ -1182,7 +1189,7 @@ static int zdres(int base, const obsd_t *obs, int n, const double *rs,
         if (satazel(pos,e+i*3,azel+i*2)<opt->elmin) continue;
         
         /* excluded satellite? */
-        if (satexclude(obs[i].sat,svh[i],opt)) continue;
+        if (satexclude(obs[i].sat,0.0,svh[i],opt)) continue;
         
         /* satellite clock-bias */
         r+=-CLIGHT*dts[i*2];
@@ -1425,7 +1432,7 @@ static int ddres(rtk_t *rtk, const nav_t *nav, const obsd_t *obs, double dt,cons
     prcopt_t *opt=&rtk->opt;
     insopt_t *insopt=&opt->insopt;
     double bl,dr[3],posu[3],posr[3],didxi,didxj,*im,*vc,ddi,ddg,factor=1.0;
-    double *tropr,*tropu,*dtdxr,*dtdxu,*Ri,*Rj,lami,lamj,fi,fj,df,*Hi=NULL,rr[3];
+    double *tropr,*tropu,*dtdxr,*dtdxu,*Ri,*Rj,lami,lamj,freqi,freqj,df,*Hi=NULL,rr[3];
     double dp[3]={0},da[3]={0},dl[3]={0},S[9],dap[3];
     int i,j,k,m,f,ff,nv=0,nb[NFREQ*4*2+2]={0},b=0,sysi,sysj,nf=NF(opt),tc,nx;
     int ii,ij,flag=0;
@@ -1513,8 +1520,8 @@ static int ddres(rtk_t *rtk, const nav_t *nav, const obsd_t *obs, double dt,cons
                 }
             }
             ff=f%nf;
-            lami=nav->lam[sat[i]-1][ff];
-            lamj=nav->lam[sat[j]-1][ff];
+            lami=CLIGHT/sat2freq(sat[i],obs[iu[i]].code[ff],nav);
+            lamj=CLIGHT/sat2freq(sat[j],obs[iu[j]].code[ff],nav);
             if (lami<=0.0||lamj<=0.0) continue;
             if (H) {
                 Hi=H+nv*nx;
@@ -1562,9 +1569,10 @@ static int ddres(rtk_t *rtk, const nav_t *nav, const obsd_t *obs, double dt,cons
                 ii=tc?xiIo(insopt,sat[i]):II(sat[i],opt);
                 ij=tc?xiIo(insopt,sat[j]):II(sat[j],opt);
 
-                fi=lami/lam_carr[0]; fj=lamj/lam_carr[0];
-                didxi=(f<nf?-1.0:1.0)*fi*fi*im[i];
-                didxj=(f<nf?-1.0:1.0)*fj*fj*im[j];
+                freqi=sat2freq(sat[i],obs[iu[i]].code[ff],nav);
+                freqj=sat2freq(sat[j],obs[iu[j]].code[ff],nav);
+                didxi=(f<nf?-1.0:1.0)*im[i]*SQR(FREQ1/freqi);
+                didxj=(f<nf?-1.0:1.0)*im[j]*SQR(FREQ1/freqj);
 
                 v[nv]-=didxi*x[ii]-didxj*x[ij];
                 if (H) {

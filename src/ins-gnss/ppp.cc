@@ -470,22 +470,26 @@ static double varerr(int sat, int sys, double el, int freq, int type,
 /* geometry-free phase measurement -------------------------------------------*/
 static double gfmeas(const obsd_t *obs, const nav_t *nav)
 {
-    const double *lam=nav->lam[obs->sat-1];
+    double lam1,lami;
     int i=(satsys(obs->sat,NULL)&(SYS_GAL|SYS_SBS))?2:1;
     
-    if (lam[0]==0.0||lam[i]==0.0||obs->L[0]==0.0||obs->L[i]==0.0) return 0.0;
-    return lam[0]*obs->L[0]-lam[i]*obs->L[i];
+    lam1=CLIGHT/sat2freq(obs->sat,obs->code[0],nav);
+    lami=CLIGHT/sat2freq(obs->sat,obs->code[i],nav);
+    if (lam1==0.0||lami==0.0||obs->L[0]==0.0||obs->L[i]==0.0) return 0.0;
+    return lam1*obs->L[0]-lami*obs->L[i];
 }
 /* Melbourne-Wubbena linear combination --------------------------------------*/
 static double mwmeas(const obsd_t *obs, const nav_t *nav)
 {
-    const double *lam=nav->lam[obs->sat-1];
+    double lam1,lami;
     int i=(satsys(obs->sat,NULL)&(SYS_GAL|SYS_SBS))?2:1;
     
-    if (lam[0]==0.0||lam[i]==0.0||obs->L[0]==0.0||obs->L[i]==0.0||
+    lam1=CLIGHT/sat2freq(obs->sat,obs->code[0],nav);
+    lami=CLIGHT/sat2freq(obs->sat,obs->code[i],nav);
+    if (lam1==0.0||lami==0.0||obs->L[0]==0.0||obs->L[i]==0.0||
         obs->P[0]==0.0||obs->P[i]==0.0) return 0.0;
-    return lam[0]*lam[i]*(obs->L[0]-obs->L[i])/(lam[i]-lam[0])-
-           (lam[i]*obs->P[0]+lam[0]*obs->P[i])/(lam[i]+lam[0]);
+    return lam1*lami*(obs->L[0]-obs->L[i])/(lami-lam1)-
+           (lami*obs->P[0]+lam1*obs->P[i])/(lami+lam1);
 }
 /* antenna corrected measurements --------------------------------------------*/
 static void corr_meas(const obsd_t *obs, const nav_t *nav, const double *azel,
@@ -493,17 +497,19 @@ static void corr_meas(const obsd_t *obs, const nav_t *nav, const double *azel,
                       const double *dants, double phw, double *L, double *P,
                       double *Lc, double *Pc)
 {
-    const double *lam=nav->lam[obs->sat-1];
-    double C1,C2;
+    double freq[NFREQ],C1,C2;
     int i,sys;
     
     for (i=0;i<NFREQ;i++) {
+        double lam;
         L[i]=P[i]=0.0;
-        if (lam[i]==0.0||obs->L[i]==0.0||obs->P[i]==0.0) continue;
-        if (testsnr(0,0,azel[1],obs->SNR[i]*0.25,&opt->snrmask)) continue;
+        freq[i]=sat2freq(obs->sat,obs->code[i],nav);
+        if (freq[i]==0.0||obs->L[i]==0.0||obs->P[i]==0.0) continue;
+        if (testsnr(0,0,azel[1],obs->SNR[i]*SNR_UNIT,&opt->snrmask)) continue;
+        lam=CLIGHT/freq[i];
         
         /* antenna phase center and phase windup correction */
-        L[i]=obs->L[i]*lam[i]-dants[i]-dantr[i]-phw*lam[i];
+        L[i]=obs->L[i]*lam-dants[i]-dantr[i]-phw*lam;
         P[i]=obs->P[i]       -dants[i]-dantr[i];
         
         /* P1-C1,P2-C2 dcb correction (C1->P1,C2->P2) */
@@ -514,7 +520,7 @@ static void corr_meas(const obsd_t *obs, const nav_t *nav, const double *azel,
                  obs->code[i]==CODE_L2L||obs->code[i]==CODE_L2S) {
             P[i]+=nav->cbias[obs->sat-1][2];
 #if 0
-            L[i]-=0.25*lam[i]; /* 1/4 cycle-shift */
+            L[i]-=0.25*lam; /* 1/4 cycle-shift */
 #endif
         }
     }
@@ -522,10 +528,10 @@ static void corr_meas(const obsd_t *obs, const nav_t *nav, const double *azel,
     *Lc=*Pc=0.0;
     sys=satsys(obs->sat,NULL);
     i=(sys&(SYS_GAL|SYS_SBS))?2:1; /* L1/L2 or L1/L5 */
-    if (lam[0]==0.0||lam[i]==0.0) return;
+    if (freq[0]==0.0||freq[i]==0.0) return;
     
-    C1= SQR(lam[i])/(SQR(lam[i])-SQR(lam[0]));
-    C2=-SQR(lam[0])/(SQR(lam[i])-SQR(lam[0]));
+    C1= SQR(freq[i])/(SQR(freq[i])-SQR(freq[0]));
+    C2=-SQR(freq[0])/(SQR(freq[i])-SQR(freq[0]));
     
 #if 0
     /* P1-P2 dcb correction (P1->Pc,P2->Pc) */
@@ -751,12 +757,14 @@ static void udiono_ppp(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
     for (i=0;i<n;i++) {
         j=II(obs[i].sat,&rtk->opt);
         if (rtk->x[j]==0.0) {
+            double lam0,lamk;
             k=satsys(obs[i].sat,NULL)==SYS_GAL?2:1;
-            lam=nav->lam[obs[i].sat-1];
-            if (obs[i].P[0]==0.0||obs[i].P[k]==0.0||lam[0]==0.0||lam[k]==0.0) {
+            lam0=CLIGHT/sat2freq(obs[i].sat,obs[i].code[0],nav);
+            lamk=CLIGHT/sat2freq(obs[i].sat,obs[i].code[k],nav);
+            if (obs[i].P[0]==0.0||obs[i].P[k]==0.0||lam0==0.0||lamk==0.0) {
                 continue;
             }
-            ion=(obs[i].P[0]-obs[i].P[k])/(1.0-SQR(lam[k]/lam[0]));
+            ion=(obs[i].P[0]-obs[i].P[k])/(1.0-SQR(lamk/lam0));
             ecef2pos(rtk->sol.rr,pos);
             azel=rtk->ssat[obs[i].sat-1].azel;
             ion/=ionmapf(pos,azel);
@@ -830,12 +838,15 @@ static void udbias_ppp(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
             }
             else if (L[f]!=0.0&&P[f]!=0.0) {
                 slip[i]=rtk->ssat[sat-1].slip[f];
+                double lam0,laml,lamf;
                 l=satsys(sat,NULL)==SYS_GAL?2:1;
-                lam=nav->lam[sat-1];
+                lam0=CLIGHT/sat2freq(sat,obs[i].code[0],nav);
+                laml=CLIGHT/sat2freq(sat,obs[i].code[l],nav);
+                lamf=CLIGHT/sat2freq(sat,obs[i].code[f],nav);
                 if (obs[i].P[0]==0.0||obs[i].P[l]==0.0||
-                    lam[0]==0.0||lam[l]==0.0||lam[f]==0.0) continue;
-                ion=(obs[i].P[0]-obs[i].P[l])/(1.0-SQR(lam[l]/lam[0]));
-                bias[i]=L[f]-P[f]+2.0*ion*SQR(lam[f]/lam[0]);
+                    lam0==0.0||laml==0.0||lamf==0.0) continue;
+                ion=(obs[i].P[0]-obs[i].P[l])/(1.0-SQR(laml/lam0));
+                bias[i]=L[f]-P[f]+2.0*ion*SQR(lamf/lam0);
             }
             if (rtk->x[j]==0.0||slip[i]||bias[i]==0.0) continue;
             
@@ -1133,9 +1144,11 @@ static int ppp_res(int post, const obsd_t *obs, int n, const double *rs,
     ecef2pos(rr,pos);
     
     for (i=0;i<n&&i<MAXOBS;i++) {
+        double lam0,lamj2;
         sat=obs[i].sat;
-        lam=nav->lam[sat-1];
-        if (lam[j/2]==0.0||lam[0]==0.0) continue;
+        lam0=CLIGHT/sat2freq(sat,obs[i].code[0],nav);
+        lamj2=CLIGHT/sat2freq(sat,obs[i].code[j/2],nav);
+        if (lamj2==0.0||lam0==0.0) continue;
         
         if ((r=geodist(rs+i*6,rr,e))<=0.0||
             satazel(pos,e,azel+i*2)<opt->elmin) {
@@ -1143,7 +1156,7 @@ static int ppp_res(int post, const obsd_t *obs, int n, const double *rs,
             continue;
         }
         if (!(sys=satsys(sat,NULL))||!rtk->ssat[sat-1].vs||
-            satexclude(obs[i].sat,svh[i],opt)||exc[i]) {
+            satexclude(obs[i].sat,var_rs[i],svh[i],opt)||exc[i]) {
             exc[i]=1;
             continue;
         }

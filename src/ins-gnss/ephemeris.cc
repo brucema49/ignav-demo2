@@ -83,6 +83,7 @@
 
 #define MAX_ITER_KEPLER 30        /* max number of iteration of Kelpler */
 
+static int eph_sel[]={0,0,0,0,0,0,0}; /* GPS,GLO,GAL,QZS,BDS,IRN,SBS */
 /* variance by ura ephemeris (ref [1] 20.3.3.3.1.1) --------------------------*/
 static double var_uraeph(int ura)
 {
@@ -765,4 +766,18 @@ extern void satposs(gtime_t teph, const obsd_t *obs, int n, const nav_t *nav,
               time_str(time[i],6),obs[i].sat,rs[i*6],rs[1+i*6],rs[2+i*6],
               dts[i*2]*1E9,var[i],svh[i]);
     }
+}
+/* select ephemeris ----------------------------------------------------------*/
+extern int getseleph(int sys)
+{
+    switch (sys) {
+        case SYS_GPS: return eph_sel[0];
+        case SYS_GLO: return eph_sel[1];
+        case SYS_GAL: return eph_sel[2];
+        case SYS_QZS: return eph_sel[3];
+        case SYS_CMP: return eph_sel[4];
+        case SYS_IRN: return eph_sel[5];
+        case SYS_SBS: return eph_sel[6];
+    }
+    return 0;
 }

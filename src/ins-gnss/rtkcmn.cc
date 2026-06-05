@@ -671,6 +671,7 @@ extern int getcodepri(int sys, unsigned char code, const char *opt)
         default: return 0;
     }
     obs=code2obs(code);
+    if (!*obs) return 0; /* unknown obs code */
     j=code2idx(sys,code)+1;
     
     /* parse code options */

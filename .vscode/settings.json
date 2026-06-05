@@ -1,6 +1,6 @@
 {
     "cmake.debugConfig": {
-        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/a-cpt/cpt.conf",
+        "args": ["-s","-o", "/home/mxl/workplace/ignav-debug/a-cpt/cpt-rtktc.conf",
          "-t","3","-m","52030"],
         "cwd": "${workspaceFolder}/bin"
     },

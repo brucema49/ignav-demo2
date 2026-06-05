@@ -463,7 +463,7 @@ static int decode_obsdata(char *buff, double ver, int mask,sigind_t *index,
             case 0: obs->P[p[i]]=val[i]; obs->code[p[i]]=ind->code[i]; break;
             case 1: obs->L[p[i]]=val[i]; obs->LLI [p[i]]=lli[i];       break;
             case 2: obs->D[p[i]]=(float)val[i];                        break;
-            case 3: obs->SNR[p[i]]=(unsigned char)(val[i]/SNR_UNIT+0.5);    break;
+            case 3: obs->SNR[p[i]]=(uint16_t)(val[i]/SNR_UNIT+0.5);    break;
         }
     }
     return 1;

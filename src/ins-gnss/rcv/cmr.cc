@@ -359,7 +359,7 @@
 #define MAXTIMEDIFF             60.0 /* Maximum tolerable time difference in seconds */
 
 /* Utility macros: */
-#define SNRATIO(snr) (unsigned char)((snr<=0.0)||(snr>=255.5))?(0.0):((snr/SNR_UNIT)+0.5)
+#define SNRATIO(snr) (uint16_t)((snr<=0.0))?(0.0):((snr/SNR_UNIT)+0.5)
 
 /*
 | Typedefs:
@@ -387,7 +387,7 @@ typedef struct {                    /* Base observables data record */
     unsigned int  Slot;             /* Slot number */ 
     unsigned char Sat;              /* Satellite number */
     unsigned char Code[2];          /* L1/L2 code indicators (CODE_???) */
-    unsigned char SNR[2];           /* L1/L2 signal strengths */
+    uint16_t SNR[2];           /* L1/L2 signal strengths */
     unsigned char Slip[2];          /* L1/L2 slip counts */
     unsigned char LLI[2];           /* L1/L2 loss of lock indicators */
 } obsbd_t;

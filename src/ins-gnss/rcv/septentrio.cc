@@ -399,7 +399,7 @@ static int decode_measepoch(raw_t *raw){
             raw->obs.data[n].L[h]    = adr;
             raw->obs.data[n].P[h]    = psr;
             raw->obs.data[n].D[h]    = (float)dopplerType1;
-            raw->obs.data[n].SNR[h]  = (unsigned char)(SNR_DBHZ/SNR_UNIT);
+            raw->obs.data[n].SNR[h]  = (uint16_t)(SNR_DBHZ/SNR_UNIT);
             raw->obs.data[n].code[h] = code;
 
             /* lock to signal indication */
@@ -481,7 +481,7 @@ static int decode_measepoch(raw_t *raw){
                 raw->obs.data[n].L[h]    = Ltype2;
                 raw->obs.data[n].P[h]    = PRtype2;
                 raw->obs.data[n].D[h]    = (float)dopplerType2;
-                raw->obs.data[n].SNR[h]  = (unsigned char)(SNR2_DBHZ/SNR_UNIT);
+                raw->obs.data[n].SNR[h]  = (uint16_t)(SNR2_DBHZ/SNR_UNIT);
                 raw->obs.data[n].code[h] = getSignalCode(signType2);
 
                 /* lock to signal indication */

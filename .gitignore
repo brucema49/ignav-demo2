@@ -14,3 +14,4 @@ README-master.md
 .claude/
 *.trace
 *.rslt
+python_plot/

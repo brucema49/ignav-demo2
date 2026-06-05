@@ -1377,7 +1377,7 @@ static int decode_solstat(char *buff, solstat_t *stat)
     stat->resp =(float)resp;
     stat->resc =(float)resc;
     stat->flag =(unsigned char)((vsat<<5)+(slip<<3)+fix);
-    stat->snr  =(unsigned char)(snr*4.0+0.5);
+    stat->snr  =(uint16_t)(snr/SNR_UNIT+0.5);
     stat->lock =(unsigned short)lock;
     stat->outc =(unsigned short)outc;
     stat->slipc=(unsigned short)slipc;

@@ -110,11 +110,30 @@ static double prange(const obsd_t *obs, const nav_t *nav, const prcopt_t *opt,
             return (P2-gamma*P1)/(1.0-gamma);
         }
         else if (sys==SYS_CMP) { /* B1-B2 */
-            gamma=SQR(((obs->code[0]==CODE_L2I)?FREQ1_CMP:FREQ1)/FREQ2_CMP);
-            if      (obs->code[0]==CODE_L2I) b1=gettgd(sat,nav,0); /* TGD_B1I */
-            else if (obs->code[0]==CODE_L1P) b1=gettgd(sat,nav,2); /* TGD_B1Cp */
-            else b1=gettgd(sat,nav,2)+gettgd(sat,nav,4); /* TGD_B1Cp+ISC_B1Cd */
-            b2=gettgd(sat,nav,1); /* TGD_B2I/B2bI (m) */
+            double freq1_cmp,freq2_cmp;
+            /* determine frequency pair based on code types */
+            if (obs->code[0]==CODE_L2I) {
+                freq1_cmp=FREQ1_CMP; /* B1I */
+                b1=gettgd(sat,nav,0); /* TGD_B1I */
+            }
+            else if (obs->code[0]==CODE_L1P) {
+                freq1_cmp=FREQ1; /* B1Cp */
+                b1=gettgd(sat,nav,2); /* TGD_B1Cp */
+            }
+            else {
+                freq1_cmp=FREQ1; /* B1Cd */
+                b1=gettgd(sat,nav,2)+gettgd(sat,nav,4); /* TGD_B1Cp+ISC_B1Cd */
+            }
+            if (obs->code[1]==CODE_L7I||obs->code[1]==CODE_L7Q||
+                obs->code[1]==CODE_L7X) {
+                freq2_cmp=FREQ2_CMP; /* B2b */
+                b2=gettgd(sat,nav,1); /* TGD_B2I/B2bI */
+            }
+            else { /* B2a (L5) */
+                freq2_cmp=FREQ5;
+                b2=0.0; /* no TGD for B2a in current nav message */
+            }
+            gamma=SQR(freq1_cmp/freq2_cmp);
             return ((P2-gamma*P1)-(b2-gamma*b1))/(1.0-gamma);
         }
         else if (sys==SYS_IRN) { /* L5-S */
@@ -312,6 +331,9 @@ static int rescode(int iter, const obsd_t *obs, int n, const double *rs,
 
         /* excluded satellite? */
         if (satexclude(obs[i].sat,vare[i],svh[i],opt)) continue;
+
+        /* SNR mask */
+        if (testsnr(0,0,azel[1+i*2],obs[i].SNR[0]*SNR_UNIT,&opt->snrmask)) continue;
 
         /* ionospheric corrections */
         if (!ionocorr(obs[i].time,nav,obs[i].sat,pos,azel+i*2,
@@ -868,3 +890,4 @@ extern int pntpos(const obsd_t *obs, int n, const nav_t *nav,const prcopt_t *opt
     free(resp);
     return stat;
 }
+

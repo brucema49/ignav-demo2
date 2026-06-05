@@ -366,7 +366,7 @@ static int decode_rangecmpb(raw_t *raw)
             raw->obs.data[index].P  [pos]=psr;
             raw->obs.data[index].D  [pos]=(float)dop;
             raw->obs.data[index].SNR[pos]=
-                0.0<=snr&&snr<255.0?(unsigned char)(snr/SNR_UNIT+0.5):0;
+                0.0<=snr&&snr<255.0?(uint16_t)(snr/SNR_UNIT+0.5):0;
             raw->obs.data[index].LLI[pos]=(unsigned char)lli;
             raw->obs.data[index].code[pos]=code;
 #if 0
@@ -454,7 +454,7 @@ static int decode_rangeb(raw_t *raw)
             raw->obs.data[index].P  [pos]=psr;
             raw->obs.data[index].D  [pos]=(float)dop;
             raw->obs.data[index].SNR[pos]=
-                0.0<=snr&&snr<255.0?(unsigned char)(snr/SNR_UNIT+0.5):0;
+                0.0<=snr&&snr<255.0?(uint16_t)(snr/SNR_UNIT+0.5):0;
             raw->obs.data[index].LLI[pos]=(unsigned char)lli;
             raw->obs.data[index].code[pos]=code;
 #if 0
@@ -1123,7 +1123,7 @@ static int decode_rgeb(raw_t *raw)
             raw->obs.data[index].P  [freq]=psr;
             raw->obs.data[index].D  [freq]=(float)dop;
             raw->obs.data[index].SNR[freq]=
-                0.0<=snr&&snr<255.0?(unsigned char)(snr/SNR_UNIT+0.5):0;
+                0.0<=snr&&snr<255.0?(uint16_t)(snr/SNR_UNIT+0.5):0;
             raw->obs.data[index].LLI[freq]=(unsigned char)lli;
             raw->obs.data[index].code[freq]=freq==0?CODE_L1C:CODE_L2P;
         }
@@ -1190,7 +1190,7 @@ static int decode_rged(raw_t *raw)
             raw->obs.data[index].L  [freq]=adr;
             raw->obs.data[index].P  [freq]=psr;
             raw->obs.data[index].D  [freq]=(float)dop;
-            raw->obs.data[index].SNR[freq]=(unsigned char)(snr/SNR_UNIT+0.5);
+            raw->obs.data[index].SNR[freq]=(uint16_t)(snr/SNR_UNIT+0.5);
             raw->obs.data[index].LLI[freq]=(unsigned char)lli;
             raw->obs.data[index].code[freq]=freq==0?CODE_L1C:CODE_L2P;
         }

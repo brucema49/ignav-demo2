@@ -784,7 +784,7 @@ typedef struct feature {
 typedef struct {                /* observation data record */
     gtime_t time;               /* receiver sampling time (GPST) */
     unsigned char sat,rcv;      /* satellite/receiver number */
-    unsigned char SNR [NFREQ+NEXOBS]; /* signal strength (0.25 dBHz) */
+    uint16_t SNR [NFREQ+NEXOBS]; /* signal strength (0.001 dBHz) */
     unsigned char LLI [NFREQ+NEXOBS]; /* loss of lock indicator */
     unsigned char code[NFREQ+NEXOBS]; /* code indicator (CODE_???) */
     double L[NFREQ+NEXOBS]; /* observation data carrier-phase (cycle) */
@@ -1470,7 +1470,7 @@ typedef struct {        /* QZSS LEX message type */
     int type;           /* message type */
     int alert;          /* alert flag */
     unsigned char stat; /* signal tracking status */
-    unsigned char snr;  /* signal C/N0 (0.25 dBHz) */
+    uint16_t snr;  /* signal C/N0 (0.001 dBHz) */
     unsigned int ttt;   /* tracking time (ms) */
     unsigned char msg[212]; /* LEX message data part 1695 bits */
 } lexmsg_t;
@@ -1944,7 +1944,7 @@ typedef struct {        /* satellite status type */
     double resc[NFREQ]; /* residuals of carrier-phase (m) */
     unsigned char vsat[NFREQ]; /* valid satellite flag */
     unsigned char vsatc[NFREQ];/* valid satellite flag for pseudorange */
-    unsigned char snr [NFREQ]; /* signal strength (0.25 dBHz) */
+    uint16_t snr [NFREQ]; /* signal strength (0.001 dBHz) */
     unsigned char fix [NFREQ]; /* ambiguity fix flag (1:fix,2:float,3:hold) */
     unsigned char slip[NFREQ]; /* cycle-slip flag */
     unsigned char half[NFREQ]; /* half-cycle valid flag */

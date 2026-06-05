@@ -789,7 +789,7 @@ static int decode_obsdata(FILE *fp, char *buff, double ver, int mask,
             case 0: obs->P[p[i]]=val[i]; obs->code[p[i]]=ind->code[i]; break;
             case 1: obs->L[p[i]]=val[i]; obs->LLI [p[i]]=lli[i];       break;
             case 2: obs->D[p[i]]=(float)val[i];                        break;
-            case 3: obs->SNR[p[i]]=(unsigned char)(val[i]/SNR_UNIT+0.5);    break;
+            case 3: obs->SNR[p[i]]=(uint16_t)(val[i]/SNR_UNIT+0.5);    break;
         }
     }
     trace(4,"decode_obsdata: time=%s sat=%2d\n",time_str(obs->time,0),obs->sat);

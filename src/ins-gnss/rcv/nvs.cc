@@ -139,7 +139,7 @@ static int decode_xf5raw(raw_t *raw)
                   sat,L1,P1,D1);
             continue;
         }
-        raw->obs.data[n].SNR[0]=(unsigned char)(I1(p+3)/SNR_UNIT+0.5);
+        raw->obs.data[n].SNR[0]=(uint16_t)(I1(p+3)/SNR_UNIT+0.5);
         if (sys==SYS_GLO) {
             raw->obs.data[n].L[0]=L1-toff*(FREQ1_GLO+DFRQ1_GLO*carrNo);
         } else {

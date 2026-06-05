@@ -164,9 +164,9 @@ static int lossoflock(rtcm_t *rtcm, int sat, int freq, int lock)
     return lli;
 }
 /* s/n ratio -----------------------------------------------------------------*/
-static unsigned char snratio(double snr)
+static uint16_t snratio(double snr)
 {
-    return (unsigned char)(snr<=0.0||255.5<=snr?0.0:snr/SNR_UNIT+0.5);
+    return (uint16_t)(snr<=0.0?0.0:snr/SNR_UNIT+0.5);
 }
 /* get observation data index ------------------------------------------------*/
 static int obsindex(obs_t *obs, gtime_t time, int sat)
@@ -1947,7 +1947,7 @@ static void save_msm_obs(rtcm_t *rtcm, int sys, msm_h_t *h, const double *r,
                 }
                 rtcm->obs.data[index].LLI[ind[k]]=
                     lossoflock(rtcm,sat,ind[k],lock[j])+(half[j]?3:0);
-                rtcm->obs.data[index].SNR [ind[k]]=(unsigned char)(cnr[j]/SNR_UNIT);
+                rtcm->obs.data[index].SNR [ind[k]]=(uint16_t)(cnr[j]/SNR_UNIT);
                 rtcm->obs.data[index].code[ind[k]]=code[k];
             }
             j++;

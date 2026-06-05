@@ -139,7 +139,7 @@ static int decode_cresraw(raw_t *raw)
         raw->obs.data[n].P[0]=pr;
         raw->obs.data[n].L[0]=cp/CLIGHT/FREQ1;
         raw->obs.data[n].D[0]=-(float)(dop/CLIGHT/FREQ1);
-        raw->obs.data[n].SNR[0]=(unsigned char)(snr/SNR_UNIT+0.5);
+        raw->obs.data[n].SNR[0]=(uint16_t)(snr/SNR_UNIT+0.5);
         raw->obs.data[n].LLI[0]=(unsigned char)lli;
         raw->obs.data[n].code[0]=CODE_L1C;
         
@@ -249,7 +249,7 @@ static int decode_cresraw2(raw_t *raw)
                 raw->obs.data[n].P[j]=pr[j]==0.0?0.0:pr[j]-toff;
                 raw->obs.data[n].L[j]=cp[j]==0.0?0.0:cp[j]-toff/CLIGHT/(j==0?FREQ1:FREQ2);
                 raw->obs.data[n].D[j]=-(float)dop[j];
-                raw->obs.data[n].SNR[j]=(unsigned char)(snr[j]/SNR_UNIT+0.5);
+                raw->obs.data[n].SNR[j]=(uint16_t)(snr[j]/SNR_UNIT+0.5);
                 raw->obs.data[n].LLI[j]=(unsigned char)lli[j];
                 raw->obs.data[n].code[j]=j==0?CODE_L1C:CODE_L2P;
             }
@@ -451,7 +451,7 @@ static int decode_cresgloraw(raw_t *raw)
                 raw->obs.data[n].P[j]=pr[j]==0.0?0.0:pr[j]-toff;
                 raw->obs.data[n].L[j]=cp[j]==0.0?0.0:cp[j]-toff/CLIGHT/(j==0?FREQ1:FREQ2);
                 raw->obs.data[n].D[j]=-(float)dop[j];
-                raw->obs.data[n].SNR[j]=(unsigned char)(snr[j]/SNR_UNIT+0.5);
+                raw->obs.data[n].SNR[j]=(uint16_t)(snr[j]/SNR_UNIT+0.5);
                 raw->obs.data[n].LLI[j]=(unsigned char)lli[j];
                 raw->obs.data[n].code[j]=j==0?CODE_L1C:CODE_L2P;
             }

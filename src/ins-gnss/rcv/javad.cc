@@ -1540,7 +1540,7 @@ static int decode_Ex(raw_t *raw, char code)
         
         if ((j=checkpri(raw->opt,sys,type,freq))>=0) {
             if (!settag(raw->obuf.data+i,raw->time)) continue;
-            raw->obuf.data[i].SNR[j]=(unsigned char)(cnr/SNR_UNIT+0.5);
+            raw->obuf.data[i].SNR[j]=(uint16_t)(cnr/SNR_UNIT+0.5);
         }
     }
     return 0;

@@ -12,3 +12,5 @@ skills/
 README-master.md
 .idea/
 .claude/
+*.trace
+*.rslt

@@ -282,8 +282,7 @@ static char *obscodes[]={       /* observation code strings */
     "2W","2Y","2M","2N","5I", "5Q","5X","7I","7Q","7X", /* 20-29 */
     "6A","6B","6C","6X","6Z", "6S","6L","8L","8Q","8X", /* 30-39 */
     "2I","2Q","6I","6Q","3I", "3Q","3X","1I","1Q","5A", /* 40-49 */
-    "5B","5C","9A","9B","9C", "9X","1D","5D","5P","5Z", /* 50-59 */
-    "6E","7D","7P","7Z","8D", "8P","4A","4B","4X",""    /* 60-69 */
+    "5B","5C","9A","9B","9C", "9X",""  ,""  ,""  ,""    /* 50-59 */
 };
 static unsigned char obsfreqs[]={
     /* 1:L1/E1, 2:L2/B1, 3:L5/E5a/L3, 4:L6/LEX/B3, 5:E5b/B2, 6:E5(a+b), 7:S */
@@ -292,8 +291,7 @@ static unsigned char obsfreqs[]={
     2, 2, 2, 2, 3,  3, 3, 5, 5, 5, /* 20-29 */
     4, 4, 4, 4, 4,  4, 4, 6, 6, 6, /* 30-39 */
     2, 2, 4, 4, 3,  3, 3, 1, 1, 3, /* 40-49 */
-    3, 3, 7, 7, 7,  7, 1, 3, 3, 3, /* 50-59 */
-    4, 5, 5, 5, 6,  6, 1, 1, 1     /* 60-68 */
+    3, 3, 7, 7, 7,  7, 0, 0, 0, 0  /* 50-59 */
 };
 static char codepris[7][MAXFREQ][16]={  /* code priority table */
    
@@ -303,7 +301,7 @@ static char codepris[7][MAXFREQ][16]={  /* code priority table */
     {"CABXZ"   ,""          ,"IQX"     ,"ABCXZ"  ,"IQX"    ,"IQX"   ,""    }, /* GAL */
     {"CSLXZ"   ,"SLX"       ,"IQX"     ,"SLX"    ,""       ,""      ,""    }, /* QZS */
     {"C"       ,""          ,"IQX"     ,""       ,""       ,""      ,""    }, /* SBS */
-    {"DPZXIQ"  ,"DPZXIQ"    ,"DPZXIQ"  ,"DPZXIQ" ,"DPZXIQ" ,""      ,""    }, /* BDS */
+    {"IQX"     ,"IQX"       ,"IQX"     ,"IQX"    ,"IQX"    ,""      ,""    }, /* BDS */
     {""        ,""          ,"ABCX"    ,""       ,""       ,""      ,"ABCX"}  /* IRN */
 };
 static fatalfunc_t *fatalfunc=NULL; /* fatal callback function */
@@ -671,7 +669,6 @@ extern int getcodepri(int sys, unsigned char code, const char *opt)
         default: return 0;
     }
     obs=code2obs(code);
-    if (!*obs) return 0; /* unknown obs code */
     j=code2idx(sys,code)+1;
     
     /* parse code options */

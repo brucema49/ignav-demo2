@@ -18,7 +18,7 @@
 /* constants -----------------------------------------------------------------*/
 #define MAXVAR       1E10         /* max variance for reset covariance matrix */
 #define MAXSOLR      2            /* max number of reboot solutions */
-#define MINVEL       0.5        /* min velocity for initial ins states (low-cost device) */
+#define MINVEL       3        /* min velocity for initial ins states (low-cost device) */
 #define MAXGYRO      (30.0*D2R)   /* max rotation speed value for initial */
 #define MAXDIFF      30.0         /* max time difference between solution */
 #define REBOOT       1            /* ins tightly coupled reboot enabled for low-cost device */

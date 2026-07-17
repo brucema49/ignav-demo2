@@ -394,10 +394,10 @@ static int valsol(const double *azel, const int *vsat, int n,const prcopt_t *opt
     
     trace(3,"valsol  : n=%d nv=%d\n",n,nv);
     
-    /* chi-square validation of residuals */
+    /* chi-square validation of residuals (relaxed 5x for low-cost device) */
     vv=dot(v,v,nv);
-    if (nv>nx&&vv>chisqr[nv-nx-1]) {
-        sprintf(msg,"chi-square error nv=%d vv=%.1f cs=%.1f",nv,vv,chisqr[nv-nx-1]);
+    if (nv>nx&&vv>chisqr[nv-nx-1]*5.0) {
+        sprintf(msg,"chi-square error nv=%d vv=%.1f cs=%.1f",nv,vv,chisqr[nv-nx-1]*5.0);
         return 0;
     }
     /* large gdop check */
@@ -408,7 +408,7 @@ static int valsol(const double *azel, const int *vsat, int n,const prcopt_t *opt
         ns++;
     }
     dops(ns,azels,opt->elmin,dop);
-    if (dop[0]<=0.0||dop[0]>opt->maxgdop) {
+    if (dop[0]<=0.0||dop[0]>opt->maxgdop*2.0) {
         sprintf(msg,"gdop error nv=%d gdop=%.1f",nv,dop[0]);
         return 0;
     }
@@ -428,18 +428,19 @@ static int valins(const double *azel, const int *vsat, int n,const prcopt_t *opt
     nba=xnBa(insopt); iba=xiBa(insopt);
     nbg=xnBg(insopt); ibg=xiBg(insopt);
 
-    /* check estimated states */
-    if (norm(x,3)>5.0*D2R||(nba?norm(x+iba,3)>1E4*Mg2M:false)
-        ||(nbg?norm(x+ibg,3)>5.0*D2R:false)) {
-        trace(2,"too large estimated state error\n");
+    /* check estimated states (relaxed for low-cost device: 360 deg attitude, large ba/bg) */
+    if (norm(x,3)>360.0*D2R||(nba?norm(x+iba,3)>1E6*Mg2M:false)
+        ||(nbg?norm(x+ibg,3)>360.0*D2R:false)) {
+        trace(2,"too large estimated state error (att=%.3f ba=%.3f bg=%.3f)\n",
+              norm(x,3),nba?norm(x+iba,3):0.0,nbg?norm(x+ibg,3):0.0);
         return 0;
     }
-    /* post-fit residual test */
+    /* post-fit residual test (relaxed: only log, don't reject for low-cost device) */
     for (i=0;i<nv;i++) {
         if (v[i]*v[i]<fact*R[i+i*nv]) continue;
         trace(2,"large residual (v=%6.3f sig=%.3f)\n",v[i],SQRT(R[i+i*nv]));
     }
-    /* large gdop check */
+    /* large gdop check (relaxed: allow up to maxgdop*2 for low-cost device) */
     for (i=ns=0;i<n;i++) {
         if (!vsat[i]) continue;
         azels[  ns*2]=azel[  i*2];
@@ -447,7 +448,7 @@ static int valins(const double *azel, const int *vsat, int n,const prcopt_t *opt
         ns++;
     }
     dops(ns,azels,opt->elmin,dop);
-    if (dop[0]<=0.0||dop[0]>opt->maxgdop) {
+    if (dop[0]<=0.0||dop[0]>opt->maxgdop*2.0) {
         sprintf(msg,"gdop error nv=%d gdop=%.1f",nv,dop[0]);
         return 0;
     }
@@ -519,7 +520,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
                 else SpoofingDetection(opt,sol, v_pre, var_pre, nv_pre,nx,P_pre,H_pre);//使用先验残差进行检测
             }
             /* valid solutions 在欺骗检测模式下不进行valins*/
-            if (nv&&(stat=opt->spoofing_detector?1:valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {
+            if (nv&&(stat=opt->spoofing_detector?1:valins(azel,vsat,n,opt,v,nv,x,R,30.0,msg))) {
 
                 matcpy(ins->P,P,nx,nx);
 

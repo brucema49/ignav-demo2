@@ -47,7 +47,19 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <errno.h>
+#include <execinfo.h>
 #include <navlib.h>
+
+/* crash handler: print backtrace on segfault */
+static void sigcrash(int sig)
+{
+    void *bt[64];
+    int n = backtrace(bt, 64);
+    fprintf(stderr, "\n=== CRASH (signal %d) ===\n", sig);
+    backtrace_symbols_fd(bt, n, STDERR_FILENO);
+    fprintf(stderr, "=== END BACKTRACE ===\n");
+    _exit(1);
+}
 
 #define PRGNAME     "rtkrcv"            /* program name */
 #define CMDPROMPT   "rtkrcv> "          /* command prompt */
@@ -1817,9 +1829,9 @@ int main(int argc, char **argv)
         /* 在初始化代码前添加调试配置 */
     #ifdef DEBUG
     /* 调试模式配置 */
-    dev = "/dev/null";  // 使用空设备，避免终端问题
+    dev = "/dev/null";  /* 使用空设备，避免终端问题 */
     #else
-    dev = "/dev/tty";   // 生产模式使用真实终端
+    dev = "/dev/null";   /* 非交互模式也使用null设备，避免终端问题 */
     #endif
 
 
@@ -1891,6 +1903,8 @@ int main(int argc, char **argv)
     signal(SIGUSR2,sigshut);
     signal(SIGHUP ,SIG_IGN);
     signal(SIGPIPE,SIG_IGN);
+    signal(SIGSEGV, sigcrash); /* crash handler */
+    signal(SIGABRT, sigcrash);
 #if OPENPLOT
     /* real-time plot */
     if (moniport) {
@@ -1914,22 +1928,22 @@ int main(int argc, char **argv)
         accept_sock(sock,con);
         sleepms(100);
     }
+    /* close monitor */
+    if (gtmoniport>0) closemoni_gt();
+    if (moniport>0) closemoni();
+    if (outstat>0) rtkclosestat();
+    
+    /* save navigation data (must be before rtksvrfree which frees nav) */
+    if (!savenav(NAVIFILE,&svr.nav)) {
+        fprintf(stderr,"navigation data save error: %s\n",NAVIFILE);
+    }
+    
     /* stop rtk server */
     stopsvr(pvt);
     rtksvrfree(&svr);
     
     /* close consoles */
     for (i=0;i<MAXCON;i++) con_close(con[i]);
-
-    /* close monitor */
-    if (gtmoniport>0) closemoni_gt();
-    if (moniport>0) closemoni();
-    if (outstat>0) rtkclosestat();
-    
-    /* save navigation data */
-    if (!savenav(NAVIFILE,&svr.nav)) {
-        fprintf(stderr,"navigation data save error: %s\n",NAVIFILE);
-    }
     traceclose();
     return 0;
 }

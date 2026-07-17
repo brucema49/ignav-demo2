@@ -891,8 +891,8 @@ static void set_index(double ver, int sys, const char *opt,
                   tobs[i],shift);
         }
     }
-    /* assign index for highest priority code */
-    for (i=0;i<NFREQ;i++) {
+    /* assign index for highest priority code (single-frequency: only freq 1) */
+    for (i=0;i<1;i++) {
         for (j=0,k=-1;j<n;j++) {
             if (ind->frq[j]==i+1&&ind->pri[j]&&(k<0||ind->pri[j]>ind->pri[k])) {
                 k=j;
@@ -904,30 +904,18 @@ static void set_index(double ver, int sys, const char *opt,
             if (ind->code[j]==ind->code[k]) ind->pos[j]=i;
         }
     }
-    /* assign index of extended obs data */
-    for (i=0;i<NEXOBS;i++) {
-        for (j=0;j<n;j++) {
-            if (ind->code[j]&&ind->pri[j]&&ind->pos[j]<0) break;
-        }
-        if (j>=n) break;
-        
-        for (k=0;k<n;k++) {
-            if (ind->code[k]==ind->code[j]) ind->pos[k]=NFREQ+i;
-        }
-    }
     for (i=0;i<n;i++) {
         if (!ind->code[i]||!ind->pri[i]||ind->pos[i]>=0) continue;
         trace(4,"reject obs type: sys=%2d, obs=%s\n",sys,tobs[i]);
     }
     ind->n=n;
     
-#if 0 /* for debug */
+    /* debug: print set_index results */
     for (i=0;i<n;i++) {
         trace(2,"set_index: sys=%2d,tobs=%s code=%2d pri=%2d frq=%d pos=%d shift=%5.2f\n",
               sys,tobs[i],ind->code[i],ind->pri[i],ind->frq[i],ind->pos[i],
               ind->shift[i]);
     }
-#endif
 }
 /* read rinex obs data body --------------------------------------------------*/
 static int readrnxobsb(FILE *fp, const char *opt, double ver, int *tsys,

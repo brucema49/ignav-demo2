@@ -14,4 +14,11 @@ README-master.md
 .claude/
 *.trace
 *.rslt
+*.csv
+*.txt
+*.log
+*.a
+*.nav
+*.json
+phone/
 python_plot/

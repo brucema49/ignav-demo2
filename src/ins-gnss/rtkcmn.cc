@@ -3524,11 +3524,12 @@ extern void tracelevel(int level)
 extern void trace(int level, const char *format, ...)
 {
     va_list ap;
-    
+
     /* print error message to stderr */
     if (level<=1) {
         va_start(ap,format); vfprintf(stderr,format,ap); va_end(ap);
     }
+    if (level>level_trace) return;
 #if TRACE_STDERR
     fp_trace=stderr;
 #endif
@@ -3541,6 +3542,7 @@ extern void trace(int level, const char *format, ...)
 extern void tracet(int level, const char *format, ...)
 {
     va_list ap;
+    if (level>level_trace) return;
 #if TRACE_STDERR
     fp_trace=stderr;
 #endif
@@ -3552,10 +3554,11 @@ extern void tracet(int level, const char *format, ...)
 }
 extern void tracemat(int level, const double *A, int n, int m, int p, int q)
 {
+    if (level>level_trace) return;
 #if TRACE_STDERR
     fp_trace=stderr;
 #endif
-    
+
 #if VIG_TRACE_MAT
     if (!fp_trace) return;
     matfprint(A,n,m,p,q,fp_trace); fflush(fp_trace);
@@ -4126,6 +4129,12 @@ static int code2freq_BDS(uint8_t code, double *freq)
             else {
                 *freq=FREQ1;     return 0; /* B1C */
             }
+        case '2':
+            /* B1I in RINEX 3.02/3.05 (frequency code '2' for BDS B1I) */
+            if (obs[1]=='I'||obs[1]=='Q'||obs[1]=='X') {
+                *freq=FREQ1_CMP; return 0; /* B1I */
+            }
+            return -1;
         case '7': *freq=FREQ2_CMP; return 1; /* B2I/B2b */
         case '5': *freq=FREQ5;     return 2; /* B2a */
         case '6': *freq=FREQ3_CMP; return 3; /* B3 */

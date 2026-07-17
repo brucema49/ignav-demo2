@@ -18,10 +18,12 @@
 /* constants -----------------------------------------------------------------*/
 #define MAXVAR       1E10         /* max variance for reset covariance matrix */
 #define MAXSOLR      2            /* max number of reboot solutions */
-#define MINVEL       3.0          /* min velocity for initial ins states */
+#define MINVEL       0.5        /* min velocity for initial ins states (low-cost device) */
 #define MAXGYRO      (30.0*D2R)   /* max rotation speed value for initial */
 #define MAXDIFF      30.0         /* max time difference between solution */
-#define REBOOT       1            /* ins tightly coupled reboot if always update fail */
+#define REBOOT       1            /* ins tightly coupled reboot enabled for low-cost device */
+#define REBOOT_TIMEOUT 5.0        /* reboot timeout: 5s without GNSS satellites */
+#define TC_FAIL_REBOOT 3          /* consecutive TC failures before reboot (low-cost device) */
 #define CHKNUMERIC   1            /* check numeric for given value */
 
 /* solution convert to velocity----------------------------------------------*/
@@ -156,6 +158,9 @@ extern int tcigpos(const prcopt_t *opt,const obsd_t *obs,int n,const nav_t *nav,
     int i,nx=ins->nx,info=1,nu,nr,flag;
     double *P,dt;
     const insopt_t* insopt=&opt->insopt;
+    static gtime_t last_gnss_time={0}; /* track last GNSS observation time */
+    static int reboot_pending=0;        /* reboot pending flag */
+    static int tc_fail_count=0;         /* consecutive TC failure count */
 
     trace(3,"tcigpos: update=%d,time=%s\n",upd,time_str(imu->time,4));
 
@@ -200,16 +205,52 @@ extern int tcigpos(const prcopt_t *opt,const obsd_t *obs,int n,const nav_t *nav,
         rtk->sol.pstat=rtk->sol.stat;
         ins->gstat=SOLQ_NONE;
         ins->ns=0;
+
+        /* track last GNSS observation time for timeout-based reboot */
+        if (obs && n > 0) {
+            last_gnss_time = obs[0].time;
+            reboot_pending = 0;
+        }
+
 #if REBOOT
-        /* reboot tightly coupled if need */
-        if ((flag=rebootc(ins,opt,obs,n,imu,nav))) {
-            if (flag==1) {
-                trace(2,"ins tightly coupled still reboot\n");
-                info=0; goto EXIT;
+        /* check for GNSS timeout: reboot if no GNSS for REBOOT_TIMEOUT seconds */
+        if (last_gnss_time.time && !reboot_pending &&
+            timediff(imu->time, last_gnss_time) > REBOOT_TIMEOUT) {
+            trace(2,"GNSS timeout %.1fs, triggering reboot\n",
+                  timediff(imu->time, last_gnss_time));
+            reboot_pending = 1;
+        }
+
+        /* only reboot on timeout, not on every GNSS epoch */
+        if (reboot_pending) {
+            flag = rebootc(ins, opt, obs, n, imu, nav);
+            if (flag == 2) {
+                trace(3,"ins tightly coupled reboot ok\n");
+                ins->stat=INSS_REBOOT; info=1;
+                tc_fail_count=0;
+                goto EXIT;
             }
-            trace(3,"ins tightly coupled reboot ok\n");
-            ins->stat=INSS_REBOOT; info=1;
-            goto EXIT;
+            /* rebootc failed: continue with current state (avoid crash from incomplete reset) */
+            trace(2,"timeout reboot: rebootc failed, continuing with current state\n");
+            reboot_pending = 0;
+            tc_fail_count=0;
+            /* fall through to normal TC processing */
+        }
+
+        /* reboot on consecutive TC failures (attitude divergence recovery) */
+        if (obs && n > 0 && tc_fail_count >= TC_FAIL_REBOOT) {
+            trace(2,"consecutive TC failures (%d), triggering reboot\n", tc_fail_count);
+            flag = rebootc(ins, opt, obs, n, imu, nav);
+            if (flag == 2) {
+                trace(3,"ins tightly coupled reboot ok (tc_fail)\n");
+                ins->stat=INSS_REBOOT; info=1;
+                tc_fail_count=0;
+                goto EXIT;
+            }
+            /* rebootc failed: reset counter and continue (avoid crash from incomplete reset) */
+            trace(2,"tc_fail reboot: rebootc failed, continuing with current state\n");
+            tc_fail_count=0;
+            /* fall through to normal TC processing */
         }
 #endif
         /* updates by measurement data */
@@ -239,6 +280,7 @@ extern int tcigpos(const prcopt_t *opt,const obsd_t *obs,int n,const nav_t *nav,
             ins->stat=ins->stat==INSS_REBOOT?INSS_REBOOT:INSS_TCUD;
 
             trace(3,"tightly couple ok\n");
+            tc_fail_count=0; /* reset on success */
 
             /* lack satellites but tightly-coupled run */
             if (ins->ns<4) {
@@ -254,7 +296,8 @@ extern int tcigpos(const prcopt_t *opt,const obsd_t *obs,int n,const nav_t *nav,
             update_ins_state_n(ins);
         }
         else {
-            trace(2,"tightly coupled fail\n");
+            tc_fail_count++; /* increment on failure */
+            trace(2,"tightly coupled fail (count=%d)\n",tc_fail_count);
             info=0;
         }
     }

@@ -3190,9 +3190,10 @@ extern int rtkpos(rtk_t *rtk, const obsd_t *obs, int n, const nav_t *nav)
 #if DEGRADETC
     /* degrade to dgps-tc mode if rtk-tc fail */
     if (stat==0&&opt->mode==PMODE_INS_TGNSS) {
+        int tc_orig=insopt->tc;
         insopt->tc=INSTC_DGPS;
         stat=relpos(rtk,opt->adjobs?obsd:obs,nu,nr,nav);
-        insopt->tc=INSTC_RTK;
+        insopt->tc=tc_orig;
         if (stat) goto exit;
     }
     /* degrade to single-tc mode if dgps-tc fail */

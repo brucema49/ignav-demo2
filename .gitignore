@@ -22,3 +22,4 @@ README-master.md
 *.json
 phone/
 python_plot/
+.vscode/settings.json

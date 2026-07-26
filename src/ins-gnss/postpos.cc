@@ -741,6 +741,7 @@ static void proclcgsof(FILE *fp, const prcopt_t *popt, const solopt_t *sopt,
             odo(&popt->insopt,&imus,&imus.odo,&rtk.ins);
         }
         if (mode==0) { /* forward/backward */
+            ins2sol(&rtk.ins,&popt->insopt,&rtk.sol);
             outsol(fp,&rtk.sol,rtk.rb,sopt,&rtk.ins,&popt->insopt);
         }
         else if (!revs) { /* combined-forward */
@@ -878,6 +879,7 @@ static void proclcobs(FILE *fp, const prcopt_t *popt, const solopt_t *sopt,
             odo(&popt->insopt,&imus,&imus.odo,&rtk.ins);
         }
         if (mode==0) { /* forward/backward */
+            ins2sol(&rtk.ins,&popt->insopt,&rtk.sol);
             outsol(fp,&rtk.sol,rtk.rb,sopt,&rtk.ins,&popt->insopt);
         }
         else if (!revs) { /* combined-forward */
@@ -990,6 +992,7 @@ static void proctcpos(FILE *fp, const prcopt_t *popt, const solopt_t *sopt,
             odo(&rtk.opt.insopt,&imus,&imus.odo,&rtk.ins);
         }
         if (mode==0) { /* forward/backward */
+            ins2sol(&rtk.ins,&rtk.opt.insopt,&rtk.sol);
             outsol(fp,&rtk.sol,rtk.rb,sopt,&rtk.ins,&rtk.opt.insopt);
         }
         else if (!revs) { /* combined-forward */

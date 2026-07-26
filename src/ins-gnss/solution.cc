@@ -1589,9 +1589,9 @@ static int outecef(unsigned char *buff, const char *s, const sol_t *sol,
     
     trace(3,"outecef:\n");
 
-    if (sol->stat==SOLQ_NONE) return 0;
+    if (sol->stat==SOLQ_NONE&&sol->ista<=INSS_NONE) return 0;
     p+=sprintf(p,"%s%s%14.4f%s%14.4f%s%14.4f%s%3d%s%4d%s%3d%s%10.4f%s%10.4f%s%10.4f%s%10.4f%s%10.4f%s%10.4f%s%6.2f%s%6.1f",
-               s,sep,sol->rr[0],sep,sol->rr[1],sep,sol->rr[2],sep,sol->stat,sep,0,sep,
+               s,sep,sol->rr[0],sep,sol->rr[1],sep,sol->rr[2],sep,sol->stat,sep,sol->ista,sep,
                sol->ns,sep,SQRT(sol->qr[0]),sep,SQRT(sol->qr[1]),sep,SQRT(sol->qr[2]),
                sep,sqvar(sol->qr[3]),sep,sqvar(sol->qr[4]),sep,sqvar(sol->qr[5]),
                sep,sol->age,sep,sol->ratio);
@@ -1642,7 +1642,7 @@ static int outpos(unsigned char *buff, const char *s, const sol_t *sol,
         p+=sprintf(p,"%s%s%14.9f%s%14.9f",s,sep,pos[0]*R2D,sep,pos[1]*R2D);
     }
     p+=sprintf(p,"%s%10.4f%s%3d%s%3d%s%3d%s%8.4f%s%8.4f%s%8.4f%s%8.4f%s%8.4f%s%8.4f%s%6.2f%s%6.1f",
-               sep,pos[2],sep,sol->stat,sep,0,sep,sol->ns,sep,SQRT(Q[4]),sep,
+               sep,pos[2],sep,sol->stat,sep,sol->ista,sep,sol->ns,sep,SQRT(Q[4]),sep,
                SQRT(Q[0]),sep,SQRT(Q[8]),sep,sqvar(Q[1]),sep,sqvar(Q[2]),
                sep,sqvar(Q[5]),sep,sol->age,sep,sol->ratio);
     if(opt->spoofing_detector==1){//windowed residuals  windowed statistic

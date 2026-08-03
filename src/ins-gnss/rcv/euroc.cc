@@ -42,6 +42,7 @@ extern int input_imu_euroc(raw_t *raw, unsigned char data)
     val[0]*=1E-9; /* time */
     raw->imu.time.time=(time_t)val[0];
     raw->imu.time.sec =val[0]-(time_t)val[0];
+    raw->imu.time=utc2gpst(raw->imu.time);
 
     /* gyro/accl measurement data */
     for (i=0;i<3;i++) {
@@ -94,5 +95,6 @@ extern int input_img_euroc(raw_t *raw, unsigned char data)
     raw->img.data=tmp;
     raw->img.time.time=(time_t)time;
     raw->img.time.sec =time-(time_t)time;
+    raw->img.time=utc2gpst(raw->img.time);
     return 11;
 }

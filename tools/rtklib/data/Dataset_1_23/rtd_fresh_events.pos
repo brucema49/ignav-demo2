@@ -1,0 +1,22 @@
+% program   : RTKLIB ver.demo5 b34L
+% inp file  : E:\program_project\python\GInsStream\tools\rtklib\data\Dataset_1_23\gnss_log.obs
+% inp file  : E:\program_project\python\GInsStream\tools\rtklib\data\Dataset_1_23\base.25o
+% inp file  : E:\program_project\python\GInsStream\tools\rtklib\data\Dataset_1_23\Test2440_R_20252440000_01D_MN.25n
+% obs start : 2025/09/01 07:51:04.9 GPST (week2382 114664.9s)
+% obs end   : 2025/09/01 09:18:06.0 GPST (week2382 119886.0s)
+% pos mode  : DGPS
+% freqs     : L1
+% solution  : Forward
+% elev mask : 7.0 deg
+% dynamics  : on
+% tidecorr  :
+% ionos opt : Broadcast
+% tropo opt : OFF
+% ephemeris : Broadcast
+% navi sys  : GPS BDS
+% antenna1  :                       ( 0.0000  0.0000  0.0000)
+% antenna2  :                       ( 0.0000  0.0000  0.0000)
+% ref pos   :  30.576915109  114.361121283    45.5371
+%
+% (lat/lon/height=WGS84/ellipsoidal,Q=1:fix,2:float,3:sbas,4:dgps,5:single,6:ppp,ns=# of satellites)
+%  GPST          latitude(deg) longitude(deg)  height(m)   Q  ns   sdn(m)   sde(m)   sdu(m)  sdne(m)  sdeu(m)  sdun(m) age(s)  ratio

@@ -162,6 +162,27 @@ def read_ref_csv(filename: str) -> dict[str, Array] | None:
     return data
 
 
+def detect_pos_type(filename: str) -> str:
+    """Auto-detect eval-file coordinate type from first data row magnitude."""
+    with open(filename) as f:
+        for ln in f:
+            s = ln.strip()
+            if not s or s.startswith("%"):
+                continue
+            nums = [float(x) for x in s.split()]
+            if len(nums) >= 5 and (0 <= nums[0] < 4000) and (0 <= nums[1] <= 604800):
+                c0, c1, c2 = nums[2], nums[3], nums[4]
+            elif len(nums) >= 3:
+                c0, c1, c2 = nums[0], nums[1], nums[2]
+            else:
+                continue
+            # llh: lat in [-90,90], lon in [-180,180], height magnitude reasonable
+            if abs(c0) <= 90.0 and abs(c1) <= 180.0 and abs(c2) < 1.0e4:
+                return "llh"
+            return "xyz"
+    return "xyz"
+
+
 def read_eval_file(filename: str, pos_type: str = "xyz",
                    ref_datetime: Array | None = None,
                    qins_col: int = 6) -> dict[str, Array] | None:
@@ -710,7 +731,8 @@ def main():
 
     if args.eval_file.exists():
         eval_label = "ignav-RTDTC-GPS" if args.eval_file == DEFAULT_EVAL else f"ignav-RTDTC-GPS ({args.eval_file.stem})"
-        _, record = evaluate_dataset(args.eval_file, "xyz", 6, eval_label, *common)
+        eval_ptype = detect_pos_type(str(args.eval_file))
+        _, record = evaluate_dataset(args.eval_file, eval_ptype, 6, eval_label, *common)
         if record is not None:
             records.append(record)
     else:

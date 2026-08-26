@@ -9,6 +9,10 @@ cmake-build-debug/
 rtklib_b34/
 example/
 skills/
+exp-8-22/
+exp-8-23/
+exp-phone/
+Data19_20201214_HG4930_CAR_Opensky/
 README-master.md
 .idea/
 .claude/
@@ -20,6 +24,11 @@ README-master.md
 *.a
 *.nav
 *.json
+*.stat
 phone/
 python_plot/
 .vscode/settings.json
+.gitignore
+rtkrcv.nav
+.gitignore
+rtkrcv.nav

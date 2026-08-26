@@ -1835,19 +1835,8 @@ int main(int argc, char **argv)
     #endif
 
 
-    if (trace>0) {
-        traceopen(TRACEFILE);
-        tracelevel(trace);
-    }
-    
-    /* initialize rtk server and monitor port */
-    rtksvrinit(&svr);
-    strinit(&moni);
-
-    /* initialize ground truth monitor port */
-    strinit(&gtmoni);
-    
-    /* load options file */
+    /* load options file (提前到 trace/stat 打开之前, 使 file-tracefile /
+     * file-solstatfile 配置能生效; 否则 trace/stat 固定落在进程 cwd) */
     if (!*file) sprintf(file,"%s/%s",OPTSDIR,OPTSFILE);
     resetsysopts();
     if (!loadopts(file,rcvopts)||!loadopts(file,sysopts)||
@@ -1860,13 +1849,37 @@ int main(int argc, char **argv)
 #else
     getsysopts(&prcopt,solopt,&filopt);
 #endif
-    
+
+    if (trace>0) {
+        char tracefile[1024];
+        if (*filopt.trace) {
+            strcpy(tracefile,filopt.trace);   /* conf: file-tracefile */
+        } else {
+            strcpy(tracefile,TRACEFILE);      /* 兼容旧行为: cwd 下 */
+        }
+        traceopen(tracefile);
+        tracelevel(trace);
+    }
+
+    /* initialize rtk server and monitor port */
+    rtksvrinit(&svr);
+    strinit(&moni);
+
+    /* initialize ground truth monitor port */
+    strinit(&gtmoni);
+
     /* read navigation data */
     if (!readnav(NAVIFILE,&svr.nav)) {
         fprintf(stderr,"no navigation data: %s\n",NAVIFILE);
     }
     if (outstat>0) {
-        rtkopenstat(STATFILE,outstat);
+        char statfile[1024];
+        if (*filopt.solstat) {
+            strcpy(statfile,filopt.solstat);  /* conf: file-solstatfile */
+        } else {
+            strcpy(statfile,STATFILE);        /* 兼容旧行为: cwd 下 */
+        }
+        rtkopenstat(statfile,outstat);
     }
     /* open ground truth monitor port */
     if (gtmoniport>0&&!open_gtmoni(gtmoniport)) {

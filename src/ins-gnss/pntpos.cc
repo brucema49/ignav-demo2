@@ -72,75 +72,87 @@ static double varerr(const prcopt_t *opt, double el, int sys)
     if (opt->ionoopt==IONOOPT_IFLC) varr*=SQR(3.0); /* iono-free */
     return SQR(fact)*varr;
 }
-/* get tgd parameter (m) -----------------------------------------------------*/
-static double gettgd(int sat, const nav_t *nav)
-{
-    int i;
-    for (i=0;i<nav->n;i++) {
-        if (nav->eph[i].sat!=sat) continue;
-        return CLIGHT*nav->eph[i].tgd[0];
-    }
-    return 0.0;
-}
 /* psendorange with code bias correction -------------------------------------*/
-static double prange(const obsd_t *obs, const nav_t *nav, const double *azel,
-                     int iter, const prcopt_t *opt, double *var)
+static double prange(const obsd_t *obs, const nav_t *nav, const prcopt_t *opt,
+                     double *var)
 {
-    const double *lam=nav->lam[obs->sat-1];
-    double PC,P1,P2,P1_P2,P1_C1,P2_C2,gamma;
-    int i=0,j=1,sys;
+    double P1,P2,gamma,b1,b2;
+    int sat,sys;
     
+    sat=obs->sat;
+    sys=satsys(sat,NULL);
+    P1=obs->P[0];
+    P2=obs->P[1];
     *var=0.0;
     
-    if (!(sys=satsys(obs->sat,NULL))) return 0.0;
+    if (P1==0.0||(opt->ionoopt==IONOOPT_IFLC&&P2==0.0)) return 0.0;
     
-    /* L1-L2 for GPS/GLO/QZS, L1-L5 for GAL/SBS */
-    if (NFREQ>=3&&(sys&(SYS_GAL|SYS_SBS))) j=2;
-    if (NFREQ<2||lam[i]==0.0||lam[j]==0.0) return 0.0;
-
-    /* test snr mask */
-    if (iter>0) {
-        if (testsnr(0,i,azel[1],obs->SNR[i]*0.25,&opt->snrmask)) {
-            trace(4,"snr mask: %s sat=%2d el=%.1f snr=%.1f\n",
-                  time_str(obs->time,0),obs->sat,azel[1]*R2D,obs->SNR[i]*0.25);
-            return 0.0;
-        }
-        if (opt->ionoopt==IONOOPT_IFLC) {
-            if (testsnr(0,j,azel[1],obs->SNR[j]*0.25,&opt->snrmask)) return 0.0;
-        }
-    }
-    /* f1^2/f2^2 */
-    gamma=SQR(lam[j])/SQR(lam[i]);
-
-    P1=obs->P[i];
-    P2=obs->P[j];
-    P1_P2=nav->cbias[obs->sat-1][0];
-    P1_C1=nav->cbias[obs->sat-1][1];
-    P2_C2=nav->cbias[obs->sat-1][2];
-    
-    /* if no P1-P2 DCB, use TGD instead */
-    if (P1_P2==0.0&&(sys&(SYS_GPS|SYS_GAL|SYS_QZS))) {
-        P1_P2=(1.0-gamma)*gettgd(obs->sat,nav);
+    /* P1-C1,P2-C2 DCB correction */
+    if (sys==SYS_GPS||sys==SYS_GLO) {
+        if (obs->code[0]==CODE_L1C) P1+=nav->cbias[sat-1][1]; /* C1->P1 */
+        if (obs->code[1]==CODE_L2C) P2+=nav->cbias[sat-1][2]; /* C2->P2 */
     }
     if (opt->ionoopt==IONOOPT_IFLC) { /* dual-frequency */
         
-        if (P1==0.0||P2==0.0) return 0.0;
-        if (obs->code[i]==CODE_L1C) P1+=P1_C1; /* C1->P1 */
-        if (obs->code[j]==CODE_L2C) P2+=P2_C2; /* C2->P2 */
+        if (sys==SYS_GPS||sys==SYS_QZS) { /* L1-L2,G1-G2 */
+            gamma=SQR(FREQ1/FREQ2);
+            return (P2-gamma*P1)/(1.0-gamma);
+        }
+        else if (sys==SYS_GLO) { /* G1-G2 */
+            gamma=SQR(FREQ1_GLO/FREQ2_GLO);
+            return (P2-gamma*P1)/(1.0-gamma);
+        }
+        else if (sys==SYS_GAL) { /* E1-E5b */
+            gamma=SQR(FREQ1/FREQ7);
+            if (getseleph(SYS_GAL)) { /* F/NAV */
+                P2-=gettgd(sat,nav,0)-gettgd(sat,nav,1); /* BGD_E5aE5b */
+            }
+            return (P2-gamma*P1)/(1.0-gamma);
+        }
+        else if (sys==SYS_CMP) { /* B1-B2 */
+            int isB1I=(obs->code[0]==CODE_L2I||obs->code[0]==CODE_L1I);
+            gamma=SQR((isB1I?FREQ1_CMP:FREQ1)/FREQ2_CMP);
+            if      (isB1I)                 b1=gettgd(sat,nav,0); /* TGD_B1I */
+            else if (obs->code[0]==CODE_L1P) b1=gettgd(sat,nav,2); /* TGD_B1Cp */
+            else b1=gettgd(sat,nav,2)+gettgd(sat,nav,4); /* TGD_B1Cp+ISC_B1Cd */
+            b2=gettgd(sat,nav,1); /* TGD_B2I/B2bI (m) */
+            return ((P2-gamma*P1)-(b2-gamma*b1))/(1.0-gamma);
+        }
+        else if (sys==SYS_IRN) { /* L5-S */
+            gamma=SQR(FREQ5/FREQ9);
+            return (P2-gamma*P1)/(1.0-gamma);
+        }
+    }
+    else { /* single-freq (L1/E1/B1) */
+        *var=SQR(ERR_CBIAS);
         
-        /* iono-free combination */
-        PC=(gamma*P1-P2)/(gamma-1.0);
+        if (sys==SYS_GPS||sys==SYS_QZS) { /* L1 */
+            b1=gettgd(sat,nav,0); /* TGD (m) */
+            return P1-b1;
+        }
+        else if (sys==SYS_GLO) { /* G1 */
+            gamma=SQR(FREQ1_GLO/FREQ2_GLO);
+            b1=gettgd(sat,nav,0); /* -dtaun (m) */
+            return P1-b1/(gamma-1.0);
+        }
+        else if (sys==SYS_GAL) { /* E1 */
+            if (getseleph(SYS_GAL)) b1=gettgd(sat,nav,0); /* BGD_E1E5a */
+            else                    b1=gettgd(sat,nav,1); /* BGD_E1E5b */
+            return P1-b1;
+        }
+        else if (sys==SYS_CMP) { /* B1I/B1Cp/B1Cd */
+            if      (obs->code[0]==CODE_L2I||obs->code[0]==CODE_L1I) b1=gettgd(sat,nav,0); /* TGD_B1I */
+            else if (obs->code[0]==CODE_L1P) b1=gettgd(sat,nav,2); /* TGD_B1Cp */
+            else b1=gettgd(sat,nav,2)+gettgd(sat,nav,4); /* TGD_B1Cp+ISC_B1Cd */
+            return P1-b1;
+        }
+        else if (sys==SYS_IRN) { /* L5 */
+            gamma=SQR(FREQ9/FREQ5);
+            b1=gettgd(sat,nav,0); /* TGD (m) */
+            return P1-gamma*b1;
+        }
     }
-    else { /* single-frequency */
-        if (P1==0.0) return 0.0;
-        if (obs->code[i]==CODE_L1C) P1+=P1_C1; /* C1->P1 */
-        PC=P1-P1_P2/(1.0-gamma);
-    }
-    if (opt->sateph==EPHOPT_SBAS) PC-=P1_C1; /* sbas clock based C1 */
-    
-    *var=SQR(ERR_CBIAS);
-    
-    return PC;
+    return P1;
 }
 /* ionospheric correction ------------------------------------------------------
 * compute ionospheric correction
@@ -297,18 +309,18 @@ static int rescode(int iter, const obsd_t *obs, int n, const double *rs,
             satazel(pos,e,azel+i*2)<opt->elmin) continue;
 
         /* psudorange with code bias correction */
-        if ((P=prange(obs+i,nav,azel+i*2,iter,opt,&vmeas))==0.0) continue;
+        if ((P=prange(obs+i,nav,opt,&vmeas))==0.0) continue;
 
         /* excluded satellite? */
-        if (satexclude(obs[i].sat,svh[i],opt)) continue;
+        if (satexclude(obs[i].sat,vare[i],svh[i],opt)) continue;
 
         /* ionospheric corrections */
         if (!ionocorr(obs[i].time,nav,obs[i].sat,pos,azel+i*2,
                       iter>0?opt->ionoopt:IONOOPT_BRDC,&dion,&vion)) continue;
 
         /* GPS-L1 -> L1/B1 */
-        if ((lam_L1=nav->lam[obs[i].sat-1][0])>0.0) {
-            dion*=SQR(lam_L1/lam_carr[0]);
+        if ((lam_L1=CLIGHT/sat2freq(obs[i].sat,obs[i].code[0],nav))>0.0) {
+            dion*=SQR(lam_L1*FREQ1/CLIGHT);
         }
         /* tropospheric corrections */
         if (!tropcorr(obs[i].time,nav,pos,azel+i*2,
@@ -382,10 +394,10 @@ static int valsol(const double *azel, const int *vsat, int n,const prcopt_t *opt
     
     trace(3,"valsol  : n=%d nv=%d\n",n,nv);
     
-    /* chi-square validation of residuals */
+    /* chi-square validation of residuals (relaxed 5x for low-cost device) */
     vv=dot(v,v,nv);
-    if (nv>nx&&vv>chisqr[nv-nx-1]) {
-        sprintf(msg,"chi-square error nv=%d vv=%.1f cs=%.1f",nv,vv,chisqr[nv-nx-1]);
+    if (nv>nx&&vv>chisqr[nv-nx-1]*5.0) {
+        sprintf(msg,"chi-square error nv=%d vv=%.1f cs=%.1f",nv,vv,chisqr[nv-nx-1]*5.0);
         return 0;
     }
     /* large gdop check */
@@ -396,7 +408,7 @@ static int valsol(const double *azel, const int *vsat, int n,const prcopt_t *opt
         ns++;
     }
     dops(ns,azels,opt->elmin,dop);
-    if (dop[0]<=0.0||dop[0]>opt->maxgdop) {
+    if (dop[0]<=0.0||dop[0]>opt->maxgdop*2.0) {
         sprintf(msg,"gdop error nv=%d gdop=%.1f",nv,dop[0]);
         return 0;
     }
@@ -416,18 +428,19 @@ static int valins(const double *azel, const int *vsat, int n,const prcopt_t *opt
     nba=xnBa(insopt); iba=xiBa(insopt);
     nbg=xnBg(insopt); ibg=xiBg(insopt);
 
-    /* check estimated states */
-    if (norm(x,3)>5.0*D2R||(nba?norm(x+iba,3)>1E4*Mg2M:false)
-        ||(nbg?norm(x+ibg,3)>5.0*D2R:false)) {
-        trace(2,"too large estimated state error\n");
+    /* check estimated states (relaxed for low-cost device: 360 deg attitude, large ba/bg) */
+    if (norm(x,3)>360.0*D2R||(nba?norm(x+iba,3)>1E6*Mg2M:false)
+        ||(nbg?norm(x+ibg,3)>360.0*D2R:false)) {
+        trace(2,"too large estimated state error (att=%.3f ba=%.3f bg=%.3f)\n",
+              norm(x,3),nba?norm(x+iba,3):0.0,nbg?norm(x+ibg,3):0.0);
         return 0;
     }
-    /* post-fit residual test */
+    /* post-fit residual test (relaxed: only log, don't reject for low-cost device) */
     for (i=0;i<nv;i++) {
         if (v[i]*v[i]<fact*R[i+i*nv]) continue;
         trace(2,"large residual (v=%6.3f sig=%.3f)\n",v[i],SQRT(R[i+i*nv]));
     }
-    /* large gdop check */
+    /* large gdop check (relaxed: allow up to maxgdop*2 for low-cost device) */
     for (i=ns=0;i<n;i++) {
         if (!vsat[i]) continue;
         azels[  ns*2]=azel[  i*2];
@@ -435,7 +448,7 @@ static int valins(const double *azel, const int *vsat, int n,const prcopt_t *opt
         ns++;
     }
     dops(ns,azels,opt->elmin,dop);
-    if (dop[0]<=0.0||dop[0]>opt->maxgdop) {
+    if (dop[0]<=0.0||dop[0]>opt->maxgdop*2.0) {
         sprintf(msg,"gdop error nv=%d gdop=%.1f",nv,dop[0]);
         return 0;
     }
@@ -507,7 +520,7 @@ static int estinspr(const obsd_t *obs,int n,const double *rs,const double *dts,
                 else SpoofingDetection(opt,sol, v_pre, var_pre, nv_pre,nx,P_pre,H_pre);//使用先验残差进行检测
             }
             /* valid solutions 在欺骗检测模式下不进行valins*/
-            if (nv&&(stat=opt->spoofing_detector?1:valins(azel,vsat,n,opt,v,nv,x,R,4.0,msg))) {
+            if (nv&&(stat=opt->spoofing_detector?1:valins(azel,vsat,n,opt,v,nv,x,R,30.0,msg))) {
 
                 matcpy(ins->P,P,nx,nx);
 
@@ -705,7 +718,7 @@ static int resdop(const obsd_t *obs, int n, const double *rs, const double *dts,
     
     for (i=0;i<n&&i<MAXOBS;i++) {
         
-        lam=nav->lam[obs[i].sat-1][0];
+        lam=CLIGHT/sat2freq(obs[i].sat,obs[i].code[0],nav);
         if (obs[i].D[0]==0.0||lam==0.0||!vsat[i]||norm(rs+3+i*6,3)<=0.0) {
             continue;
         }

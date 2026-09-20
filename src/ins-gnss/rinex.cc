@@ -283,6 +283,38 @@ static void convcode(double ver, int sys, const char *str, char *type)
     }
     trace(3,"convcode: ver=%.2f sys=%2d type= %s -> %s\n",ver,sys,str,type);
 }
+/* fix observation code band (BDS-2/BDS-3) -------------------------------------
+* Normalize the frequency-band digit of a RINEX 3 observation code, following
+* GREAT-MSF LibGnut (gcoders/rinexo3.cpp: t_rinexo3::_fix_band).
+*
+*   BDS, ver <= 3.03 : C1x -> C2x  (B1I; both draft "C2x" and released "C1x"
+*                      are accepted and normalized to B1I = band 2)
+*   BDS, any         : C3x -> C6x  (B3I)
+*   BDS, ver >= 3.04 : C7D/C7P/C7Z -> C9D/C9P/C9Z
+*                      (distinguish BDS-3 B2b from BDS-2 B2I/B2b)
+* args   : char    sys   I  RINEX system code ('C' ...)
+*          char   *go    IO observation code (3 chars + '\0')
+*          double  ver   I  RINEX version
+*-----------------------------------------------------------------------------*/
+static void fix_band3(char sys, char *go, double ver)
+{
+    if (sys!='C'||!go||strlen(go)<3) return;
+
+    if (go[1]=='1'&&ver<=3.03) {
+        trace(2,"fix_band: both C1x and C2x coding should be accepted and "
+                "treated as C2x in RINEX 3.02/3.03 (code=%s)\n",go);
+        go[1]='2';
+    }
+    if (go[1]=='3') {
+        trace(2,"fix_band: BDS band changed C3x -> C6x (code=%s)\n",go);
+        go[1]='6';
+    }
+    if (go[1]=='7'&&ver>=3.04&&(go[2]=='D'||go[2]=='P'||go[2]=='Z')) {
+        trace(2,"fix_band: changing BDS-3 C7D/C7P/C7Z to C9D/C9P/C9Z in "
+                "RINEX 3.04 (code=%s)\n",go);
+        go[1]='9';
+    }
+}
 /* decode obs header ---------------------------------------------------------*/
 static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
                         char tobs[][MAXOBSTYPE][4], nav_t *nav, sta_t *sta)
@@ -301,7 +333,8 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
     int i,j,k,n,nt,prn,fcn;
     const char *p;
     char *label=buff+60,str[4];
-    
+    char sys_ch=0;    /* 当前 SYS / # / OBS TYPES 行的系统码 (读续行后 buff 已变) */
+
     trace(4,"decode_obsh: ver=%.2f\n",ver);
     
     if      (strstr(label,"MARKER NAME"         )) {
@@ -350,6 +383,7 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
             return;
         }
         i=(int)(p-syscodes);
+        sys_ch=buff[0];   /* 保存系统码: 下面读续行时 buff 会被覆盖 */
         n=(int)str2num(buff,3,3);
         for (j=nt=0,k=7;j<n;j++,k+=4) {
             if (k>58) {
@@ -359,17 +393,18 @@ static void decode_obsh(FILE *fp, char *buff, double ver, int *tsys,
             if (nt<MAXOBSTYPE-1) setstr(tobs[i][nt++],buff+k,3);
         }
         *tobs[i][nt]='\0';
-        
-        /* change beidou B1 code: 3.02 draft -> 3.02/3.03 */
-        if (i==5) {
-            for (j=0;j<nt;j++) if (tobs[i][j][1]=='2') tobs[i][j][1]='1';
-        }
+
+        /* fix observation-code band (BDS-2/BDS-3 conventions) */
+        for (j=0;j<nt;j++) fix_band3(sys_ch,tobs[i][j],ver);
         /* if unknown code in ver.3, set default code */
         for (j=0;j<nt;j++) {
             if (tobs[i][j][2]) continue;
+            /* 空码槽(解析出的数量多于实际列出的码)必须跳过: strchr(s,'\0')
+             * 会返回指向终止符的非空指针, 导致 defcodes 越界访问 */
+            if (!tobs[i][j][1]) continue;
             if (!(p=strchr(frqcodes,tobs[i][j][1]))) continue;
             tobs[i][j][2]=defcodes[i][(int)(p-frqcodes)];
-            trace(2,"set default for unknown code: sys=%c code=%s\n",buff[0],
+            trace(2,"set default for unknown code: sys=%c code=%s\n",sys_ch,
                   tobs[i][j]);
         }
     }
@@ -789,7 +824,7 @@ static int decode_obsdata(FILE *fp, char *buff, double ver, int mask,
             case 0: obs->P[p[i]]=val[i]; obs->code[p[i]]=ind->code[i]; break;
             case 1: obs->L[p[i]]=val[i]; obs->LLI [p[i]]=lli[i];       break;
             case 2: obs->D[p[i]]=(float)val[i];                        break;
-            case 3: obs->SNR[p[i]]=(unsigned char)(val[i]*4.0+0.5);    break;
+            case 3: obs->SNR[p[i]]=(uint16_t)(val[i]/SNR_UNIT+0.5);    break;
         }
     }
     trace(4,"decode_obsdata: time=%s sat=%2d\n",time_str(obs->time,0),obs->sat);
@@ -860,7 +895,8 @@ static void set_index(double ver, int sys, const char *opt,
     int i,j,k,n;
     
     for (i=n=0;*tobs[i];i++,n++) {
-        ind->code[i]=obs2code(tobs[i]+1,ind->frq+i);
+        ind->code[i]=obs2code(tobs[i]+1);
+        ind->frq[i]=code2idx(sys,ind->code[i])+1;
         ind->type[i]=(p=strchr(obscodes,tobs[i][0]))?(int)(p-obscodes):0;
         ind->pri[i]=getcodepri(sys,ind->code[i],opt);
         ind->pos[i]=-1;
@@ -884,14 +920,14 @@ static void set_index(double ver, int sys, const char *opt,
     for (p=opt;p&&(p=strchr(p,'-'));p++) {
         if (sscanf(p,optstr,str,&shift)<2) continue;
         for (i=0;i<n;i++) {
-            if (strcmp(code2obs(ind->code[i],NULL),str)) continue;
+            if (strcmp(code2obs(ind->code[i]),str)) continue;
             ind->shift[i]=shift;
             trace(2,"phase shift: sys=%2d tobs=%s shift=%.3f\n",sys,
                   tobs[i],shift);
         }
     }
-    /* assign index for highest priority code */
-    for (i=0;i<NFREQ;i++) {
+    /* assign index for highest priority code (single-frequency: only freq 1) */
+    for (i=0;i<1;i++) {
         for (j=0,k=-1;j<n;j++) {
             if (ind->frq[j]==i+1&&ind->pri[j]&&(k<0||ind->pri[j]>ind->pri[k])) {
                 k=j;
@@ -903,30 +939,18 @@ static void set_index(double ver, int sys, const char *opt,
             if (ind->code[j]==ind->code[k]) ind->pos[j]=i;
         }
     }
-    /* assign index of extended obs data */
-    for (i=0;i<NEXOBS;i++) {
-        for (j=0;j<n;j++) {
-            if (ind->code[j]&&ind->pri[j]&&ind->pos[j]<0) break;
-        }
-        if (j>=n) break;
-        
-        for (k=0;k<n;k++) {
-            if (ind->code[k]==ind->code[j]) ind->pos[k]=NFREQ+i;
-        }
-    }
     for (i=0;i<n;i++) {
         if (!ind->code[i]||!ind->pri[i]||ind->pos[i]>=0) continue;
         trace(4,"reject obs type: sys=%2d, obs=%s\n",sys,tobs[i]);
     }
     ind->n=n;
     
-#if 0 /* for debug */
+    /* debug: print set_index results */
     for (i=0;i<n;i++) {
         trace(2,"set_index: sys=%2d,tobs=%s code=%2d pri=%2d frq=%d pos=%d shift=%5.2f\n",
               sys,tobs[i],ind->code[i],ind->pri[i],ind->frq[i],ind->pos[i],
               ind->shift[i]);
     }
-#endif
 }
 /* read rinex obs data body --------------------------------------------------*/
 static int readrnxobsb(FILE *fp, const char *opt, double ver, int *tsys,
@@ -2029,12 +2053,12 @@ static int obsindex(double ver, int sys, const unsigned char *code,
                     return i;
             }
             else {
-                id=code2obs(code[i],NULL);
+                id=code2obs(code[i]);
                 if (id[0]==tobs[1]) return i;
             }
         }
         else { /* ver.3 */
-            id=code2obs(code[i],NULL);
+            id=code2obs(code[i]);
             if (!strcmp(id,tobs+1)) return i;
         }
     }
@@ -2118,7 +2142,7 @@ extern int outrnxobsb(FILE *fp, const rnxopt_t *opt, const obsd_t *obs, int n,
                 case 'P': outrnxobsf(fp,obs[ind[i]].P[k],-1); break;
                 case 'L': outrnxobsf(fp,obs[ind[i]].L[k],obs[ind[i]].LLI[k]); break;
                 case 'D': outrnxobsf(fp,obs[ind[i]].D[k],-1); break;
-                case 'S': outrnxobsf(fp,obs[ind[i]].SNR[k]*0.25,-1); break;
+                case 'S': outrnxobsf(fp,obs[ind[i]].SNR[k]*SNR_UNIT,-1); break;
             }
         }
         if (opt->rnxver>2.99&&fprintf(fp,"\n")==EOF) return 0;

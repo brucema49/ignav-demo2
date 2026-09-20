@@ -83,6 +83,7 @@
 
 #define MAX_ITER_KEPLER 30        /* max number of iteration of Kelpler */
 
+static int eph_sel[]={0,0,0,0,0,0,0}; /* GPS,GLO,GAL,QZS,BDS,IRN,SBS */
 /* variance by ura ephemeris (ref [1] 20.3.3.3.1.1) --------------------------*/
 static double var_uraeph(int ura)
 {
@@ -90,7 +91,7 @@ static double var_uraeph(int ura)
         2.4,3.4,4.85,6.85,9.65,13.65,24.0,48.0,96.0,192.0,384.0,768.0,1536.0,
         3072.0,6144.0
     };
-    return ura<0||15<ura?SQR(6144.0):SQR(ura_value[ura]);
+    return ura<0||14<ura?SQR(6144.0):SQR(ura_value[ura]);
 }
 /* variance by ura ssr (ref [4]) ---------------------------------------------*/
 static double var_urassr(int ura)
@@ -154,15 +155,15 @@ extern void alm2pos(gtime_t time, const alm_t *alm, double *rs, double *dts)
 *-----------------------------------------------------------------------------*/
 extern double eph2clk(gtime_t time, const eph_t *eph)
 {
-    double t;
+    double t,ts;
     int i;
-    
+
     trace(4,"eph2clk : time=%s sat=%2d\n",time_str(time,3),eph->sat);
-    
-    t=timediff(time,eph->toc);
-    
+
+    t=ts=timediff(time,eph->toc);
+
     for (i=0;i<2;i++) {
-        t-=eph->f0+eph->f1*t+eph->f2*t*t;
+        t=ts-(eph->f0+eph->f1*t+eph->f2*t*t);
     }
     return eph->f0+eph->f1*t+eph->f2*t*t;
 }
@@ -222,7 +223,7 @@ extern void eph2pos(gtime_t time, const eph_t *eph, double *rs, double *dts,
     x=r*cos(u); y=r*sin(u); cosi=cos(i);
     
     /* beidou geo satellite (ref [9]) */
-    if (sys==SYS_CMP&&prn<=5) {
+    if (sys==SYS_CMP&&(prn<=5||prn>=59)) { /* ref [9] table 4-1 */
         O=eph->OMG0+eph->OMGd*tk-omge*eph->toes;
         sinO=sin(O); cosO=cos(O);
         xg=x*cosO-y*cosi*sinO;
@@ -288,15 +289,15 @@ static void glorbit(double t, double *x, const double *acc)
 *-----------------------------------------------------------------------------*/
 extern double geph2clk(gtime_t time, const geph_t *geph)
 {
-    double t;
+    double t,ts;
     int i;
-    
+
     trace(4,"geph2clk: time=%s sat=%2d\n",time_str(time,3),geph->sat);
-    
-    t=timediff(time,geph->toe);
-    
+
+    t=ts=timediff(time,geph->toe);
+
     for (i=0;i<2;i++) {
-        t-=-geph->taun+geph->gamn*t;
+        t=ts-(-geph->taun+geph->gamn*t);
     }
     return -geph->taun+geph->gamn*t;
 }
@@ -765,4 +766,18 @@ extern void satposs(gtime_t teph, const obsd_t *obs, int n, const nav_t *nav,
               time_str(time[i],6),obs[i].sat,rs[i*6],rs[1+i*6],rs[2+i*6],
               dts[i*2]*1E9,var[i],svh[i]);
     }
+}
+/* select ephemeris ----------------------------------------------------------*/
+extern int getseleph(int sys)
+{
+    switch (sys) {
+        case SYS_GPS: return eph_sel[0];
+        case SYS_GLO: return eph_sel[1];
+        case SYS_GAL: return eph_sel[2];
+        case SYS_QZS: return eph_sel[3];
+        case SYS_CMP: return eph_sel[4];
+        case SYS_IRN: return eph_sel[5];
+        case SYS_SBS: return eph_sel[6];
+    }
+    return 0;
 }

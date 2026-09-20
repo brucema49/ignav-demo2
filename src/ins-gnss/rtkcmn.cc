@@ -180,10 +180,6 @@ const double chisqr[100]={      /* chi-sqr(n) (alpha=0.001) */
     126 ,127 ,128 ,129 ,131 ,132 ,133 ,134 ,135 ,137 ,
     138 ,139 ,140 ,142 ,143 ,144 ,145 ,147 ,148 ,149
 };
-const double lam_carr[MAXFREQ]={ /* carrier wave length (m) */
-    CLIGHT/FREQ1,CLIGHT/FREQ2,CLIGHT/FREQ5,CLIGHT/FREQ6,CLIGHT/FREQ7,
-    CLIGHT/FREQ8,CLIGHT/FREQ9
-};
 const prcopt_t prcopt_default={ /* defaults processing options */
     PMODE_KINEMA,0,2,SYS_GPS,   /* mode,soltype,nf,navsys */
     15.0*D2R,{{0,0}},           /* elmin,snrmask */
@@ -286,7 +282,8 @@ static char *obscodes[]={       /* observation code strings */
     "2W","2Y","2M","2N","5I", "5Q","5X","7I","7Q","7X", /* 20-29 */
     "6A","6B","6C","6X","6Z", "6S","6L","8L","8Q","8X", /* 30-39 */
     "2I","2Q","6I","6Q","3I", "3Q","3X","1I","1Q","5A", /* 40-49 */
-    "5B","5C","9A","9B","9C", "9X",""  ,""  ,""  ,""    /* 50-59 */
+    "5B","5C","9A","9B","9C", "9X","1D","5D","5P","5Z", /* 50-59 */
+    "6E","7D","7P","7Z","8D", "8P","4A","4B","4X",""    /* 60-68 */
 };
 static unsigned char obsfreqs[]={
     /* 1:L1/E1, 2:L2/B1, 3:L5/E5a/L3, 4:L6/LEX/B3, 5:E5b/B2, 6:E5(a+b), 7:S */
@@ -295,7 +292,8 @@ static unsigned char obsfreqs[]={
     2, 2, 2, 2, 3,  3, 3, 5, 5, 5, /* 20-29 */
     4, 4, 4, 4, 4,  4, 4, 6, 6, 6, /* 30-39 */
     2, 2, 4, 4, 3,  3, 3, 1, 1, 3, /* 40-49 */
-    3, 3, 7, 7, 7,  7, 0, 0, 0, 0  /* 50-59 */
+    3, 3, 7, 7, 7,  7, 1, 3, 3, 3, /* 50-59 */
+    4, 5, 5, 5, 6,  6, 1, 1, 1     /* 60-68 */
 };
 static char codepris[7][MAXFREQ][16]={  /* code priority table */
    
@@ -305,7 +303,7 @@ static char codepris[7][MAXFREQ][16]={  /* code priority table */
     {"CABXZ"   ,""          ,"IQX"     ,"ABCXZ"  ,"IQX"    ,"IQX"   ,""    }, /* GAL */
     {"CSLXZ"   ,"SLX"       ,"IQX"     ,"SLX"    ,""       ,""      ,""    }, /* QZS */
     {"C"       ,""          ,"IQX"     ,""       ,""       ,""      ,""    }, /* SBS */
-    {"IQX"     ,"IQX"       ,"IQX"     ,"IQX"    ,"IQX"    ,""      ,""    }, /* BDS */
+    {"IQXDPZ"  ,"IQX"       ,"IQXDPZ"  ,"IQX"    ,"IQXDPZ" ,""      ,""    }, /* BDS */
     {""        ,""          ,"ABCX"    ,""       ,""       ,""      ,"ABCX"}  /* IRN */
 };
 static fatalfunc_t *fatalfunc=NULL; /* fatal callback function */
@@ -553,7 +551,7 @@ extern void satno2id(int sat, char *id)
 *          prcopt_t *opt    I   processing options (NULL: not used)
 * return : status (1:excluded,0:not excluded)
 *-----------------------------------------------------------------------------*/
-extern int satexclude(int sat, int svh, const prcopt_t *opt)
+extern int satexclude(int sat, double var, int svh, const prcopt_t *opt)
 {
     int sys=satsys(sat,NULL);
     
@@ -567,6 +565,10 @@ extern int satexclude(int sat, int svh, const prcopt_t *opt)
     if (sys==SYS_QZS) svh&=0xFE; /* mask QZSS LEX health */
     if (svh) {
         trace(3,"unhealthy satellite: sat=%3d svh=%02X\n",sat,svh);
+        return 1;
+    }
+    if (var>MAX_VAR_EPH) {
+        trace(3,"invalid ura satellite: sat=%3d ura=%.2f\n",sat,sqrt(var));
         return 1;
     }
     return 0;
@@ -604,31 +606,24 @@ extern int testsnr(int base, int freq, double el, double snr,
 * return : obs code (CODE_???)
 * notes  : obs codes are based on reference [6] and qzss extension
 *-----------------------------------------------------------------------------*/
-extern unsigned char obs2code(const char *obs, int *freq)
+extern uint8_t obs2code(const char *obs)
 {
     int i;
-    if (freq) *freq=0;
     for (i=1;*obscodes[i];i++) {
         if (strcmp(obscodes[i],obs)) continue;
-        if (freq) *freq=obsfreqs[i];
-        return (unsigned char)i;
+        return (uint8_t)i;
     }
     return CODE_NONE;
 }
 /* obs code to obs code string -------------------------------------------------
 * convert obs code to obs code string
-* args   : unsigned char code I obs code (CODE_???)
-*          int    *freq  IO     frequency (NULL: no output)
-*                               (1:L1/E1, 2:L2/B1, 3:L5/E5a/L3, 4:L6/LEX/B3,
-                                 5:E5b/B2, 6:E5(a+b), 7:S)
+* args   : uint8_t code I obs code (CODE_???)
 * return : obs code string ("1C","1P","1P",...)
 * notes  : obs codes are based on reference [6] and qzss extension
 *-----------------------------------------------------------------------------*/
-extern char *code2obs(unsigned char code, int *freq)
+extern char *code2obs(uint8_t code)
 {
-    if (freq) *freq=0;
     if (code<=CODE_NONE||MAXCODE<code) return "";
-    if (freq) *freq=obsfreqs[code];
     return obscodes[code];
 }
 /* set code priority -----------------------------------------------------------
@@ -675,7 +670,8 @@ extern int getcodepri(int sys, unsigned char code, const char *opt)
         case SYS_IRN: i=6; optstr="-IL%2s"; break;
         default: return 0;
     }
-    obs=code2obs(code,&j);
+    obs=code2obs(code);
+    j=code2idx(sys,code)+1;
     
     /* parse code options */
     for (p=opt;p&&(p=strchr(p,'-'));p++) {
@@ -3219,22 +3215,6 @@ extern void uniqnav(nav_t *nav)
     uniqeph (nav);
     uniqgeph(nav);
     uniqseph(nav);
-    
-    /* update carrier wave length */
-    for (i=0;i<MAXSAT;i++) for (j=0;j<NFREQ;j++) {
-        nav->lam[i][j]=satwavelen(i+1,j,nav);
-    }
-    /* update carrier wavw length of extended obs codes */
-    for (rcv=0;rcv<2;rcv++) {
-        for (i=0;i<MAXSAT;i++) {
-            if ((ind=sys2ind(satsys(i+1,NULL)))<0) continue;
-            for (ps=&nav->sind[rcv][ind],j=0;j<ps->n&&j<NFREQ+NEXOBS;j++) {
-                if (ps->pos[j]< NFREQ       ) continue;
-                if (ps->pos[j]>=NFREQ+NEXOBS) continue;
-                nav->lam[i][ps->pos[j]+NEXOBS*rcv]=satwavelen(i+1,ps->frq[j]-1,nav);
-            }
-        }
-    }
 }
 /* compare observation data -------------------------------------------------*/
 static int cmpobs(const void *p1, const void *p2)
@@ -3544,11 +3524,12 @@ extern void tracelevel(int level)
 extern void trace(int level, const char *format, ...)
 {
     va_list ap;
-    
+
     /* print error message to stderr */
     if (level<=1) {
         va_start(ap,format); vfprintf(stderr,format,ap); va_end(ap);
     }
+    if (level>level_trace) return;
 #if TRACE_STDERR
     fp_trace=stderr;
 #endif
@@ -3561,6 +3542,7 @@ extern void trace(int level, const char *format, ...)
 extern void tracet(int level, const char *format, ...)
 {
     va_list ap;
+    if (level>level_trace) return;
 #if TRACE_STDERR
     fp_trace=stderr;
 #endif
@@ -3572,10 +3554,11 @@ extern void tracet(int level, const char *format, ...)
 }
 extern void tracemat(int level, const double *A, int n, int m, int p, int q)
 {
+    if (level>level_trace) return;
 #if TRACE_STDERR
     fp_trace=stderr;
 #endif
-    
+
 #if VIG_TRACE_MAT
     if (!fp_trace) return;
     matfprint(A,n,m,p,q,fp_trace); fflush(fp_trace);
@@ -3624,7 +3607,7 @@ extern void traceobs(int level, const obsd_t *obs, int n)
                         " %13.3f %3d %3d %3d %3d %3.1f %3.1f\n",
               i+1,str,id,obs[i].rcv,obs[i].L[0],obs[i].L[1],obs[i].P[0],
               obs[i].P[1],obs[i].LLI[0],obs[i].LLI[1],obs[i].code[0],
-              obs[i].code[1],obs[i].SNR[0]*0.25,obs[i].SNR[1]*0.25);
+              obs[i].code[1],obs[i].SNR[0]*SNR_UNIT,obs[i].SNR[1]*SNR_UNIT);
     }
     fflush(fp_trace);
 }
@@ -4059,9 +4042,13 @@ extern double satwavelen(int sat, int frq, const nav_t *nav)
         }
     }
     else if (sys==SYS_CMP) {
-        if      (frq==0) return CLIGHT/FREQ1_CMP; /* B1 */
-        else if (frq==1) return CLIGHT/FREQ2_CMP; /* B2 */
-        else if (frq==2) return CLIGHT/FREQ3_CMP; /* B3 */
+        /* wavelength must match the frequency index returned by
+           code2freq_BDS(): 0=B1I, 1=B2I/B2b(BDS-3), 2=B2a, 3=B3I, 4=B2ab */
+        if      (frq==0) return CLIGHT/FREQ1_CMP; /* B1I */
+        else if (frq==1) return CLIGHT/FREQ2_CMP; /* B2I/B2b */
+        else if (frq==2) return CLIGHT/FREQ5;     /* B2a  (was B3: inconsistent!) */
+        else if (frq==3) return CLIGHT/FREQ3_CMP; /* B3I */
+        else if (frq==4) return CLIGHT/FREQ8;     /* B2ab */
     }
     else {
         if      (frq==0) return CLIGHT/FREQ1; /* L1/E1 */
@@ -4073,6 +4060,167 @@ extern double satwavelen(int sat, int frq, const nav_t *nav)
         else if (frq==6) return CLIGHT/FREQ9; /* S */
     }
     return 0.0;
+}
+/* GPS obs code to frequency --------------------------------------------------*/
+static int code2freq_GPS(uint8_t code, double *freq)
+{
+    char *obs=code2obs(code);
+    switch (obs[0]) {
+        case '1': *freq=FREQ1; return 0; /* L1 */
+        case '2': *freq=FREQ2; return 1; /* L2 */
+        case '5': *freq=FREQ5; return 2; /* L5 */
+    }
+    return -1;
+}
+/* GLONASS obs code to frequency ---------------------------------------------*/
+static int code2freq_GLO(uint8_t code, int fcn, double *freq)
+{
+    char *obs=code2obs(code);
+    if (fcn<-7||fcn>6) return -1;
+    switch (obs[0]) {
+        case '1': *freq=FREQ1_GLO+DFRQ1_GLO*fcn; return 0; /* G1 */
+        case '2': *freq=FREQ2_GLO+DFRQ2_GLO*fcn; return 1; /* G2 */
+        case '3': *freq=FREQ3_GLO;               return 2; /* G3 */
+        case '4': *freq=FREQ1a_GLO;              return 0; /* G1a */
+        case '6': *freq=FREQ2a_GLO;              return 1; /* G2a */
+    }
+    return -1;
+}
+/* Galileo obs code to frequency ---------------------------------------------*/
+static int code2freq_GAL(uint8_t code, double *freq)
+{
+    char *obs=code2obs(code);
+    switch (obs[0]) {
+        case '1': *freq=FREQ1; return 0; /* E1 */
+        case '7': *freq=FREQ7; return 1; /* E5b */
+        case '5': *freq=FREQ5; return 2; /* E5a */
+        case '6': *freq=FREQ6; return 3; /* E6 */
+        case '8': *freq=FREQ8; return 4; /* E5ab */
+    }
+    return -1;
+}
+/* QZSS obs code to frequency ------------------------------------------------*/
+static int code2freq_QZS(uint8_t code, double *freq)
+{
+    char *obs=code2obs(code);
+    switch (obs[0]) {
+        case '1': *freq=FREQ1; return 0; /* L1 */
+        case '2': *freq=FREQ2; return 1; /* L2 */
+        case '5': *freq=FREQ5; return 2; /* L5 */
+        case '6': *freq=FREQ6; return 3; /* L6 */
+    }
+    return -1;
+}
+/* SBAS obs code to frequency ------------------------------------------------*/
+static int code2freq_SBS(uint8_t code, double *freq)
+{
+    char *obs=code2obs(code);
+    switch (obs[0]) {
+        case '1': *freq=FREQ1; return 0; /* L1 */
+        case '5': *freq=FREQ5; return 1; /* L5 */
+    }
+    return -1;
+}
+/* BDS obs code to frequency -------------------------------------------------*/
+static int code2freq_BDS(uint8_t code, double *freq)
+{
+    char *obs=code2obs(code);
+    switch (obs[0]) {
+        case '1':
+            if (obs[1]=='I'||obs[1]=='Q'||obs[1]=='X') {
+                *freq=FREQ1_CMP; return 0; /* B1I */
+            }
+            else {
+                *freq=FREQ1;     return 0; /* B1C */
+            }
+        case '2':
+            /* B1I in RINEX 3.02/3.05 (frequency code '2' for BDS B1I) */
+            if (obs[1]=='I'||obs[1]=='Q'||obs[1]=='X') {
+                *freq=FREQ1_CMP; return 0; /* B1I */
+            }
+            return -1;
+        case '7': *freq=FREQ2_CMP; return 1; /* B2I (BDS-2) */
+        case '9': *freq=FREQ2_CMP; return 1; /* B2b (BDS-3), normalized by fix_band3() */
+        case '5': *freq=FREQ5;     return 2; /* B2a */
+        case '6': *freq=FREQ3_CMP; return 3; /* B3I */
+        case '8': *freq=FREQ8;     return 4; /* B2ab */
+    }
+    return -1;
+}
+/* NavIC obs code to frequency -----------------------------------------------*/
+static int code2freq_IRN(uint8_t code, double *freq)
+{
+    char *obs=code2obs(code);
+    switch (obs[0]) {
+        case '5': *freq=FREQ5; return 0; /* L5 */
+        case '9': *freq=FREQ9; return 1; /* S */
+    }
+    return -1;
+}
+/* system and obs code to frequency index ------------------------------------*/
+extern int code2idx(int sys, uint8_t code)
+{
+    double freq;
+    switch (sys) {
+        case SYS_GPS: return code2freq_GPS(code,&freq);
+        case SYS_GLO: return code2freq_GLO(code,0,&freq);
+        case SYS_GAL: return code2freq_GAL(code,&freq);
+        case SYS_QZS: return code2freq_QZS(code,&freq);
+        case SYS_SBS: return code2freq_SBS(code,&freq);
+        case SYS_CMP: return code2freq_BDS(code,&freq);
+        case SYS_IRN: return code2freq_IRN(code,&freq);
+    }
+    return -1;
+}
+/* system and obs code to frequency ------------------------------------------*/
+extern double code2freq(int sys, uint8_t code, int fcn)
+{
+    double freq=0.0;
+    switch (sys) {
+        case SYS_GPS: (void)code2freq_GPS(code,&freq); break;
+        case SYS_GLO: (void)code2freq_GLO(code,fcn,&freq); break;
+        case SYS_GAL: (void)code2freq_GAL(code,&freq); break;
+        case SYS_QZS: (void)code2freq_QZS(code,&freq); break;
+        case SYS_SBS: (void)code2freq_SBS(code,&freq); break;
+        case SYS_CMP: (void)code2freq_BDS(code,&freq); break;
+        case SYS_IRN: (void)code2freq_IRN(code,&freq); break;
+    }
+    return freq;
+}
+/* satellite and obs code to frequency ---------------------------------------*/
+extern double sat2freq(int sat, uint8_t code, const nav_t *nav)
+{
+    int i,fcn=0,sys,prn;
+    sys=satsys(sat,&prn);
+    if (sys==SYS_GLO) {
+        if (!nav) return 0.0;
+        for (i=0;i<nav->ng;i++) {
+            if (nav->geph[i].sat==sat) break;
+        }
+        if (i<nav->ng) {
+            fcn=nav->geph[i].frq;
+        }
+        else if (nav->glo_fcn[prn-1]>0) {
+            fcn=nav->glo_fcn[prn-1]-8;
+        }
+        else return 0.0;
+    }
+    return code2freq(sys,code,fcn);
+}
+/* group delay correction ----------------------------------------------------*/
+extern double gettgd(int sat, const nav_t *nav, int type)
+{
+    int i,sys=satsys(sat,NULL);
+    
+    if (sys==SYS_GLO) {
+        for (i=0;i<nav->ng;i++) {
+            if (nav->geph[i].sat!=sat) continue;
+            return -nav->geph[i].dtaun*CLIGHT; /* -dtaun (m) */
+        }
+        return 0.0;
+    }
+    if (type<0||6<type) return 0.0;
+    return nav->eph[sat-1].tgd[type]*CLIGHT; /* TGD (m) */
 }
 /* geometric distance ----------------------------------------------------------
 * compute geometric distance and receiver-to-satellite unit vector
@@ -4524,7 +4672,7 @@ extern void csmooth(obs_t *obs, int ns)
             if (p->LLI[j]) n[r-1][s-1][j]=0;
             if (n[r-1][s-1][j]==0) Ps[r-1][s-1][j]=p->P[j];
             else {
-                dcp=lam_carr[j]*(p->L[j]-Lp[r-1][s-1][j]);
+                {double freq=code2freq(satsys(p->sat,NULL),p->code[j],0); dcp=(freq>0.0?CLIGHT/freq:0.0)*(p->L[j]-Lp[r-1][s-1][j]);}
                 Ps[r-1][s-1][j]=p->P[j]/ns+(Ps[r-1][s-1][j]+dcp)*(ns-1)/ns;
             }
             if (++n[r-1][s-1][j]<ns) p->P[j]=0.0; else p->P[j]=Ps[r-1][s-1][j];

@@ -384,8 +384,16 @@ extern int vt_printf(vt_t *vt, const char *format, ...)
     va_list ap;
     char buff[MAXBUFF+1];
     va_start(ap,format);
-    vsprintf(buff,format,ap);
+    vsnprintf(buff,sizeof(buff),format,ap);
     va_end(ap);
+    /* 无可用控制台时(如 rtkrcv -s 批处理, vt 为 NULL 或 state==0)回退到 stderr。
+     * 原实现直接写 vt->logfp/写 fd, 一旦 vt 无效会在 fwrite 处 SIGSEGV, 把真正的
+     * 错误信息(如 rtksvrstart 的 errmsg)完全掩盖掉。 */
+    if (!vt||!vt->state) {
+        fputs(buff,stderr);
+        fflush(stderr);
+        return 0;
+    }
     return vt_puts(vt,buff);
 }
 /* check break on console ------------------------------------------------------

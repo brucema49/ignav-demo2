@@ -920,10 +920,6 @@ extern int init_raw(raw_t *raw, int format)
     for (i=0;i<MAXSAT   ;i++) raw->nav.alm  [i]=alm0;
     for (i=0;i<NSATGLO  ;i++) raw->nav.geph [i]=geph0;
     for (i=0;i<NSATSBS*2;i++) raw->nav.seph [i]=seph0;
-    for (i=0;i<MAXSAT;i++) for (j=0;j<NFREQ;j++) {
-        if (!(sys=satsys(i+1,NULL))) continue;
-        raw->nav.lam[i][j]=sys==SYS_GLO?lam_glo[j]:lam_carr[j];
-    }
     raw->sta.name[0]=raw->sta.marker[0]='\0';
     raw->sta.antdes[0]=raw->sta.antsno[0]='\0';
     raw->sta.rectype[0]=raw->sta.recver[0]=raw->sta.recsno[0]='\0';

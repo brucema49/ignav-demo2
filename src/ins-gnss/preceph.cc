@@ -652,10 +652,9 @@ static int pephclk(gtime_t time, int sat, const nav_t *nav, double *dts,
 extern void satantoff(gtime_t time, const double *rs, int sat, const nav_t *nav,
                       double *dant)
 {
-    const double *lam=nav->lam[sat-1];
     const pcv_t *pcv=nav->pcvs+sat-1;
     double ex[3],ey[3],ez[3],es[3],r[3],rsun[3],gmst,erpv[5]={0};
-    double gamma,C1,C2,dant1,dant2;
+    double gamma,C1,C2,dant1,dant2,lam0,lamk;
     int i,j=0,k=1;
     
     trace(4,"satantoff: time=%s sat=%2d\n",time_str(time,3),sat);
@@ -674,9 +673,11 @@ extern void satantoff(gtime_t time, const double *rs, int sat, const nav_t *nav,
     
     if (NFREQ>=3&&(satsys(sat,NULL)&(SYS_GAL|SYS_SBS))) k=2;
     
-    if (NFREQ<2||lam[j]==0.0||lam[k]==0.0) return;
+    lam0=CLIGHT/sat2freq(sat,CODE_L1C+j,nav); /* approximate */
+    lamk=CLIGHT/sat2freq(sat,CODE_L1C+k,nav);
+    if (NFREQ<2||lam0==0.0||lamk==0.0) return;
     
-    gamma=SQR(lam[k])/SQR(lam[j]);
+    gamma=SQR(lamk)/SQR(lam0);
     C1=gamma/(gamma-1.0);
     C2=-1.0 /(gamma-1.0);
     

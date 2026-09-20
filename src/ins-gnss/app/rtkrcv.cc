@@ -47,7 +47,19 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <errno.h>
+#include <execinfo.h>
 #include <navlib.h>
+
+/* crash handler: print backtrace on segfault */
+static void sigcrash(int sig)
+{
+    void *bt[64];
+    int n = backtrace(bt, 64);
+    fprintf(stderr, "\n=== CRASH (signal %d) ===\n", sig);
+    backtrace_symbols_fd(bt, n, STDERR_FILENO);
+    fprintf(stderr, "=== END BACKTRACE ===\n");
+    _exit(1);
+}
 
 #define PRGNAME     "rtkrcv"            /* program name */
 #define CMDPROMPT   "rtkrcv> "          /* command prompt */
@@ -969,7 +981,7 @@ static void probserv(vt_t *vt, int nf)
         for (j=0;j<nf;j++) vt_printf(vt,"%13.3f",obs[i].P[j]);
         for (j=0;j<nf;j++) vt_printf(vt,"%14.3f",obs[i].L[j]);
         for (j=0;j<nf;j++) vt_printf(vt,"%8.1f" ,obs[i].D[j]);
-        for (j=0;j<nf;j++) vt_printf(vt,"%3.0f" ,obs[i].SNR[j]*0.25);
+        for (j=0;j<nf;j++) vt_printf(vt,"%3.0f" ,obs[i].SNR[j]*SNR_UNIT);
         for (j=0;j<nf;j++) vt_printf(vt,"%2d"   ,obs[i].LLI[j]);
         vt_printf(vt,"\n");
     }
@@ -1583,7 +1595,13 @@ static void *con_thread(void *arg)
                 break;
         }
     }
-    vt_close(con->vt);
+    /* 注意: 这里不能 vt_close() —— 批处理(-s 且 stdin 非 tty, 如 /dev/null 或
+     * 重定向)时本线程会立刻读到 EOF 并退出, 若在此释放 vt, main 后续仍持有
+     * con->vt 指针 (pvt / con_close) 就会变成 use-after-free, 实测在停止阶段
+     * 于 vt_putchar() 的 fwrite 处 SIGSEGV。改为只标记离线, 由 con_close() 统一
+     * 关闭并释放, 保证 vt 的生命周期不短于 main 的使用期。 */
+    if (con->vt) con->vt->state=0;
+    con->state=0;
     return 0;
 }
 /* open console --------------------------------------------------------------*/
@@ -1612,8 +1630,14 @@ static void con_close(con_t *con)
     trace(3,"con_close:\n");
     
     if (!con) return;
-    con->state=con->vt->state=0;
+    con->state=0;
+    if (con->vt) con->vt->state=0;
     pthread_join(con->thread,NULL);
+    /* vt 由本函数统一关闭释放 (con_thread 退出时不再释放, 见 con_thread 注释) */
+    if (con->vt) {
+        vt_close(con->vt);
+        con->vt=NULL;
+    }
     free(con);
 }
 /* open socket for remote console --------------------------------------------*/
@@ -1817,25 +1841,14 @@ int main(int argc, char **argv)
         /* 在初始化代码前添加调试配置 */
     #ifdef DEBUG
     /* 调试模式配置 */
-    dev = "/dev/null";  // 使用空设备，避免终端问题
+    dev = "/dev/null";  /* 使用空设备，避免终端问题 */
     #else
-    dev = "/dev/tty";   // 生产模式使用真实终端
+    dev = "/dev/null";   /* 非交互模式也使用null设备，避免终端问题 */
     #endif
 
 
-    if (trace>0) {
-        traceopen(TRACEFILE);
-        tracelevel(trace);
-    }
-    
-    /* initialize rtk server and monitor port */
-    rtksvrinit(&svr);
-    strinit(&moni);
-
-    /* initialize ground truth monitor port */
-    strinit(&gtmoni);
-    
-    /* load options file */
+    /* load options file (提前到 trace/stat 打开之前, 使 file-tracefile /
+     * file-solstatfile 配置能生效; 否则 trace/stat 固定落在进程 cwd) */
     if (!*file) sprintf(file,"%s/%s",OPTSDIR,OPTSFILE);
     resetsysopts();
     if (!loadopts(file,rcvopts)||!loadopts(file,sysopts)||
@@ -1848,13 +1861,37 @@ int main(int argc, char **argv)
 #else
     getsysopts(&prcopt,solopt,&filopt);
 #endif
-    
+
+    if (trace>0) {
+        char tracefile[1024];
+        if (*filopt.trace) {
+            strcpy(tracefile,filopt.trace);   /* conf: file-tracefile */
+        } else {
+            strcpy(tracefile,TRACEFILE);      /* 兼容旧行为: cwd 下 */
+        }
+        traceopen(tracefile);
+        tracelevel(trace);
+    }
+
+    /* initialize rtk server and monitor port */
+    rtksvrinit(&svr);
+    strinit(&moni);
+
+    /* initialize ground truth monitor port */
+    strinit(&gtmoni);
+
     /* read navigation data */
     if (!readnav(NAVIFILE,&svr.nav)) {
         fprintf(stderr,"no navigation data: %s\n",NAVIFILE);
     }
     if (outstat>0) {
-        rtkopenstat(STATFILE,outstat);
+        char statfile[1024];
+        if (*filopt.solstat) {
+            strcpy(statfile,filopt.solstat);  /* conf: file-solstatfile */
+        } else {
+            strcpy(statfile,STATFILE);        /* 兼容旧行为: cwd 下 */
+        }
+        rtkopenstat(statfile,outstat);
     }
     /* open ground truth monitor port */
     if (gtmoniport>0&&!open_gtmoni(gtmoniport)) {
@@ -1891,6 +1928,8 @@ int main(int argc, char **argv)
     signal(SIGUSR2,sigshut);
     signal(SIGHUP ,SIG_IGN);
     signal(SIGPIPE,SIG_IGN);
+    signal(SIGSEGV, sigcrash); /* crash handler */
+    signal(SIGABRT, sigcrash);
 #if OPENPLOT
     /* real-time plot */
     if (moniport) {
@@ -1914,22 +1953,22 @@ int main(int argc, char **argv)
         accept_sock(sock,con);
         sleepms(100);
     }
+    /* close monitor */
+    if (gtmoniport>0) closemoni_gt();
+    if (moniport>0) closemoni();
+    if (outstat>0) rtkclosestat();
+    
+    /* save navigation data (must be before rtksvrfree which frees nav) */
+    if (!savenav(NAVIFILE,&svr.nav)) {
+        fprintf(stderr,"navigation data save error: %s\n",NAVIFILE);
+    }
+    
     /* stop rtk server */
     stopsvr(pvt);
     rtksvrfree(&svr);
     
     /* close consoles */
     for (i=0;i<MAXCON;i++) con_close(con[i]);
-
-    /* close monitor */
-    if (gtmoniport>0) closemoni_gt();
-    if (moniport>0) closemoni();
-    if (outstat>0) rtkclosestat();
-    
-    /* save navigation data */
-    if (!savenav(NAVIFILE,&svr.nav)) {
-        fprintf(stderr,"navigation data save error: %s\n",NAVIFILE);
-    }
     traceclose();
     return 0;
 }

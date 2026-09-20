@@ -166,7 +166,7 @@ static int doppHVR(const prcopt_t *opt,const insstate_t *ins,const double *rs,
     /* sensitive matrix for doppler measurement */
     for (i=0;i<n&&i<MAXOBS;i++) {
 
-        lam=nav->lam[obs[i].sat-1][0];
+        lam=CLIGHT/sat2freq(obs[i].sat,obs[i].code[0],nav);
 
         if (obs[i].D[0]==0.0||lam==0.0||norm(rs+3+i*6,3)<=0.0) {
             continue;
@@ -177,7 +177,7 @@ static int doppHVR(const prcopt_t *opt,const insstate_t *ins,const double *rs,
         if (geodist(rs+i*6,rr,e)<=0.0||satazel(pos,e,azel)<opt->elmin) continue;
 
         /* excluded satellite */
-        if (satexclude(obs[i].sat,svh[i],opt)) continue;
+        if (satexclude(obs[i].sat,0.0,svh[i],opt)) continue;
 
         /* satellite velocity relative to receiver in ecef */
         vs[0]=rs[0+3+i*6]-vr[0];

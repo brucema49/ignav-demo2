@@ -1,34 +1,31 @@
-# Created by .ignore support plugin (hsz.mobi)
-.vscode/
-.idea/
-b-kaggle/
-b-kaggle-com/
-bin/
-build/
-cmake-build-debug/
-rtklib_b34/
-example/
-skills/
-exp-8-22/
-exp-8-23/
-exp-phone/
-Data19_20201214_HG4930_CAR_Opensky/
-README-master.md
-.idea/
-.claude/
+# ---------------------------------------------------------------------------
+# 白名单模式: 仓库只跟踪以下四项 (以及本忽略文件自身):
+#     src/           源码
+#     README.md      说明
+#     a-cpt/         数据集与配置
+#     man/           文档
+# 其余顶层文件/目录一律忽略 (/* 先全部忽略, 再用 ! 逐项放行)。
+# ---------------------------------------------------------------------------
+/*
+!/.gitignore
+!/README.md
+!/src/
+!/a-cpt/
+!/man/
+
+# 白名单目录内部的本地产物 / 缓存
+__pycache__/
+*.pyc
+a-cpt/output/
+
+# 常见本地产物 (保险起见)
 *.trace
 *.rslt
-*.csv
-*.txt
-*.log
-*.a
-*.nav
-*.json
 *.stat
-phone/
-python_plot/
-.vscode/settings.json
-.gitignore
+*.log
 rtkrcv.nav
-.gitignore
-rtkrcv.nav
+build/
+build2/
+bin/
+lib/
+cmake-build-debug/

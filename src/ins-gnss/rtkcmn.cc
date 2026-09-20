@@ -4042,9 +4042,13 @@ extern double satwavelen(int sat, int frq, const nav_t *nav)
         }
     }
     else if (sys==SYS_CMP) {
-        if      (frq==0) return CLIGHT/FREQ1_CMP; /* B1 */
-        else if (frq==1) return CLIGHT/FREQ2_CMP; /* B2 */
-        else if (frq==2) return CLIGHT/FREQ3_CMP; /* B3 */
+        /* wavelength must match the frequency index returned by
+           code2freq_BDS(): 0=B1I, 1=B2I/B2b(BDS-3), 2=B2a, 3=B3I, 4=B2ab */
+        if      (frq==0) return CLIGHT/FREQ1_CMP; /* B1I */
+        else if (frq==1) return CLIGHT/FREQ2_CMP; /* B2I/B2b */
+        else if (frq==2) return CLIGHT/FREQ5;     /* B2a  (was B3: inconsistent!) */
+        else if (frq==3) return CLIGHT/FREQ3_CMP; /* B3I */
+        else if (frq==4) return CLIGHT/FREQ8;     /* B2ab */
     }
     else {
         if      (frq==0) return CLIGHT/FREQ1; /* L1/E1 */
@@ -4135,9 +4139,10 @@ static int code2freq_BDS(uint8_t code, double *freq)
                 *freq=FREQ1_CMP; return 0; /* B1I */
             }
             return -1;
-        case '7': *freq=FREQ2_CMP; return 1; /* B2I/B2b */
+        case '7': *freq=FREQ2_CMP; return 1; /* B2I (BDS-2) */
+        case '9': *freq=FREQ2_CMP; return 1; /* B2b (BDS-3), normalized by fix_band3() */
         case '5': *freq=FREQ5;     return 2; /* B2a */
-        case '6': *freq=FREQ3_CMP; return 3; /* B3 */
+        case '6': *freq=FREQ3_CMP; return 3; /* B3I */
         case '8': *freq=FREQ8;     return 4; /* B2ab */
     }
     return -1;

@@ -177,6 +177,34 @@ static void convcode(double ver, int sys, const char *str, char *type)
     }
     trace(3,"convcode: ver=%.2f sys=%2d type=%s -> %s\n",ver,sys,str,type);
 }
+/* fix BDS observation-code band (LibGnut _fix_band semantics) ----------------
+* RINEX 版本的差异在这里吸收掉, 内部一律按 band 2(B1I)/6(B3I)/7(B2I)/9(B2b) 处理:
+*   ver<=3.03 : C1x -> C2x (B1I), C3x -> C6x (B3I)
+*   ver>=3.04 : C7D/C7P/C7Z -> C9x (BDS-3 B2b, 与 BDS-2 的 B2I 区分)
+* args   : char   sys      I  system code ('C' 才处理)
+*          char   *go      IO observation code (3 chars)
+*          double ver      I  RINEX version
+* return : none
+*-----------------------------------------------------------------------------*/
+static void fix_band3(char sys, char *go, double ver)
+{
+    if (sys!='C'||!go||strlen(go)<3) return;
+
+    if (go[1]=='1'&&ver<=3.03) {
+        trace(2,"fix_band: both C1x and C2x coding should be accepted and "
+                "treated as C2x in RINEX 3.02/3.03 (code=%s)\n",go);
+        go[1]='2';
+    }
+    if (go[1]=='3') {
+        trace(2,"fix_band: BDS band changed C3x -> C6x (code=%s)\n",go);
+        go[1]='6';
+    }
+    if (go[1]=='7'&&ver>=3.04&&(go[2]=='D'||go[2]=='P'||go[2]=='Z')) {
+        trace(2,"fix_band: changing BDS-3 C7D/C7P/C7Z to C9D/C9P/C9Z in "
+                "RINEX 3.04 (code=%s)\n",go);
+        go[1]='9';
+    }
+}
 /* decode obs header ---------------------------------------------------------*/
 static void decode_obsh(char *buff,double ver,int *tsys,char tobs[][MAXOBSTYPE][4],
                         nav_t *nav, sta_t *sta)
@@ -237,27 +265,51 @@ static void decode_obsh(char *buff,double ver,int *tsys,char tobs[][MAXOBSTYPE][
     else if (strstr(label,"ANTENNA: ZERODIR XYZ")) ; /* opt ver.3 */
     else if (strstr(label,"CENTER OF MASS: XYZ" )) ; /* opt ver.3 */
     else if (strstr(label,"SYS / # / OBS TYPES" )) { /* ver.3 */
+        /* 续行归属: RINEX 头里同一系统的观测类型会分成多行 (每行最多 13 个),
+         * 续行的系统码位置是空格。原实现直接以 "invalid system code" 丢弃, 导致
+         * 观测码多于 13 个的系统(基站 BDS 28 个、GPS/GAL/GLO 20 个)只保留首行,
+         * 第二行起的频点(含很多 L1 相位)全部丢失, 多系统双差自然形不成。 */
+        static int last_sys=-1;
+        int i0,sysc;
+        if (buff[0]==' ') {
+            if (last_sys<0) return;
+            i0=last_sys;
+            sysc=(int)syscodes[i0];
+            for (nt=0;tobs[i0][nt][0]&&nt<MAXOBSTYPE-1;nt++) ;   /* 已有码数 */
+            for (j=0,k=7;j<13&&nt<MAXOBSTYPE-1;j++,k+=4) {
+                if (!buff[k]||buff[k]==' ') continue;            /* 行尾空白 */
+                setstr(tobs[i0][nt],buff+k,3);
+                if (!tobs[i0][nt][0]) continue;
+                fix_band3((char)sysc,tobs[i0][nt],ver);
+                nt++;
+            }
+            tobs[i0][nt][0]='\0';
+            return;
+        }
         if (!(p=strchr(syscodes,buff[0]))) {
             trace(2,"invalid system code: sys=%c\n",buff[0]);
             return;
         }
         i=(int)(p-syscodes);
+        sysc=(int)buff[0];
+        last_sys=i;
         n=(int)str2num(buff,3,3);
         for (j=nt=0,k=7;j<n;j++,k+=4) {
             if (nt<MAXOBSTYPE-1) setstr(tobs[i][nt++],buff+k,3);
         }
         *tobs[i][nt]='\0';
 
-        /* change beidou B1 code: 3.02 draft -> 3.02/3.03 */
-        if (i==5) {
-            for (j=0;j<nt;j++) if (tobs[i][j][1]=='2') tobs[i][j][1]='1';
-        }
+        /* 北斗观测码按频带归一化 (与 LibGnut _fix_band 一致, 版本相关):
+         * ver<=3.03: C1x -> C2x (B1I); C3x -> C6x (B3I);
+         * ver>=3.04: C7D/C7P/C7Z -> C9x (BDS-3 B2b) */
+        for (j=0;j<nt;j++) fix_band3((char)sysc,tobs[i][j],ver);
         /* if unknown code in ver.3, set default code */
         for (j=0;j<nt;j++) {
             if (tobs[i][j][2]) continue;
+            if (!tobs[i][j][1]) continue;    /* 空槽: strchr(s,'\0') 会越界 */
             if (!(p=strchr(frqcodes,tobs[i][j][1]))) continue;
             tobs[i][j][2]=defcodes[i][(int)(p-frqcodes)];
-            trace(2,"set default for unknown code: sys=%c code=%s\n",buff[0],
+            trace(2,"set default for unknown code: sys=%c code=%s\n",(char)sysc,
                   tobs[i][j]);
         }
     }

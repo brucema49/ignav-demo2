@@ -509,7 +509,12 @@ static int inputobs(rtksvr_t *svr,obsd_t *obs)
         if (j>=MAXOBSBUF) j%=MAXOBSBUF;
 
         if (fabs(timediff(bobs[j].data[0].time,obs[0].time))<DTTOLM) {
-            for (nb=0,k=0;k<bobs[i].n;k++) {
+            /* 注意: 这里必须用 bobs[j].n (匹配到的那个历元), 原实现写成
+             * bobs[i].n —— i 是相对 syn.base 的搜索偏移, 一旦 i!=j 就会按
+             * 错误历元的卫星数拷贝, 导致 nb==0 ("no match base observation
+             * data") 或拷贝错误的观测。campus01 回放时该分支被触发十几万次,
+             * 一个解都出不来。 */
+            for (nb=0,k=0;k<bobs[j].n;k++) {
                 obs[nr+nb++]=bobs[j].data[k];
             }
             /* update base sync index */
@@ -1095,7 +1100,12 @@ static int suspend(rtksvr_t *svr,int index)
 {
     syn_t *syn=&svr->syn;
     int lc=svr->rtk.opt.insopt.lcopt;
-    double d,dT=MAXTIMEDIFF;
+    /* 背压阈值必须小于历元匹配阈值 DTTOLM, 否则存在死区:
+     * 若 rover 比 base 超前 (DTTOLM, MAXTIMEDIFF) 之间, rover 不会被暂停读取,
+     * 但 inputobs() 又找不到 |dt|<DTTOLM 的 base 历元 -> 返回 0 ->
+     * rover 同步索引不推进 -> 永远卡在该历元 (campus01 回放实测十几万次
+     * "no match base observation data", 一个解都出不来)。 */
+    double d,dT=DTTOLM*0.5;
 
     d=svr->rtk.opt.soltype?-1.0:1.0;
 

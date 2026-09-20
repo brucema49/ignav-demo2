@@ -1595,7 +1595,13 @@ static void *con_thread(void *arg)
                 break;
         }
     }
-    vt_close(con->vt);
+    /* 注意: 这里不能 vt_close() —— 批处理(-s 且 stdin 非 tty, 如 /dev/null 或
+     * 重定向)时本线程会立刻读到 EOF 并退出, 若在此释放 vt, main 后续仍持有
+     * con->vt 指针 (pvt / con_close) 就会变成 use-after-free, 实测在停止阶段
+     * 于 vt_putchar() 的 fwrite 处 SIGSEGV。改为只标记离线, 由 con_close() 统一
+     * 关闭并释放, 保证 vt 的生命周期不短于 main 的使用期。 */
+    if (con->vt) con->vt->state=0;
+    con->state=0;
     return 0;
 }
 /* open console --------------------------------------------------------------*/
@@ -1624,8 +1630,14 @@ static void con_close(con_t *con)
     trace(3,"con_close:\n");
     
     if (!con) return;
-    con->state=con->vt->state=0;
+    con->state=0;
+    if (con->vt) con->vt->state=0;
     pthread_join(con->thread,NULL);
+    /* vt 由本函数统一关闭释放 (con_thread 退出时不再释放, 见 con_thread 注释) */
+    if (con->vt) {
+        vt_close(con->vt);
+        con->vt=NULL;
+    }
     free(con);
 }
 /* open socket for remote console --------------------------------------------*/
